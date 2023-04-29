@@ -6,4 +6,10 @@
         <item name="cornerSize">60%</item>
 
     </style>
+
+    <style name="ImageButtonStyle">
+        <item name="android:background">@null</item>
+    </style>
+
+
 </resources>
