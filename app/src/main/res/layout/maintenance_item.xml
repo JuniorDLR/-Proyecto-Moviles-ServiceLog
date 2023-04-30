@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cvMaintenance"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:animateLayoutChanges="true"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="10dp"
+    app:cardUseCompatPadding="true">
+
+    <LinearLayout
+        android:id="@+id/linear"
+        android:layout_width="375dp"
+        android:layout_height="145dp"
+        android:animateLayoutChanges="true"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="6dp">
+
+            <ImageView
+                android:id="@+id/iconoCvComputadora"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                app:srcCompat="@drawable/computer_icon" />
+
+            <LinearLayout
+                android:id="@+id/datos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_toEndOf="@+id/iconoCvComputadora"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvLab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="3dp"
+                    android:text="Laboratorio:"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="5dp"/>
+
+                <TextView
+                    android:id="@+id/txtLab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="3dp"
+                    tools:text="CN-009NK2-73846-65N-0P05"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_marginStart="10dp"/>
+
+                <TextView
+                    android:id="@+id/tvDescripcion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="5dp"
+                    android:padding="3dp"
+                    android:text="Laboratorio:"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txtDescripcion"
+                    android:layout_width="175dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:padding="3dp"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    tools:text="MuchoTexto, MuchoTexto,
+                        MuchoTexto, MuchoTexto,
+                        MuchoTexto" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="55dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:orientation="vertical">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:layout_width="45dp"
+                    android:layout_height="55dp"
+                    android:background="@color/soft_green"
+                    app:shapeAppearance="@style/CircularImageView"
+                    app:srcCompat="@drawable/edit_icon" />
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:layout_width="45dp"
+                    android:layout_height="55dp"
+                    android:background="@color/soft_green"
+                    app:shapeAppearance="@style/CircularImageView"
+                    app:srcCompat="@drawable/delete_icon" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
