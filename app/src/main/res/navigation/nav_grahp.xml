@@ -10,4 +10,19 @@
         android:name="com.example.servivelog.ui.view.FragmentLogin"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" />
+    <fragment
+        android:id="@+id/fragmentMenu"
+        android:name="com.example.servivelog.ui.view.FragmentMenu"
+        android:label="fragment_menu"
+        tools:layout="@layout/fragment_menu" />
+    <fragment
+        android:id="@+id/fragmentRegistroUsuario"
+        android:name="com.example.servivelog.ui.view.FragmentRegistroUsuario"
+        android:label="fragment_registro_usuario"
+        tools:layout="@layout/fragment_registro_usuario" />
+    <fragment
+        android:id="@+id/fragmentConfiguracionUsuario"
+        android:name="com.example.servivelog.ui.view.FragmentConfiguracionUsuario"
+        android:label="fragment_configuracion_usuario"
+        tools:layout="@layout/fragment_configuracion_usuario" />
 </navigation>
