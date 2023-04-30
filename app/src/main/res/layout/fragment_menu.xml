@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.view.FragmentMenu">
+    tools:context=".ui.view.FragmentMenu"
+    android:id="@+id/FragmentoMenu">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -38,40 +39,11 @@
             android:gravity="center"
             android:orientation="horizontal">
 
-            <ImageButton
-                style="@style/ImageButtonStyle"
-                android:layout_width="80dp"
-                android:layout_height="100dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/baseline_home_24" />
-
-            <ImageButton
-                style="@style/ImageButtonStyle"
-                android:layout_width="80dp"
-                android:layout_height="100dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/baseline_screen_search_desktop_24" />
-
-            <ImageButton
-                style="@style/ImageButtonStyle"
-                android:layout_width="80dp"
-                android:layout_height="100dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/baseline_image_24" />
-
-            <ImageButton
-                style="@style/ImageButtonStyle"
-                android:layout_width="80dp"
-                android:layout_height="100dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/baseline_add_chart_24" />
-
-            <ImageButton
-                style="@style/ImageButtonStyle"
-                android:layout_width="80dp"
-                android:layout_height="100dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/baseline_supervised_user_circle_24" />
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/BarraNavegacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:menu="@menu/bottom_nav_menu"/>
 
         </LinearLayout>
 

@@ -3,20 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_grahp"
-    app:startDestination="@id/fragmentRegistroUsuario">
+    app:startDestination="@id/fragmentLogin">
 
     <fragment
         android:id="@+id/fragmentLogin"
         android:name="com.example.servivelog.ui.view.FragmentLogin"
         android:label="fragment_login"
-        tools:layout="@layout/fragment_login" >
-        <action
-            android:id="@+id/action_fragmentLogin_to_fragmentMenu"
-            app:destination="@id/fragmentMenu" />
-        <action
-            android:id="@+id/action_fragmentLogin_to_fragmentRegistroUsuario"
-            app:destination="@id/fragmentRegistroUsuario" />
-    </fragment>
+        tools:layout="@layout/fragment_login" />
     <fragment
         android:id="@+id/fragmentMenu"
         android:name="com.example.servivelog.ui.view.FragmentMenu"
@@ -27,4 +20,9 @@
         android:name="com.example.servivelog.ui.view.FragmentRegistroUsuario"
         android:label="fragment_registro_usuario"
         tools:layout="@layout/fragment_registro_usuario" />
+    <fragment
+        android:id="@+id/fragmentConfiguracionUsuario"
+        android:name="com.example.servivelog.ui.view.FragmentConfiguracionUsuario"
+        android:label="fragment_configuracion_usuario"
+        tools:layout="@layout/fragment_configuracion_usuario" />
 </navigation>

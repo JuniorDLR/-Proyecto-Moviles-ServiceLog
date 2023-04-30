@@ -37,8 +37,7 @@
             android:layout_margin="10dp"
             android:autofillHints="name"
             android:hint="@string/ingrese_su_nombre"
-            android:inputType="text"
-            app:startIconScaleType="centerCrop" />
+            android:inputType="text"/>
 
         <TextView
             android:id="@+id/tvApelldios"
