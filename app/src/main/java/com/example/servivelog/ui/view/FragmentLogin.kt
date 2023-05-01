@@ -15,7 +15,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class FragmentLogin : Fragment() {
 
     private lateinit var loginBinding: FragmentLoginBinding
-    private lateinit var navigationView: BottomNavigationView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         loginBinding = FragmentLoginBinding.inflate(layoutInflater)
