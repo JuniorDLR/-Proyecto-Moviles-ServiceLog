@@ -13,7 +13,7 @@
     <LinearLayout
         android:id="@+id/linear"
         android:layout_width="375dp"
-        android:layout_height="125dp"
+        android:layout_height="145dp"
         android:animateLayoutChanges="true"
         android:orientation="vertical">
 
@@ -31,7 +31,7 @@
                 android:layout_centerVertical="true"
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
-                app:srcCompat="@drawable/computer_icon" />
+                app:srcCompat="@drawable/diagnostico" />
 
             <LinearLayout
                 android:id="@+id/datos"
@@ -41,35 +41,26 @@
                 android:layout_toEndOf="@+id/iconoCvComputadora"
                 android:orientation="vertical">
 
-                <RelativeLayout
+                <TextView
+                    android:id="@+id/tvServiceTag"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingTop="5dp">
+                    android:padding="3dp"
+                    android:text="ServiceTag:"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="5dp"/>
 
-                    <TextView
-                        android:id="@+id/tvLab"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_marginStart="5dp"
-                        android:padding="3dp"
-                        android:text="Laboratorio:"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/txtLab"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_toEndOf="@+id/tvLab"
-                        android:padding="3dp"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        tools:text="LabP4" />
-                </RelativeLayout>
-
+                <TextView
+                    android:id="@+id/txtServiceTag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="3dp"
+                    tools:text="CN-009NK2-73846-65N-0P05"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_marginStart="10dp"/>
 
                 <TextView
                     android:id="@+id/tvDescripcion"
@@ -78,7 +69,7 @@
                     android:layout_alignParentStart="true"
                     android:layout_marginStart="5dp"
                     android:padding="3dp"
-                    android:text="Laboratorio:"
+                    android:text="Descripción:"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
@@ -104,6 +95,7 @@
                 android:orientation="vertical">
 
                 <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/ivEdit"
                     android:layout_width="45dp"
                     android:layout_height="55dp"
                     android:background="@color/soft_green"
@@ -111,6 +103,7 @@
                     app:srcCompat="@drawable/edit_icon" />
 
                 <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/ivDelete"
                     android:layout_width="45dp"
                     android:layout_height="55dp"
                     android:background="@color/soft_green"

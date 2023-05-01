@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.gestionmantenimiento.view.FragmentAgregarMantenimiento">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="Mantenimiento"
+                android:textStyle="bold"
+                android:textSize="25sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:text="Laboratorio"
+                android:textSize="19sp"
+                android:textStyle="bold"/>
+
+            <AutoCompleteTextView
+                android:id="@+id/ctvLab"
+                android:layout_width="match_parent"
+                android:layout_margin="10dp"
+                android:layout_height="55dp"
+                android:hint="Labp1"
+                android:textSize="17sp"
+                android:textStyle="italic"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="Computadora"
+                android:textSize="19sp"
+                android:textStyle="bold"/>
+
+            <AutoCompleteTextView
+                android:id="@+id/ctvServiceTag"
+                android:layout_width="match_parent"
+                android:layout_margin="10dp"
+                android:layout_height="55dp"
+                android:hint="@string/ServiceTagExp"
+                android:textSize="17sp"
+                android:textStyle="italic"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Actividades a realizar"
+                android:textSize="19sp"
+                android:textStyle="bold"/>
+
+            <CheckBox
+                android:id="@+id/cbExterna"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Limpieza general externa"
+                android:textStyle="italic"
+                android:textSize="17sp"/>
+            <CheckBox
+                android:id="@+id/cbInterna"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Limpieza general interna"
+                android:textStyle="italic"
+                android:textSize="17sp"/>
+
+            <CheckBox
+                android:id="@+id/cbCambio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Cambio de partes internas"
+                android:layout_marginBottom="10dp"
+                android:textStyle="italic"
+                android:textSize="17sp"
+                tools:checked="true"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="Descripción"
+                android:textSize="19sp"
+                android:textStyle="bold"/>
+
+            <EditText
+                android:id="@+id/etDescripcion"
+                android:layout_width="match_parent"
+                android:layout_height="170dp"
+                android:layout_margin="10dp"
+                android:hint="Todas las limpiezas"
+                android:textSize="17sp"/>
+
+            <Button
+                android:id="@+id/btnAgregar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Agregar"
+                android:layout_gravity="center"
+                android:textStyle="italic"
+                android:textSize="20sp"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+</FrameLayout>
