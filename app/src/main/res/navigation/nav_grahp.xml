@@ -25,4 +25,19 @@
         android:name="com.example.servivelog.ui.view.FragmentConfiguracionUsuario"
         android:label="fragment_configuracion_usuario"
         tools:layout="@layout/fragment_configuracion_usuario" />
+    <fragment
+        android:id="@+id/fragmentDiagnostico"
+        android:name="com.example.servivelog.ui.view.FragmentDiagnostico"
+        android:label="fragment_diagnostico"
+        tools:layout="@layout/fragment_diagnostico" />
+    <fragment
+        android:id="@+id/fragmentEditarDiagnostico"
+        android:name="com.example.servivelog.ui.view.FragmentEditarDiagnostico"
+        android:label="fragment_editar_diagnostico"
+        tools:layout="@layout/fragment_editar_diagnostico" />
+    <fragment
+        android:id="@+id/fragmentAgregarDiagnostico"
+        android:name="com.example.servivelog.ui.view.FragmentAgregarDiagnostico"
+        android:label="fragment_agregar_diagnostico"
+        tools:layout="@layout/fragment_agregar_diagnostico" />
 </navigation>
