@@ -6,7 +6,7 @@
         android:title="Home" />
 
     <item
-        android:id="@+id/fragmentLaboratorios"
+        android:id="@+id/Fragmentlaboratorios"
         android:icon="@drawable/baseline_screen_search_desktop_24"
         android:title="Labs"/>
 
@@ -16,7 +16,7 @@
         android:title="Diagnostico"/>
 
     <item
-        android:id="@+id/fragmentMantenimiento"
+        android:id="@+id/fragmentGestionMantenimiento"
         android:icon="@drawable/baseline_add_chart_24"
         android:title="Mantenimiento"/>
 
