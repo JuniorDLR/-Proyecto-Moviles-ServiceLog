@@ -40,4 +40,34 @@
         android:name="com.example.servivelog.ui.view.FragmentAgregarDiagnostico"
         android:label="fragment_agregar_diagnostico"
         tools:layout="@layout/fragment_agregar_diagnostico" />
+    <fragment
+        android:id="@+id/fragmentAgregarLaboratorio"
+        android:name="com.example.servivelog.ui.view.FragmentAgregarLaboratorio"
+        android:label="fragment_agregar_laboratorio"
+        tools:layout="@layout/fragment_agregar_laboratorio" />
+    <fragment
+        android:id="@+id/fragmentAgregarMantenimiento"
+        android:name="com.example.servivelog.ui.gestionmantenimiento.view.FragmentAgregarMantenimiento"
+        android:label="fragment_agregar_mantenimiento"
+        tools:layout="@layout/fragment_agregar_mantenimiento" />
+    <fragment
+        android:id="@+id/fragmentEditMantenimiento"
+        android:name="com.example.servivelog.ui.gestionmantenimiento.view.FragmentEditMantenimiento"
+        android:label="fragment_edit_mantenimiento"
+        tools:layout="@layout/fragment_edit_mantenimiento" />
+    <fragment
+        android:id="@+id/Fragmentlaboratorios"
+        android:name="com.example.servivelog.ui.view.FragmentLaboratorios"
+        android:label="fragment_laboratorios"
+        tools:layout="@layout/fragment_laboratorios" />
+    <fragment
+        android:id="@+id/fragmentGestionMantenimiento"
+        android:name="com.example.servivelog.ui.gestionmantenimiento.view.FragmentGestionMantenimiento"
+        android:label="fragment_gestion_mantenimiento"
+        tools:layout="@layout/fragment_gestion_mantenimiento" />
+    <fragment
+        android:id="@+id/fragmentEditarLaboratorio"
+        android:name="com.example.servivelog.ui.view.FragmentEditarLaboratorio"
+        android:label="fragment_editar_laboratorio"
+        tools:layout="@layout/fragment_editar_laboratorio" />
 </navigation>
