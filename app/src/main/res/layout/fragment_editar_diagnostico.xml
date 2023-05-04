@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.view.FragmentEditarDiagnostico">
+    tools:context=".ui.gestiondiagnostico.view.FragmentEditarDiagnostico">
 
 
     <ScrollView
@@ -129,7 +129,6 @@
                     android:text="Tomar foto"
                     android:textSize="20sp" />
 
-
                 <Button
                     android:id="@+id/btnAñadirFoto"
                     android:layout_width="200dp"
@@ -139,6 +138,13 @@
                     android:textSize="20sp" />
             </RelativeLayout>
 
+            <Button
+                android:id="@+id/btnEditar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Editar"
+                android:textSize="20sp"
+                android:layout_margin="10dp"/>
 
         </LinearLayout>
     </ScrollView>

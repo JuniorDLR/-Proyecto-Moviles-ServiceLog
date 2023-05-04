@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.view.LaboratoriosFragment">
+    tools:context=".ui.gestionlaboratorio.view.FragmentLaboratorios">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -17,6 +17,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -27,12 +28,14 @@
                     android:textSize="30sp" />
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/fbtnAdd"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"
-                    android:src="@drawable/baseline_add_24" />
+                    android:src="@drawable/baseline_add_24"
+                    android:contentDescription="add"/>
 
             </LinearLayout>
 

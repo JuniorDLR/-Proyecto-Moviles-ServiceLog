@@ -7,8 +7,7 @@ import androidx.room.PrimaryKey
 
 @Entity("tblDiagnosis")
 data class DiagnosisEntity(
-    @PrimaryKey(autoGenerate = true) @ColumnInfo("idDiag")
-    var idD: Int,
+    @PrimaryKey(autoGenerate = true) @ColumnInfo("idDiag") var idD: Int = 0,
     @ColumnInfo("lab")
     var nombrelab: String,
     @ColumnInfo("comp")// ServiceTag de la computadora

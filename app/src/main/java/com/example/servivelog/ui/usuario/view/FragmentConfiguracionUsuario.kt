@@ -1,4 +1,4 @@
-package com.example.servivelog.ui.view
+package com.example.servivelog.ui.usuario.view
 
 import android.os.Bundle
 import android.view.LayoutInflater

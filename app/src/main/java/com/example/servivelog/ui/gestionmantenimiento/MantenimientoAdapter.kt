@@ -1,15 +1,19 @@
 package com.example.servivelog.ui.gestionmantenimiento
 
 import android.content.Context
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.servivelog.R
+import com.example.servivelog.domain.model.MantenimientoItem
 
 
-class MantenimientoAdapter (context: Context): RecyclerView.Adapter<MantenimientoAdapter.MyHolder>(){
+class MantenimientoAdapter (var context: Context,
+                            var listM: List<MantenimientoItem>,
+                            var view: View): RecyclerView.Adapter<MantenimientoAdapter.MyHolder>(){
 
     inner class MyHolder(itemView: View): RecyclerView.ViewHolder(itemView){
 
@@ -29,14 +33,18 @@ class MantenimientoAdapter (context: Context): RecyclerView.Adapter<Mantenimient
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyHolder {
-        TODO("Not yet implemented")
+        val itemView = LayoutInflater.from(context).inflate(R.layout.maintenance_item, parent, false)
+        return MyHolder(itemView)
     }
 
     override fun getItemCount(): Int {
-        TODO("Not yet implemented")
+        return listM.size
     }
 
     override fun onBindViewHolder(holder: MyHolder, position: Int) {
-        TODO("Not yet implemented")
+        val mant =listM[position]
+        holder.serviceTag.text = mant.computadora
+        holder.lab.text = mant.labname
+        holder.tipoMan.text = mant.tipoLimpieza
     }
 }

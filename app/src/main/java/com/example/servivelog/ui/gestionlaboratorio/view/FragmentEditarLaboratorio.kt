@@ -1,4 +1,4 @@
-package com.example.servivelog.ui.gestionmantenimiento.view
+package com.example.servivelog.ui.gestionlaboratorio.view
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,17 +6,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.Navigation
-import com.example.servivelog.databinding.FragmentEditMantenimientoBinding
-import dagger.hilt.android.AndroidEntryPoint
+import com.example.servivelog.databinding.FragmentEditarDiagnosticoBinding
+import com.example.servivelog.databinding.FragmentEditarLaboratorioBinding
 
-@AndroidEntryPoint
-class FragmentEditMantenimiento : Fragment() {
 
-    private lateinit var editMantenimientoBinding: FragmentEditMantenimientoBinding
+class FragmentEditarLaboratorio : Fragment() {
+    private lateinit var editarLaboratoriosBinding: FragmentEditarLaboratorioBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        editMantenimientoBinding = FragmentEditMantenimientoBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
+        editarLaboratoriosBinding = FragmentEditarLaboratorioBinding.inflate(layoutInflater)
     }
 
     override fun onCreateView(
@@ -24,13 +23,15 @@ class FragmentEditMantenimiento : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        val btneditar = editMantenimientoBinding.btnEditar
+        val btnEditar = editarLaboratoriosBinding.btnEditar
 
-        btneditar.setOnClickListener{
+        btnEditar.setOnClickListener {
             val navController = Navigation.findNavController(it)
             navController.popBackStack()
         }
 
-        return editMantenimientoBinding.root
+        return editarLaboratoriosBinding.root
     }
+
+
 }

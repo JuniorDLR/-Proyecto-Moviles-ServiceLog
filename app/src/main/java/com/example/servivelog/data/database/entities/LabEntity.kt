@@ -6,8 +6,7 @@ import androidx.room.PrimaryKey
 
 @Entity("tblLaboratorio")
 data class LabEntity(
-    @PrimaryKey(autoGenerate = true) @ColumnInfo("idLab")
-    var idL: Int,
+    @PrimaryKey(autoGenerate = true) @ColumnInfo("idLab") var idL: Int = 0,
     @ColumnInfo("nombreLab")
     var nombre: String,
     @ColumnInfo("descripcion")

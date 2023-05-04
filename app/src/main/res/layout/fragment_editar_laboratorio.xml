@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.view.FragmentEditarLaboratorio">
+    tools:context=".ui.gestionlaboratorio.view.FragmentEditarLaboratorio">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -74,7 +74,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
-                android:id="@+id/btnGuardar"
+                android:id="@+id/btnEditar"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

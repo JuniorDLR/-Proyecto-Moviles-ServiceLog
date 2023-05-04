@@ -1,36 +1,28 @@
-package com.example.servivelog.ui.view
+package com.example.servivelog.ui.gestioncomputadora.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import com.example.servivelog.R
-import com.example.servivelog.databinding.FragmentLoginBinding
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.example.servivelog.databinding.FragmentAgregarComputadoraBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class FragmentLogin : Fragment() {
+class FragmentAgregarComputadora : Fragment() {
 
-    private lateinit var loginBinding: FragmentLoginBinding
-
+    private lateinit var agregarComputadoraBinding: FragmentAgregarComputadoraBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        loginBinding = FragmentLoginBinding.inflate(layoutInflater)
+        agregarComputadoraBinding = FragmentAgregarComputadoraBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
-
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-
-
-
+    ): View {
         // Inflate the layout for this fragment
-        return loginBinding.root
+        return agregarComputadoraBinding.root
     }
 }
