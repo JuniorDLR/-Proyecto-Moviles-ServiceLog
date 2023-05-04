@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:id="@+id/PantallaAgregarDiagnostico"
     android:layout_height="match_parent"
-    tools:context=".ui.view.FragmentAgregarDiagnostico">
+    tools:context=".ui.gestiondiagnostico.view.FragmentAgregarDiagnostico">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -115,7 +115,7 @@
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/vpImagen"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"/>
+                android:layout_height="150dp" />
 
 
             <RelativeLayout
@@ -126,6 +126,7 @@
                     android:id="@+id/btnTomarFoto"
                     android:layout_width="200dp"
                     android:layout_height="match_parent"
+                    android:layout_marginStart="5dp"
                     android:text="Tomar foto"
                     android:textSize="20sp" />
 
@@ -134,11 +135,19 @@
                     android:id="@+id/btnAñadirFoto"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
                     android:layout_alignParentEnd="true"
                     android:text="Añadir foto"
                     android:textSize="20sp" />
             </RelativeLayout>
 
+            <Button
+                android:id="@+id/btnGuardar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Guardar"
+                android:textSize="20sp"
+                android:layout_margin="10dp"/>
 
         </LinearLayout>
     </ScrollView>

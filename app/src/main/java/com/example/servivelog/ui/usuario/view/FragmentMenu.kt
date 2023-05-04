@@ -1,4 +1,4 @@
-package com.example.servivelog.ui.view
+package com.example.servivelog.ui.usuario.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,7 +13,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 class FragmentMenu : Fragment() {
 
     private lateinit var MenuBinding: FragmentMenuBinding
-    private lateinit var NavView: BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,12 +21,9 @@ class FragmentMenu : Fragment() {
         override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
-        ): View? {
-
+        ): View {
 
 
             return MenuBinding.root
         }
-
-
     }

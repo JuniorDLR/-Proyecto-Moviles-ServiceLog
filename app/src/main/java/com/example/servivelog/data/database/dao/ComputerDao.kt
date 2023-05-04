@@ -13,6 +13,11 @@ interface ComputerDao {
 
     @Query("SELECT * FROM tblComputer ORDER BY idComp")
     suspend fun getAllComputers():List<ComputerEntity>
+    @Query("SELECT * FROM tblComputer WHERE idComp = :idC")
+    fun getComputerById(idC: Int): ComputerEntity
+
+    @Query("SELECT * FROM tblComputer WHERE serviceTag = :comp")
+    fun getComputerByServiceTag(comp: String): ComputerEntity
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertComputer(computer: ComputerEntity)

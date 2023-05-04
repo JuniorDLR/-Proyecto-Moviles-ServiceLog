@@ -13,6 +13,11 @@ interface LabDao {
 
     @Query("SELECT * FROM tblLaboratorio ORDER BY idLab")
     suspend fun getAllLabs(): List<LabEntity>
+    @Query("SELECT * FROM tblLaboratorio WHERE idLab= :idL")
+    fun getLabById(idL: Int): LabEntity
+
+    @Query("SELECT * FROM tblLaboratorio WHERE nombreLab= :lab")
+    fun getLabByLabN(lab: String): LabEntity
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertLab(lab: LabEntity)

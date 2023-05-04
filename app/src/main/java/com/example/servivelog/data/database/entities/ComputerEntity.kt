@@ -9,8 +9,7 @@ import javax.annotation.Nonnull
 @Entity("tblComputer")
 data class ComputerEntity(
 
-    @PrimaryKey(autoGenerate = true) @ColumnInfo("idComp")
-    var idC: Int,
+    @PrimaryKey(autoGenerate = true) @ColumnInfo("idComp") var idC: Int = 0,
     @ColumnInfo("nombre")
     var nombre: String,
     @ColumnInfo("descripcion")
@@ -30,5 +29,7 @@ data class ComputerEntity(
     @ColumnInfo("noInventario")
     var noInventario: String,
     @ColumnInfo("ubicacion")
-    var ubicacion: String //LABORATORIO
+    var ubicacion: String, //LABORATORIO
+    @ColumnInfo("idL")
+    var idL: Int
 )

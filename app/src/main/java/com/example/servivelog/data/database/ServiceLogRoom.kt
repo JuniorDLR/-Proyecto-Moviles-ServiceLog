@@ -1,5 +1,6 @@
 package com.example.servivelog.data.database
 
+import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.example.servivelog.data.database.dao.ComputerDao

@@ -5,7 +5,7 @@
     android:id="@+id/FrgmentoConfiguracionUsuario"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.view.FragmentConfiguracionUsuario">
+    tools:context=".ui.usuario.view.FragmentConfiguracionUsuario">
 
 
     <ScrollView

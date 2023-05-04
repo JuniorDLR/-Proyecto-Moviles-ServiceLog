@@ -6,8 +6,7 @@ import androidx.room.PrimaryKey
 
 @Entity("tblUser")
 data class UserEntity(
-    @PrimaryKey(autoGenerate = true) @ColumnInfo("idU")
-    var idU: Int,
+    @PrimaryKey(autoGenerate = true) @ColumnInfo("idU") var idU: Int = 0,
     @ColumnInfo("nombre")
     var nombre: String,
     @ColumnInfo("apellido")

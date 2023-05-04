@@ -1,4 +1,4 @@
-package com.example.servivelog.ui.view
+package com.example.servivelog.ui
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
