@@ -43,9 +43,7 @@ class FragmentAgregarMantenimiento : Fragment() {
         val datosC = gestionManteViewModel.buscarComp(agregarMantenimientoBinding.ctvServiceTag.text.toString())
         val tipoMant = confirmarCheckBox()
         return MantenimientoItem(
-            datosL.idL,
             datosL.nombre,
-            datosC.idC,
             datosC.serviceTag,
             tipoMant,
             agregarMantenimientoBinding.etDescripcion.text.toString()

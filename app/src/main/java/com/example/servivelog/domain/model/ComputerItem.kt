@@ -14,8 +14,7 @@ data class ComputerItem (
     val almacenamiento: Int,
     val serviceTag: String,
     val noInventario: String,
-    val ubicacion: String,
-    val idL: Int
+    val ubicacion: String
 )
 
 fun ComputerEntity.toDomain() = ComputerItem(idC = idC,
@@ -28,5 +27,4 @@ fun ComputerEntity.toDomain() = ComputerItem(idC = idC,
     almacenamiento = almacenamiento,
     serviceTag = serviceTag,
     noInventario = noInventario,
-    ubicacion = ubicacion,
-    idL = idL)
+    ubicacion = ubicacion)

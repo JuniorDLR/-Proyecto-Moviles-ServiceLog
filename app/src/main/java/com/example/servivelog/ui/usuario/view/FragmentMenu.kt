@@ -12,18 +12,17 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class FragmentMenu : Fragment() {
 
-    private lateinit var MenuBinding: FragmentMenuBinding
+    private lateinit var menuBinding: FragmentMenuBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        MenuBinding = FragmentMenuBinding.inflate(layoutInflater)
+        menuBinding = FragmentMenuBinding.inflate(layoutInflater)
     }
         override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
         ): View {
 
-
-            return MenuBinding.root
+            return menuBinding.root
         }
     }

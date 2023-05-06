@@ -23,7 +23,7 @@ class GestionManteViewModel @Inject constructor(
 ): ViewModel(){
     val modeloMantenimiento = MutableLiveData<List<MantenimientoItem>>()
     var loading = MutableLiveData<Boolean>()
-    val mantenimientoItem = MantenimientoItem(0," ", 0, "Sin datos", " ", " ")
+    val mantenimientoItem = MantenimientoItem(" ",  "Sin datos", " ", " ")
     var modeloLab = MutableLiveData<LabItem>()
 
     fun onCreate(){
