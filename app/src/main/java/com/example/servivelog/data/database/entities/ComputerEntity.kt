@@ -30,6 +30,4 @@ data class ComputerEntity(
     var noInventario: String,
     @ColumnInfo("ubicacion")
     var ubicacion: String, //LABORATORIO
-    @ColumnInfo("idL")
-    var idL: Int
 )
