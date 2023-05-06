@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.servivelog.R
 import com.example.servivelog.databinding.FragmentGestionMantenimientoBinding
-import com.example.servivelog.domain.model.MantenimientoItem
+import com.example.servivelog.domain.model.mantenimiento.MantenimientoCUDItem
 import com.example.servivelog.ui.gestionmantenimiento.MantenimientoAdapter
 import com.example.servivelog.ui.gestionmantenimiento.viewmodel.GestionManteViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -51,9 +51,9 @@ class FragmentGestionMantenimiento : Fragment() {
         return gestionMantenimientoBinding.root
     }
 
-    private fun setAdapter(it: List<MantenimientoItem>) {
+    private fun setAdapter(it: List<MantenimientoCUDItem>) {
         recyclerView = gestionMantenimientoBinding.rvMantenimiento
         recyclerView.layoutManager = LinearLayoutManager(requireActivity())
-        recyclerView.adapter = MantenimientoAdapter(requireActivity(), it, gestionMantenimientoBinding.root)
+        recyclerView.adapter = MantenimientoAdapter(requireActivity(), it, gestionMantenimientoBinding.root, gestionManteViewModel)
     }
 }

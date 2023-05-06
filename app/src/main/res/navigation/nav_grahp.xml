@@ -68,7 +68,11 @@
         android:id="@+id/fragmentEditMantenimiento"
         android:name="com.example.servivelog.ui.gestionmantenimiento.view.FragmentEditMantenimiento"
         android:label="fragment_edit_mantenimiento"
-        tools:layout="@layout/fragment_edit_mantenimiento" />
+        tools:layout="@layout/fragment_edit_mantenimiento" >
+        <argument
+            android:name="mantenimiento"
+            app:argType="com.example.servivelog.domain.model.mantenimiento.MantenimientoCUDItem" />
+    </fragment>
     <fragment
         android:id="@+id/Fragmentlaboratorios"
         android:name="com.example.servivelog.ui.gestionlaboratorio.view.FragmentLaboratorios"
@@ -90,11 +94,11 @@
         android:label="fragment_gestion_mantenimiento"
         tools:layout="@layout/fragment_gestion_mantenimiento" >
         <action
-            android:id="@+id/action_fragmentGestionMantenimiento_to_fragmentEditMantenimiento"
-            app:destination="@id/fragmentEditMantenimiento" />
-        <action
             android:id="@+id/action_fragmentGestionMantenimiento_to_fragmentAgregarMantenimiento"
             app:destination="@id/fragmentAgregarMantenimiento" />
+        <action
+            android:id="@+id/action_fragmentGestionMantenimiento_to_fragmentEditMantenimiento"
+            app:destination="@id/fragmentEditMantenimiento" />
     </fragment>
     <fragment
         android:id="@+id/fragmentEditarLaboratorio"

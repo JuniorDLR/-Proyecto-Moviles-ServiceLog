@@ -1,4 +1,4 @@
-package com.example.servivelog.domain.model
+package com.example.servivelog.domain.model.mantenimiento
 
 import com.example.servivelog.data.database.entities.MantenimientoEntity
 
