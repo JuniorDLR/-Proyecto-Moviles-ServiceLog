@@ -126,5 +126,9 @@
         android:id="@+id/fragmentEditarComputadora"
         android:name="com.example.servivelog.ui.gestioncomputadora.view.FragmentEditarComputadora"
         android:label="fragment_editar_computadora"
-        tools:layout="@layout/fragment_editar_computadora" />
+        tools:layout="@layout/fragment_editar_computadora" >
+        <argument
+            android:name="computer"
+            app:argType="com.example.servivelog.domain.model.computer.ComputerItem" />
+    </fragment>
 </navigation>
