@@ -3,12 +3,12 @@ package com.example.servivelog.ui.gestionmantenimiento.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.servivelog.domain.computerusecase.SearchByIdNameComp
+import com.example.servivelog.domain.computerusecase.RUDComputer
 import com.example.servivelog.domain.labusecase.SearchIdNameLab
 import com.example.servivelog.domain.mantenimientousecase.CUDMantenimiento
 import com.example.servivelog.domain.mantenimientousecase.GetMantenimiento
-import com.example.servivelog.domain.model.ComputerItem
 import com.example.servivelog.domain.model.LabItem
+import com.example.servivelog.domain.model.computer.ComputerItem
 import com.example.servivelog.domain.model.mantenimiento.MantenimientoCUDItem
 import com.example.servivelog.domain.model.mantenimiento.MantenimientoItem
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,7 +20,7 @@ class GestionManteViewModel @Inject constructor(
     private val getMantenimiento: GetMantenimiento,
     private val cudMantenimiento: CUDMantenimiento,
     private val searchIdNameLab: SearchIdNameLab,
-    private val searchByIdNameComp: SearchByIdNameComp
+    private val searchByIdNameComp: RUDComputer
 ): ViewModel(){
     val modeloMantenimiento = MutableLiveData<List<MantenimientoCUDItem>>()
     var loading = MutableLiveData<Boolean>()
@@ -48,7 +48,7 @@ class GestionManteViewModel @Inject constructor(
         return searchIdNameLab.searchLabByN(lab)
     }
 
-    fun buscarComp(comp: String): ComputerItem{
+    fun buscarComp(comp: String): ComputerItem {
         return searchByIdNameComp.searchCompByName(comp)
     }
     fun insertMantenimiento(mantenimientoItem: MantenimientoItem){

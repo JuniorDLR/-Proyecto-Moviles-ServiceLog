@@ -4,6 +4,8 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import com.example.servivelog.domain.model.computer.ComputerItem
+import com.example.servivelog.domain.model.computer.InsertItem
 import javax.annotation.Nonnull
 
 @Entity("tblComputer")
@@ -31,3 +33,28 @@ data class ComputerEntity(
     @ColumnInfo("ubicacion")
     var ubicacion: String, //LABORATORIO
 )
+fun InsertItem.toDatabase() = ComputerEntity(
+
+    nombre = nombre,
+    descripcion = descripcion,
+    marca = marca,
+    modelo = modelo,
+    procesador = procesador,
+    ram = ram,
+    almacenamiento = almacenamiento,
+    serviceTag = serviceTag,
+    noInventario = noInventario,
+    ubicacion = ubicacion)
+
+fun ComputerItem.toDatabase() = ComputerEntity(
+    idC = idC,
+    nombre = nombre,
+    descripcion = descripcion,
+    marca = marca,
+    modelo = modelo,
+    procesador = procesador,
+    ram = ram,
+    almacenamiento = almacenamiento,
+    serviceTag = serviceTag,
+    noInventario = noInventario,
+    ubicacion = ubicacion)
