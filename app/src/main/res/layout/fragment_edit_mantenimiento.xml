@@ -70,14 +70,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Limpieza general externa"
-                android:textStyle="italic"
                 android:textSize="17sp"/>
             <CheckBox
                 android:id="@+id/cbInterna"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Limpieza general interna"
-                android:textStyle="italic"
                 android:textSize="17sp"/>
 
             <CheckBox
@@ -86,7 +84,6 @@
                 android:layout_height="wrap_content"
                 android:text="Cambio de partes internas"
                 android:layout_marginBottom="10dp"
-                android:textStyle="italic"
                 android:textSize="17sp"
                 tools:checked="true"/>
 

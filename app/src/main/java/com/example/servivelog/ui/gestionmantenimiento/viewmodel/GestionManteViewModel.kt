@@ -9,7 +9,8 @@ import com.example.servivelog.domain.mantenimientousecase.CUDMantenimiento
 import com.example.servivelog.domain.mantenimientousecase.GetMantenimiento
 import com.example.servivelog.domain.model.ComputerItem
 import com.example.servivelog.domain.model.LabItem
-import com.example.servivelog.domain.model.MantenimientoItem
+import com.example.servivelog.domain.model.mantenimiento.MantenimientoCUDItem
+import com.example.servivelog.domain.model.mantenimiento.MantenimientoItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -21,9 +22,9 @@ class GestionManteViewModel @Inject constructor(
     private val searchIdNameLab: SearchIdNameLab,
     private val searchByIdNameComp: SearchByIdNameComp
 ): ViewModel(){
-    val modeloMantenimiento = MutableLiveData<List<MantenimientoItem>>()
+    val modeloMantenimiento = MutableLiveData<List<MantenimientoCUDItem>>()
     var loading = MutableLiveData<Boolean>()
-    val mantenimientoItem = MantenimientoItem(" ",  "Sin datos", " ", " ")
+    val mantenimientoItem = MantenimientoCUDItem(0," ",  "Sin datos", "Limpieza general externa. Limpieza general interna. ", " ")
     var modeloLab = MutableLiveData<LabItem>()
 
     fun onCreate(){
@@ -52,5 +53,11 @@ class GestionManteViewModel @Inject constructor(
     }
     fun insertMantenimiento(mantenimientoItem: MantenimientoItem){
         viewModelScope.launch { cudMantenimiento.insertMantenimiento(mantenimientoItem) }
+    }
+    fun updateMantenimiento(mantenimientoCUDItem: MantenimientoCUDItem){
+        viewModelScope.launch { cudMantenimiento.updateMantenimiento(mantenimientoCUDItem) }
+    }
+    fun deleteMantenimiento(mantenimientoCUDItem: MantenimientoCUDItem){
+        viewModelScope.launch { cudMantenimiento.deleteMantenimiento(mantenimientoCUDItem) }
     }
 }
