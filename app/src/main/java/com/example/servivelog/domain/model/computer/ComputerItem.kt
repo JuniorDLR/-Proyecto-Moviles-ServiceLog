@@ -6,17 +6,17 @@ import com.example.servivelog.data.database.entities.ComputerEntity
 import com.example.servivelog.data.database.entities.LabEntity
 
 data class ComputerItem (
-    val idC: Int,
-    val nombre: String,
-    val descripcion: String,
-    val marca: String,
-    val modelo: String,
-    val procesador: String,
-    val ram: Int,
-    val almacenamiento: Int,
-    val serviceTag: String,
-    val noInventario: String,
-    val ubicacion: String
+    var idC: Int,
+    var nombre: String,
+    var descripcion: String,
+    var marca: String,
+    var modelo: String,
+    var procesador: String,
+    var ram: Int,
+    var almacenamiento: Int,
+    var serviceTag: String,
+    var noInventario: String,
+    var ubicacion: String
 ) :Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
