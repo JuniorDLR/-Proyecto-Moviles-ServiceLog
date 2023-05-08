@@ -12,7 +12,9 @@ import com.example.servivelog.databinding.FragmentEditarComputadoraBinding
 import com.example.servivelog.domain.computerusecase.RUDComputer
 import com.example.servivelog.domain.model.computer.ComputerItem
 import com.example.servivelog.ui.gestioncomputadora.viewmodel.GestionCompViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class FragmentEditarComputadora : Fragment() {
 
     private lateinit var editarComputadoraBinding: FragmentEditarComputadoraBinding

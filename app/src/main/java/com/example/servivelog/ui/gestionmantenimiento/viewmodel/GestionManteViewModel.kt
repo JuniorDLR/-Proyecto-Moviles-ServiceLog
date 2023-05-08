@@ -4,11 +4,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.servivelog.domain.computerusecase.RUDComputer
-import com.example.servivelog.domain.labusecase.SearchIdNameLab
+import com.example.servivelog.domain.labusecase.RUDLab
 import com.example.servivelog.domain.mantenimientousecase.CUDMantenimiento
 import com.example.servivelog.domain.mantenimientousecase.GetMantenimiento
-import com.example.servivelog.domain.model.LabItem
 import com.example.servivelog.domain.model.computer.ComputerItem
+import com.example.servivelog.domain.model.lab.LabItem
 import com.example.servivelog.domain.model.mantenimiento.MantenimientoCUDItem
 import com.example.servivelog.domain.model.mantenimiento.MantenimientoItem
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,7 +19,7 @@ import javax.inject.Inject
 class GestionManteViewModel @Inject constructor(
     private val getMantenimiento: GetMantenimiento,
     private val cudMantenimiento: CUDMantenimiento,
-    private val searchIdNameLab: SearchIdNameLab,
+    private val searchIdNameLab: RUDLab,
     private val searchByIdNameComp: RUDComputer
 ): ViewModel(){
     val modeloMantenimiento = MutableLiveData<List<MantenimientoCUDItem>>()

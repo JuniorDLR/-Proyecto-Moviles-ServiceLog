@@ -82,6 +82,7 @@
                     />
 
                 <TextView
+                    android:id="@+id/tvTexto"
                     android:layout_width="165dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"

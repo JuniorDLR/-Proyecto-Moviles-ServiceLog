@@ -5,10 +5,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.servivelog.domain.computerusecase.GetAllComputer
 import com.example.servivelog.domain.computerusecase.RUDComputer
-import com.example.servivelog.domain.labusecase.SearchIdNameLab
-import com.example.servivelog.domain.model.LabItem
+import com.example.servivelog.domain.labusecase.RUDLab
 import com.example.servivelog.domain.model.computer.ComputerItem
 import com.example.servivelog.domain.model.computer.InsertItem
+import com.example.servivelog.domain.model.lab.LabItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,7 +18,7 @@ import javax.inject.Inject
 class GestionCompViewModel @Inject constructor(
     private val getAllComputer: GetAllComputer,
     private val rudComputer: RUDComputer,
-    private val searchidnamelab: SearchIdNameLab
+    private val searchidnamelab: RUDLab
 ) : ViewModel() {
     val modeloComputer = MutableLiveData<List<ComputerItem>>()
     val loading = MutableLiveData<Boolean>()
@@ -63,7 +63,7 @@ class GestionCompViewModel @Inject constructor(
             rudComputer.deleteComputer(computer)
         }
     }
-    fun searchLab(lab: String): LabItem{
+    fun searchLab(lab: String): LabItem {
         return searchidnamelab.searchLabByN(lab)
     }
 }
