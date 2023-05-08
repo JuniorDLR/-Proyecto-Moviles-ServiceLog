@@ -16,7 +16,9 @@ import com.example.servivelog.domain.model.computer.ComputerItem
 import com.example.servivelog.ui.gestioncomputadora.ComputerAdapter
 import com.example.servivelog.ui.gestioncomputadora.viewmodel.GestionCompViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class GestionarComputadora : Fragment() {
 
     private lateinit var gestionarComputadoraBinding: FragmentGestionarComputadoraBinding

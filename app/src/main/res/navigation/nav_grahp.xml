@@ -43,6 +43,9 @@
         <action
             android:id="@+id/action_fragmentDiagnostico_to_fragmentAgregarDiagnostico"
             app:destination="@id/fragmentAgregarDiagnostico" />
+        <action
+            android:id="@+id/action_fragmentDiagnostico_self"
+            app:destination="@id/fragmentDiagnostico" />
     </fragment>
     <fragment
         android:id="@+id/fragmentEditarDiagnostico"
@@ -87,6 +90,9 @@
         <action
             android:id="@+id/action_Fragmentlaboratorios_to_gestionarComputadora"
             app:destination="@id/gestionarComputadora" />
+        <action
+            android:id="@+id/action_Fragmentlaboratorios_self"
+            app:destination="@id/Fragmentlaboratorios" />
     </fragment>
     <fragment
         android:id="@+id/fragmentGestionMantenimiento"
@@ -99,12 +105,19 @@
         <action
             android:id="@+id/action_fragmentGestionMantenimiento_to_fragmentEditMantenimiento"
             app:destination="@id/fragmentEditMantenimiento" />
+        <action
+            android:id="@+id/action_fragmentGestionMantenimiento_self"
+            app:destination="@id/fragmentGestionMantenimiento" />
     </fragment>
     <fragment
         android:id="@+id/fragmentEditarLaboratorio"
         android:name="com.example.servivelog.ui.gestionlaboratorio.view.FragmentEditarLaboratorio"
         android:label="fragment_editar_laboratorio"
-        tools:layout="@layout/fragment_editar_laboratorio" />
+        tools:layout="@layout/fragment_editar_laboratorio" >
+        <argument
+            android:name="lab"
+            app:argType="com.example.servivelog.domain.model.lab.LabItem" />
+    </fragment>
     <fragment
         android:id="@+id/fragmentAgregarComputadora"
         android:name="com.example.servivelog.ui.gestioncomputadora.view.FragmentAgregarComputadora"
@@ -121,6 +134,9 @@
         <action
             android:id="@+id/action_gestionarComputadora_to_fragmentEditarComputadora"
             app:destination="@id/fragmentEditarComputadora" />
+        <action
+            android:id="@+id/action_gestionarComputadora_self"
+            app:destination="@id/gestionarComputadora" />
     </fragment>
     <fragment
         android:id="@+id/fragmentEditarComputadora"
