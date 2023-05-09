@@ -14,7 +14,12 @@ import com.example.servivelog.data.database.entities.LabEntity
 import com.example.servivelog.data.database.entities.MantenimientoEntity
 import com.example.servivelog.data.database.entities.UserEntity
 
-@Database(entities = [ComputerEntity::class, DiagnosisEntity::class, LabEntity::class, MantenimientoEntity::class, UserEntity::class], version = 1, exportSchema = false)
+@Database(
+    entities = [ComputerEntity::class,
+        DiagnosisEntity::class, LabEntity::class, MantenimientoEntity::class, UserEntity::class],
+    version = 1,
+    exportSchema = false
+)
 abstract class ServiceLogRoom : RoomDatabase() {
 
     abstract fun computerDao(): ComputerDao

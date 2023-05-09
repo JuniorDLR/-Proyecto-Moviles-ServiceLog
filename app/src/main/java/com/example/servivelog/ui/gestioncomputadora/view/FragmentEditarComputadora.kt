@@ -60,14 +60,14 @@ class FragmentEditarComputadora : Fragment() {
     private fun obteniendoDatos() {
         computerItem = args.computer
         editarComputadoraBinding.etNombre.setText(computerItem.nombre)
-        editarComputadoraBinding.etAlmacenamiento.setText(computerItem.almacenamiento)
+        editarComputadoraBinding.etAlmacenamiento.setText(computerItem.almacenamiento.toString())
         editarComputadoraBinding.etDescripcion.setText(computerItem.descripcion)
         editarComputadoraBinding.etMarca.setText(computerItem.marca)
         editarComputadoraBinding.etModelo.setText(computerItem.modelo)
         editarComputadoraBinding.etInventario.setText(computerItem.noInventario)
         editarComputadoraBinding.etServiceTag.setText(computerItem.serviceTag)
         editarComputadoraBinding.etUbicacion.setText(computerItem.ubicacion)
-        editarComputadoraBinding.etRam.setText(computerItem.ram)
+        editarComputadoraBinding.etRam.setText(computerItem.ram.toString())
         editarComputadoraBinding.etProcesador.setText(computerItem.procesador)
 
 

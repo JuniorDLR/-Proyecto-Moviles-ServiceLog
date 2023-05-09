@@ -17,12 +17,12 @@ import javax.inject.Inject
 @HiltViewModel
 class GestionCompViewModel @Inject constructor(
     private val getAllComputer: GetAllComputer,
-    private val rudComputer: RUDComputer,
-    private val searchidnamelab: RUDLab
+    private val rudComputer: RUDComputer
 ) : ViewModel() {
     val modeloComputer = MutableLiveData<List<ComputerItem>>()
     val loading = MutableLiveData<Boolean>()
-    val computerItem = ComputerItem(0,
+    val computerItem = ComputerItem(
+        0,
         "",
         "sin datos",
         "",
@@ -32,38 +32,45 @@ class GestionCompViewModel @Inject constructor(
         0,
         "",
         "",
-        "")
-     fun onCreate(){
-         viewModelScope.launch{//Se usa una corrutina para conectar el viewmodel
-             loading.postValue(true)//permite postear durante la carga
-             var resultado = getAllComputer()
-             if(!resultado.isEmpty()){
-                 modeloComputer.postValue(resultado)
-                 loading.postValue(false)
-             }else{
-                 resultado = listOf(computerItem)
-                 modeloComputer.postValue(resultado)
-                 loading.postValue(false)
-             }
-         }
-     }
-    fun insertComputer(computer: InsertItem){
+        ""
+    )
+
+    fun onCreate() {
+        viewModelScope.launch {//Se usa una corrutina para conectar el viewmodel
+            loading.postValue(true)//permite postear durante la carga
+            var resultado = getAllComputer()
+            if (!resultado.isEmpty()) {
+                modeloComputer.postValue(resultado)
+                loading.postValue(false)
+            } else {
+                resultado = listOf(computerItem)
+                modeloComputer.postValue(resultado)
+                loading.postValue(false)
+            }
+        }
+    }
+
+    fun insertComputer(computer: InsertItem) {
         viewModelScope.launch {
             rudComputer.insertComputer(computer)
         }
     }
-    fun updateComputer(computer: ComputerItem){
+
+    fun updateComputer(computer: ComputerItem) {
         viewModelScope.launch {
             rudComputer.updateComputer(computer)
         }
     }
 
-    fun deleteComputer(computer: ComputerItem){
+    fun deleteComputer(computer: ComputerItem) {
         viewModelScope.launch {
             rudComputer.deleteComputer(computer)
         }
     }
-    fun searchLab(lab: String): LabItem {
-        return searchidnamelab.searchLabByN(lab)
+
+    suspend fun getAllLabs(): List<LabItem> {
+        return rudComputer.getallLabs()
+
     }
+
 }

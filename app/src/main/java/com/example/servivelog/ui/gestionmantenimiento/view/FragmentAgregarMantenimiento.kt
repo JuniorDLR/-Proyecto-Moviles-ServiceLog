@@ -40,9 +40,10 @@ class FragmentAgregarMantenimiento : Fragment() {
     }
 
     private fun enviarDatos(): MantenimientoItem {
-        val datosL = gestionManteViewModel.buscarlab(agregarMantenimientoBinding.ctvLab.text.toString())
-        val datosC = gestionManteViewModel.buscarComp(agregarMantenimientoBinding.ctvServiceTag.text.toString())
-        if (datosL == null || datosC == null) {
+        val datosL =
+            gestionManteViewModel.buscarlab(agregarMantenimientoBinding.ctvLab.text.toString())
+
+        if (datosL == null) {
             Toast.makeText(
                 requireContext(),
                 "No existe el laboratorio o el la computadora",
@@ -52,7 +53,7 @@ class FragmentAgregarMantenimiento : Fragment() {
         val tipoMant = confirmarCheckBox()
         return MantenimientoItem(
             datosL.nombre,
-            datosC.serviceTag,
+            agregarMantenimientoBinding.ctvServiceTag.text.toString(),
             tipoMant,
             agregarMantenimientoBinding.etDescripcion.text.toString()
         )
