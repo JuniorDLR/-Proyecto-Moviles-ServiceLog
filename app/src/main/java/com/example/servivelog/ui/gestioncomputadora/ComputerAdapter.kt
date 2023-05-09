@@ -51,25 +51,32 @@ class ComputerAdapter(
     }
 
     override fun onBindViewHolder(holder: MyHolder, position: Int) {
-        val compList :ComputerItem = listC[position]
+        val compList: ComputerItem = listC[position]
         holder.serviceTag.text = compList.serviceTag
         holder.modelo.text = compList.modelo
         holder.marca.text = compList.marca
 
-        holder.edit.setOnClickListener{
+        holder.edit.setOnClickListener {
 
             if (compList.descripcion == "sin datos")
-                Toast.makeText(context,"no se encontaron computadoras",Toast.LENGTH_SHORT).show()
-            else{
-                val action = GestionarComputadoraDirections.actionGestionarComputadoraToFragmentEditarComputadora(compList)
+                Toast.makeText(context, "no se encontaron computadoras", Toast.LENGTH_SHORT).show()
+            else {
+                val action =
+                    GestionarComputadoraDirections.actionGestionarComputadoraToFragmentEditarComputadora(
+                        compList
+                    )
                 Navigation.findNavController(view).navigate(action)
             }
         }
-        holder.delete.setOnClickListener{
-          if (compList.descripcion == "sin datos")
-              Toast.makeText(context,"no se encontaron computadoras",Toast.LENGTH_SHORT).show()
-            else
+        holder.delete.setOnClickListener {
+            if (compList.descripcion == "sin datos")
+                Toast.makeText(context, "no se encontaron computadoras", Toast.LENGTH_SHORT).show()
+            else {
                 gestionCompViewModel.deleteComputer(compList)
+                val navController = Navigation.findNavController(view)
+                navController.navigate(R.id.action_gestionarComputadora_self)
+            }
+
         }
     }
 }

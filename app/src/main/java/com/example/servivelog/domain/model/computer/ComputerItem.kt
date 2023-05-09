@@ -25,8 +25,8 @@ data class ComputerItem (
         parcel.readString()!!,
         parcel.readString()!!,
         parcel.readString()!!,
-        parcel.readInt()!!,
-        parcel.readInt()!!,
+        parcel.readInt(),
+        parcel.readInt(),
         parcel.readString()!!,
         parcel.readString()!!,
         parcel.readString()!!

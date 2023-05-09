@@ -48,9 +48,6 @@ class GestionManteViewModel @Inject constructor(
         return searchIdNameLab.searchLabByN(lab)
     }
 
-    fun buscarComp(comp: String): ComputerItem {
-        return searchByIdNameComp.searchCompByName(comp)
-    }
     fun insertMantenimiento(mantenimientoItem: MantenimientoItem){
         viewModelScope.launch { cudMantenimiento.insertMantenimiento(mantenimientoItem) }
     }

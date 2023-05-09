@@ -11,8 +11,12 @@ import com.example.servivelog.data.database.entities.UserEntity
 @Dao
 interface UserDao {
 
+    @Query("SELECT * FROM tblUser WHERE idU = :idU")
+    fun getUser(idU: Int): UserEntity
+
     @Query("SELECT * FROM tblUser ORDER BY idU")
-    suspend fun getuser(): UserEntity
+   suspend fun getUserByUsername(): List<UserEntity>
+
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertUser(user: UserEntity)

@@ -9,10 +9,7 @@ import javax.inject.Inject
 class ComputerRepository @Inject constructor(
     private val computerDao: ComputerDao
 ) {
-    fun searchComByN(comp: String): ComputerItem {
-        val response: ComputerEntity = computerDao.getComputerByServiceTag(comp)
-        return response.toDomain()
-    }
+
     suspend fun getAllComputers():List<ComputerItem>{
         val response: List<ComputerEntity> = computerDao.getAllComputers()
         return response.map { it.toDomain() }

@@ -12,14 +12,18 @@ import androidx.navigation.fragment.navArgs
 import com.example.servivelog.R
 import com.example.servivelog.databinding.FragmentAgregarComputadoraBinding
 import com.example.servivelog.domain.model.computer.InsertItem
+import com.example.servivelog.domain.model.lab.LabItem
 import com.example.servivelog.ui.gestioncomputadora.viewmodel.GestionCompViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class FragmentAgregarComputadora : Fragment() {
 
     private lateinit var agregarComputadoraBinding: FragmentAgregarComputadoraBinding
-    private val gestionCompViewModel : GestionCompViewModel by viewModels()
+    private val gestionCompViewModel: GestionCompViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         agregarComputadoraBinding = FragmentAgregarComputadoraBinding.inflate(layoutInflater)
@@ -32,19 +36,31 @@ class FragmentAgregarComputadora : Fragment() {
     ): View {
         val agregarBtn = agregarComputadoraBinding.btnAgregar
         agregarBtn.setOnClickListener {
-            gestionCompViewModel.insertComputer(enviarDatos())
-            val navController = Navigation.findNavController(it)
-            navController.popBackStack()//popbackstack te devuelve al fragment anterior y cierra eso
+            CoroutineScope(Dispatchers.Main).launch {
+                var labItem = gestionCompViewModel.getAllLabs()
+                gestionCompViewModel.insertComputer(enviarDatos(labItem))
+                val navController = Navigation.findNavController(it)
+                navController.popBackStack()//popbackstack te devuelve al fragment anterior y cierra eso
+
+            }
+
         }
         return agregarComputadoraBinding.root
     }
 
-    private fun enviarDatos(): InsertItem {
-        val datosL = gestionCompViewModel.searchLab(agregarComputadoraBinding.etUbicacion.text.toString())
-        if (datosL == null){
-            Toast.makeText(requireContext(),"No existe laboratorio",Toast.LENGTH_SHORT).show()
+    private fun enviarDatos(labs: List<LabItem>): InsertItem {
+
+        var lab: LabItem = LabItem(0, "", "")
+        for (l in labs) {
+
+            if (l.nombre == agregarComputadoraBinding.etUbicacion.text.toString()) {
+                lab = l
+            }
+
         }
-        return InsertItem(nombre = agregarComputadoraBinding.etNombre.text.toString(),
+
+        return InsertItem(
+            nombre = agregarComputadoraBinding.etNombre.text.toString(),
             descripcion = agregarComputadoraBinding.etDescripcion.text.toString(),
             marca = agregarComputadoraBinding.etMarca.text.toString(),
             modelo = agregarComputadoraBinding.etModelo.text.toString(),
@@ -53,7 +69,7 @@ class FragmentAgregarComputadora : Fragment() {
             almacenamiento = agregarComputadoraBinding.etAlmacenamiento.text.toString().toInt(),
             serviceTag = agregarComputadoraBinding.etServiceTag.text.toString(),
             noInventario = agregarComputadoraBinding.etInventario.text.toString(),
-            ubicacion = agregarComputadoraBinding.etUbicacion.text.toString()
+            ubicacion = lab.nombre
         )
     }
 }
