@@ -9,8 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
-import com.example.servivelog.R
 import com.example.servivelog.databinding.FragmentAgregarComputadoraBinding
+import com.example.servivelog.domain.model.computer.ComputerItem
 import com.example.servivelog.domain.model.computer.InsertItem
 import com.example.servivelog.domain.model.lab.LabItem
 import com.example.servivelog.ui.gestioncomputadora.viewmodel.GestionCompViewModel
@@ -24,9 +24,12 @@ class FragmentAgregarComputadora : Fragment() {
 
     private lateinit var agregarComputadoraBinding: FragmentAgregarComputadoraBinding
     private val gestionCompViewModel: GestionCompViewModel by viewModels()
+    private val args: FragmentAgregarComputadoraArgs by navArgs()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         agregarComputadoraBinding = FragmentAgregarComputadoraBinding.inflate(layoutInflater)
+        agregarComputadoraBinding.etUbicacion.setText(args.ubicacion)
+        agregarComputadoraBinding.etUbicacion.isEnabled = false
         super.onCreate(savedInstanceState)
     }
 
@@ -37,39 +40,44 @@ class FragmentAgregarComputadora : Fragment() {
         val agregarBtn = agregarComputadoraBinding.btnAgregar
         agregarBtn.setOnClickListener {
             CoroutineScope(Dispatchers.Main).launch {
-                var labItem = gestionCompViewModel.getAllLabs()
-                gestionCompViewModel.insertComputer(enviarDatos(labItem))
-                val navController = Navigation.findNavController(it)
-                navController.popBackStack()//popbackstack te devuelve al fragment anterior y cierra eso
-
+                val labItem = gestionCompViewModel.getAllLabs()
+                val comp = gestionCompViewModel.getComputers()
+                val insertItem = enviarDatos(labItem, comp)
+                if (insertItem.ubicacion == "")
+                    Toast.makeText(requireContext(), "Faltan datos, el serviceTag o el No.Inventario se repite el laboratorio ingresado no existe", Toast.LENGTH_SHORT).show()
+                else{
+                    gestionCompViewModel.insertComputer(insertItem)
+                    val navController = Navigation.findNavController(it)
+                    navController.popBackStack()//popbackstack te devuelve al fragment anterior y cierra este
+                }
             }
 
         }
         return agregarComputadoraBinding.root
     }
 
-    private fun enviarDatos(labs: List<LabItem>): InsertItem {
+    private fun enviarDatos(labs: List<LabItem>, comp: List<ComputerItem>): InsertItem {
 
-        var lab: LabItem = LabItem(0, "", "")
-        for (l in labs) {
+        val nombre = agregarComputadoraBinding.etNombre.text.toString()
+        val descripcion = agregarComputadoraBinding.etDescripcion.text.toString()
+        val marca = agregarComputadoraBinding.etMarca.text.toString()
+        val modelo = agregarComputadoraBinding.etModelo.text.toString()
+        val procesador = agregarComputadoraBinding.etProcesador.text.toString()
+        val ram = agregarComputadoraBinding.etRam.text.toString().toIntOrNull()
+        val almacenamiento = agregarComputadoraBinding.etAlmacenamiento.text.toString().toIntOrNull()
+        val serviceTag = agregarComputadoraBinding.etServiceTag.text.toString()
+        val noInventario = agregarComputadoraBinding.etInventario.text.toString()
+        val ubicacion = agregarComputadoraBinding.etUbicacion.text.toString()
+        val serviceTagNoInventario = comp.filter { it.serviceTag == serviceTag || it.noInventario == noInventario}
 
-            if (l.nombre == agregarComputadoraBinding.etUbicacion.text.toString()) {
-                lab = l
-            }
-
+        if (labs.none { it.nombre == ubicacion} || nombre.isEmpty()
+            || descripcion.isEmpty() || marca.isEmpty() || modelo.isEmpty() || procesador.isEmpty() || ram == null || almacenamiento == null
+            || serviceTag.isEmpty() || noInventario.isEmpty() || serviceTagNoInventario.isNotEmpty()){
+            return InsertItem("", "", "", "", "", 0, 0, "", "", "")
+        }else{
+            return InsertItem(
+                nombre = nombre, descripcion = descripcion, marca = marca, modelo = modelo, procesador = procesador, ram = ram, almacenamiento = almacenamiento, serviceTag = serviceTag, noInventario = noInventario, ubicacion = ubicacion
+            )
         }
-
-        return InsertItem(
-            nombre = agregarComputadoraBinding.etNombre.text.toString(),
-            descripcion = agregarComputadoraBinding.etDescripcion.text.toString(),
-            marca = agregarComputadoraBinding.etMarca.text.toString(),
-            modelo = agregarComputadoraBinding.etModelo.text.toString(),
-            procesador = agregarComputadoraBinding.etProcesador.text.toString(),
-            ram = agregarComputadoraBinding.etRam.text.toString().toInt(),
-            almacenamiento = agregarComputadoraBinding.etAlmacenamiento.text.toString().toInt(),
-            serviceTag = agregarComputadoraBinding.etServiceTag.text.toString(),
-            noInventario = agregarComputadoraBinding.etInventario.text.toString(),
-            ubicacion = lab.nombre
-        )
     }
 }

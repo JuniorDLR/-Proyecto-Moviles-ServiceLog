@@ -8,6 +8,7 @@ import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.servivelog.R
@@ -25,6 +26,7 @@ class GestionarComputadora : Fragment() {
     private val gestionCompViewModel: GestionCompViewModel by viewModels()
     private lateinit var addBtn:FloatingActionButton
     private lateinit var recyclerView: RecyclerView
+    private val args: GestionarComputadoraArgs by navArgs()
     override fun onCreate(savedInstanceState: Bundle?) {
         gestionarComputadoraBinding = FragmentGestionarComputadoraBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
@@ -36,13 +38,13 @@ class GestionarComputadora : Fragment() {
     ): View {
         gestionCompViewModel.onCreate()
         gestionCompViewModel.modeloComputer.observe(viewLifecycleOwner){
-            setAdapter(it)
+            setAdapter(it.filter { it.ubicacion == args.laboratorio.nombre })
         }
         //it es para mostrar corrutinas , clicklistener , all lo que retornes
         addBtn = gestionarComputadoraBinding.fbtnagregar
         addBtn.setOnClickListener{
-            val navController = Navigation.findNavController(it)
-            navController.navigate(R.id.action_gestionarComputadora_to_fragmentAgregarComputadora)
+            val action = GestionarComputadoraDirections.actionGestionarComputadoraToFragmentAgregarComputadora(args.laboratorio.nombre)
+            Navigation.findNavController(it).navigate(action)
 
         }
         return gestionarComputadoraBinding.root

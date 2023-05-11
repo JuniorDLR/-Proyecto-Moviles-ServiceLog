@@ -43,9 +43,6 @@
         <action
             android:id="@+id/action_fragmentDiagnostico_to_fragmentAgregarDiagnostico"
             app:destination="@id/fragmentAgregarDiagnostico" />
-        <action
-            android:id="@+id/action_fragmentDiagnostico_self"
-            app:destination="@id/fragmentDiagnostico" />
     </fragment>
     <fragment
         android:id="@+id/fragmentEditarDiagnostico"
@@ -122,7 +119,11 @@
         android:id="@+id/fragmentAgregarComputadora"
         android:name="com.example.servivelog.ui.gestioncomputadora.view.FragmentAgregarComputadora"
         android:label="fragment_agregar_computadora"
-        tools:layout="@layout/fragment_agregar_computadora" />
+        tools:layout="@layout/fragment_agregar_computadora" >
+        <argument
+            android:name="ubicacion"
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/gestionarComputadora"
         android:name="com.example.servivelog.ui.gestioncomputadora.view.GestionarComputadora"
@@ -137,6 +138,9 @@
         <action
             android:id="@+id/action_gestionarComputadora_self"
             app:destination="@id/gestionarComputadora" />
+        <argument
+            android:name="laboratorio"
+            app:argType="com.example.servivelog.domain.model.lab.LabItem" />
     </fragment>
     <fragment
         android:id="@+id/fragmentEditarComputadora"

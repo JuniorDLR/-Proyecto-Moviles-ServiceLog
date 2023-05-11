@@ -11,11 +11,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.servivelog.R
 import com.example.servivelog.databinding.FragmentGestionMantenimientoBinding
+import com.example.servivelog.domain.model.computer.ComputerItem
 import com.example.servivelog.domain.model.mantenimiento.MantenimientoCUDItem
-import com.example.servivelog.ui.gestionmantenimiento.MantenimientoAdapter
+import com.example.servivelog.ui.gestionmantenimiento.adapter.MantenimientoAdapter
 import com.example.servivelog.ui.gestionmantenimiento.viewmodel.GestionManteViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class FragmentGestionMantenimiento : Fragment() {
@@ -38,7 +42,11 @@ class FragmentGestionMantenimiento : Fragment() {
         gestionManteViewModel.onCreate()
 
         gestionManteViewModel.modeloMantenimiento.observe(viewLifecycleOwner){
-            setAdapter(it)
+            CoroutineScope(Dispatchers.Main).launch {
+                val listac = gestionManteViewModel.getAllComputers()
+                setAdapter(it, listac)
+            }
+
         }
 
         addBtn = gestionMantenimientoBinding.fbtnagregar
@@ -51,9 +59,9 @@ class FragmentGestionMantenimiento : Fragment() {
         return gestionMantenimientoBinding.root
     }
 
-    private fun setAdapter(it: List<MantenimientoCUDItem>) {
+    private fun setAdapter(it: List<MantenimientoCUDItem>, listac: List<ComputerItem>) {
         recyclerView = gestionMantenimientoBinding.rvMantenimiento
         recyclerView.layoutManager = LinearLayoutManager(requireActivity())
-        recyclerView.adapter = MantenimientoAdapter(requireActivity(), it, gestionMantenimientoBinding.root, gestionManteViewModel)
+        recyclerView.adapter = MantenimientoAdapter(requireActivity(),requireActivity(), it, gestionMantenimientoBinding.root, gestionManteViewModel, listac)
     }
 }

@@ -73,7 +73,7 @@ class LabAdapter(
             if(labList.nombre == "Sin Datos")
                 Toast.makeText(context,"No se encontraron Laboratorios en la Base de Datos", Toast.LENGTH_SHORT).show()
             else{
-                val action = FragmentLaboratoriosDirections.actionFragmentlaboratoriosToGestionarComputadora()
+                val action = FragmentLaboratoriosDirections.actionFragmentlaboratoriosToGestionarComputadora(labList)
                 Navigation.findNavController(view).navigate(action)
             }
         }

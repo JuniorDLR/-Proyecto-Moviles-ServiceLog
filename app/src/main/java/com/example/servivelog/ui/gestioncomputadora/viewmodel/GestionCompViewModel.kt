@@ -73,4 +73,8 @@ class GestionCompViewModel @Inject constructor(
 
     }
 
+    suspend fun getComputers(): List<ComputerItem> {
+        return getAllComputer()
+    }
+
 }
