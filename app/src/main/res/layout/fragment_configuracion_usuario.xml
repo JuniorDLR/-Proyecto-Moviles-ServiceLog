@@ -139,7 +139,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:textSize="20sp"
-                android:text="Editar" />
+                android:text="Editar"
+                android:backgroundTint="@color/Uca"
+                android:textColor="@color/GrisUca"
+                />
 
             <Button
                 android:id="@+id/btnEliminar"
@@ -147,7 +150,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:textSize="20sp"
-                android:text="Eliminar" />
+                android:text="Eliminar"
+                android:backgroundTint="@color/Uca"
+                android:textColor="@color/GrisUca"
+                />
 
 
         </LinearLayout>

@@ -128,7 +128,10 @@
                     android:layout_height="match_parent"
                     android:layout_marginStart="5dp"
                     android:text="Tomar foto"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"
+                    android:backgroundTint="@color/Uca"
+                    android:textColor="@color/GrisUca"
+                    />
 
 
                 <Button
@@ -138,7 +141,10 @@
                     android:layout_marginEnd="5dp"
                     android:layout_alignParentEnd="true"
                     android:text="Añadir foto"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"
+                    android:backgroundTint="@color/Uca"
+                    android:textColor="@color/GrisUca"
+                    />
             </RelativeLayout>
 
             <Button
@@ -147,7 +153,10 @@
                 android:layout_height="wrap_content"
                 android:text="Guardar"
                 android:textSize="20sp"
-                android:layout_margin="10dp"/>
+                android:layout_margin="10dp"
+                android:backgroundTint="@color/Uca"
+                android:textColor="@color/GrisUca"
+                />
 
         </LinearLayout>
     </ScrollView>

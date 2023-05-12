@@ -88,11 +88,13 @@
                android:id="@+id/btnIniciar"
                android:layout_width="300dp"
                android:layout_height="wrap_content"
-               android:backgroundTint="@color/boton"
                android:layout_margin="10dp"
                android:text="Iniciar Sesion"
                android:textSize="20sp"
-               android:layout_gravity="center"/>
+               android:layout_gravity="center"
+               android:backgroundTint="@color/Uca"
+               android:textColor="@color/GrisUca"
+               />
 
            <TextView
                android:id="@+id/tvRegistro"

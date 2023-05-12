@@ -112,7 +112,10 @@
                 android:text="Agregar"
                 android:layout_gravity="center"
                 android:textStyle="italic"
-                android:textSize="20sp"/>
+                android:textSize="20sp"
+                android:backgroundTint="@color/Uca"
+                android:textColor="@color/GrisUca"
+                />
 
         </LinearLayout>
     </ScrollView>
