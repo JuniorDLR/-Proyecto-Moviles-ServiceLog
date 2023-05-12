@@ -24,8 +24,7 @@ class GestionManteViewModel @Inject constructor(
 ): ViewModel(){
     val modeloMantenimiento = MutableLiveData<List<MantenimientoCUDItem>>()
     var loading = MutableLiveData<Boolean>()
-    val mantenimientoItem = MantenimientoCUDItem(0," ",  "Sin datos", "Limpieza general externa. Limpieza general interna. ", " ")
-    var modeloLab = MutableLiveData<LabItem>()
+    val mantenimientoItem = MantenimientoCUDItem(0," ",  "Sin datos", "Limpieza general externa. Limpieza general interna. ", "", "")
 
     fun onCreate(){
         //Funcion para un futuro
@@ -56,5 +55,11 @@ class GestionManteViewModel @Inject constructor(
     }
     fun deleteMantenimiento(mantenimientoCUDItem: MantenimientoCUDItem){
         viewModelScope.launch { cudMantenimiento.deleteMantenimiento(mantenimientoCUDItem) }
+    }
+    suspend fun getAllLabs(): List<LabItem>{
+        return cudMantenimiento.getAllLaboratories()
+    }
+    suspend fun getAllComputers(): List<ComputerItem>{
+        return cudMantenimiento.getAllComputers()
     }
 }

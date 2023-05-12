@@ -73,18 +73,17 @@ class FragmentLogin : Fragment() {
                 ActiveUser.apellido = v.apellido
                 ActiveUser.clave = v.clave
                 ActiveUser.correo = v.correo
-
             }
 
         }
 
-        if (ActiveUser.clave == loginBinding.txtPassword.text.toString()) {
+        if ((ActiveUser.clave == loginBinding.txtPassword.text.toString() && ActiveUser.clave != "") || ActiveUser.userName != "") {
             val navController = Navigation.findNavController(loginBinding.root)
             navController.navigate(R.id.action_fragmentLogin_to_fragmentMenu)
             (activity as MainActivity).findViewById<BottomNavigationView>(R.id.BarraNavegacion).isVisible =
                 true //esto funciona para mostrar el navigation view despues de iniciar sesion
         } else {
-            Toast.makeText(context, "Contraseña incorrecta", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, "Contraseña incorrecta o no ha registrado algún usario", Toast.LENGTH_LONG).show()
         }
 
 
