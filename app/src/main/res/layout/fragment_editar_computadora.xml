@@ -267,8 +267,6 @@
                 android:layout_gravity="center"
                 android:textSize="20sp"
                 android:text="Editar"
-                android:backgroundTint="@color/Uca"
-                android:textColor="@color/GrisUca"
                 />
 
 

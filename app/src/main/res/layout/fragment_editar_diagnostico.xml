@@ -128,8 +128,6 @@
                     android:layout_height="match_parent"
                     android:text="Tomar foto"
                     android:textSize="20sp"
-                    android:backgroundTint="@color/Uca"
-                    android:textColor="@color/GrisUca"
                     />
 
                 <Button
@@ -139,8 +137,6 @@
                     android:layout_alignParentEnd="true"
                     android:text="Añadir foto"
                     android:textSize="20sp"
-                    android:backgroundTint="@color/Uca"
-                    android:textColor="@color/GrisUca"
                     />
             </RelativeLayout>
 
@@ -151,8 +147,6 @@
                 android:text="Editar"
                 android:textSize="20sp"
                 android:layout_margin="10dp"
-                android:backgroundTint="@color/Uca"
-                android:textColor="@color/GrisUca"
                 />
 
         </LinearLayout>

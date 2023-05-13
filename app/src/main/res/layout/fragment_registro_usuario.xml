@@ -157,8 +157,6 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
                 android:text="@string/registrarse"
-               android:backgroundTint="@color/Uca"
-                android:textColor="@color/GrisUca"
                 android:textSize="20sp" />
 
 

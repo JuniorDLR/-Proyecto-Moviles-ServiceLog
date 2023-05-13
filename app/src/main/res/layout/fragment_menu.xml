@@ -1,38 +1,61 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/FragmentoMenu"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.usuario.view.FragmentMenu"
-    android:id="@+id/FragmentoMenu">
+    tools:context=".ui.usuario.view.FragmentMenu">
 
-    <RelativeLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="bottom">
+        android:layout_height="wrap_content">
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="20dp"
-            android:text="@string/ServicioLog"
-            android:textAlignment="center"
-            android:textSize="25sp" />
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                android:text="@string/ServicioLog"
+                android:textAlignment="center"
+                android:textSize="25sp" />
 
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/logo"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_centerInParent="true"
-            android:scaleType="centerCrop"
-            app:shapeAppearance="@style/CircularImageView"
-            app:srcCompat="@drawable/logo" />
+            <ImageView
+                android:id="@+id/logo"
+                android:layout_width="200dp"
+                android:layout_height="189dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="50dp"
+                app:shapeAppearance="@style/CircularImageView"
+                app:srcCompat="@drawable/logo" />
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="35dp">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/UltimosDiagnosticos"
+                    />
+            </ScrollView>
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="35dp">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ultimosMantenimientos"
+                    />
+            </ScrollView>
 
 
-
-    </RelativeLayout>
-
+        </LinearLayout>
+    </ScrollView>
 </FrameLayout>

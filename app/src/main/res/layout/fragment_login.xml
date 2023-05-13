@@ -92,8 +92,6 @@
                android:text="Iniciar Sesion"
                android:textSize="20sp"
                android:layout_gravity="center"
-               android:backgroundTint="@color/Uca"
-               android:textColor="@color/GrisUca"
                />
 
            <TextView

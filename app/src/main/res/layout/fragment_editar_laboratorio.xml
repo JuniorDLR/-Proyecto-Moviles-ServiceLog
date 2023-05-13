@@ -80,9 +80,6 @@
                 android:layout_gravity="center"
                 android:text="Editar"
                 android:textSize="20sp"
-                android:layout_marginTop="50dp"
-                android:backgroundTint="@color/Uca"
-                android:textColor="@color/GrisUca"
                 />
 
         </LinearLayout>

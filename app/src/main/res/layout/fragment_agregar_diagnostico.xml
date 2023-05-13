@@ -129,8 +129,6 @@
                     android:layout_marginStart="5dp"
                     android:text="Tomar foto"
                     android:textSize="20sp"
-                    android:backgroundTint="@color/Uca"
-                    android:textColor="@color/GrisUca"
                     />
 
 
@@ -142,8 +140,6 @@
                     android:layout_alignParentEnd="true"
                     android:text="Añadir foto"
                     android:textSize="20sp"
-                    android:backgroundTint="@color/Uca"
-                    android:textColor="@color/GrisUca"
                     />
             </RelativeLayout>
 
@@ -154,8 +150,6 @@
                 android:text="Guardar"
                 android:textSize="20sp"
                 android:layout_margin="10dp"
-                android:backgroundTint="@color/Uca"
-                android:textColor="@color/GrisUca"
                 />
 
         </LinearLayout>

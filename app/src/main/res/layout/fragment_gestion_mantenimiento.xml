@@ -34,9 +34,7 @@
                 android:layout_gravity="end"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
-                android:backgroundTint="@color/Uca"
                 android:contentDescription="add"
-                android:tint="#bac3cc"
                 android:src="@drawable/baseline_add_24" />
 
         </LinearLayout>
