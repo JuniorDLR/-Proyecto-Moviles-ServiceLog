@@ -98,7 +98,6 @@
                     android:id="@+id/ivEdit"
                     android:layout_width="45dp"
                     android:layout_height="55dp"
-                    android:background="@color/soft_green"
                     app:shapeAppearance="@style/CircularImageView"
                     app:srcCompat="@drawable/edit_icon" />
 
@@ -106,7 +105,6 @@
                     android:id="@+id/ivDelete"
                     android:layout_width="45dp"
                     android:layout_height="55dp"
-                    android:background="@color/soft_green"
                     app:shapeAppearance="@style/CircularImageView"
                     app:srcCompat="@drawable/delete_icon" />
 

@@ -124,19 +124,19 @@
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/ivEdit"
-                    android:layout_width="45dp"
+                    android:layout_width="39dp"
                     android:layout_height="55dp"
-                    android:background="@color/soft_green"
                     app:shapeAppearance="@style/CircularImageView"
-                    app:srcCompat="@drawable/edit_icon" />
+                    app:srcCompat="@drawable/edit_icon"
+                    />
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/ivDelete"
                     android:layout_width="45dp"
                     android:layout_height="55dp"
-                    android:background="@color/soft_green"
                     app:shapeAppearance="@style/CircularImageView"
-                    app:srcCompat="@drawable/delete_icon" />
+                    app:srcCompat="@drawable/delete_icon"
+                    />
 
             </LinearLayout>
 

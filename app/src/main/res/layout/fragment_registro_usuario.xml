@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.usuario.view.FragmentRegistroUsuario">
+    tools:context=".ui.usuario.view.FragmentRegistroUsuario"
+>
 
 
     <ScrollView
@@ -156,7 +157,6 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
                 android:text="@string/registrarse"
-
                 android:textSize="20sp" />
 
 

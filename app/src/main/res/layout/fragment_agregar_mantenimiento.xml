@@ -113,7 +113,8 @@
                 android:text="Agregar"
                 android:layout_gravity="center"
                 android:textStyle="italic"
-                android:textSize="20sp"/>
+                android:textSize="20sp"
+                />
 
         </LinearLayout>
     </ScrollView>
