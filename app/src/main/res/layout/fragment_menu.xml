@@ -41,7 +41,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/UltimosDiagnosticos"
-                    />
+                    android:layout_margin="10dp"/>
             </ScrollView>
             <ScrollView
                 android:layout_width="match_parent"
@@ -52,7 +52,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/ultimosMantenimientos"
-                    />
+                    android:layout_margin="10dp"/>
             </ScrollView>
 
 

@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,6 +29,7 @@ class FragmentGestionMantenimiento : Fragment() {
     private lateinit var gestionMantenimientoBinding: FragmentGestionMantenimientoBinding
     private lateinit var addBtn: FloatingActionButton
     private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: MantenimientoAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         gestionMantenimientoBinding = FragmentGestionMantenimientoBinding.inflate(layoutInflater)
@@ -39,12 +41,18 @@ class FragmentGestionMantenimiento : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
+
         gestionManteViewModel.onCreate()
 
-        gestionManteViewModel.modeloMantenimiento.observe(viewLifecycleOwner){
+        gestionManteViewModel.modeloMantenimiento.observe(viewLifecycleOwner){mantenimiento->
             CoroutineScope(Dispatchers.Main).launch {
                 val listac = gestionManteViewModel.getAllComputers()
-                setAdapter(it, listac)
+                setAdapter(mantenimiento, listac)
+            }
+
+            gestionMantenimientoBinding.etServiceTag.addTextChangedListener {filter->
+                val mantenimientofiltrados = mantenimiento.filter { it.computadora.uppercase().contains(filter.toString().uppercase()) }
+                adapter.updateRecycler(mantenimientofiltrados)
             }
 
         }
@@ -60,8 +68,9 @@ class FragmentGestionMantenimiento : Fragment() {
     }
 
     private fun setAdapter(it: List<MantenimientoCUDItem>, listac: List<ComputerItem>) {
+        adapter = MantenimientoAdapter(requireActivity(),requireActivity(), it, gestionMantenimientoBinding.root, gestionManteViewModel, listac)
         recyclerView = gestionMantenimientoBinding.rvMantenimiento
         recyclerView.layoutManager = LinearLayoutManager(requireActivity())
-        recyclerView.adapter = MantenimientoAdapter(requireActivity(),requireActivity(), it, gestionMantenimientoBinding.root, gestionManteViewModel, listac)
+        recyclerView.adapter = adapter
     }
 }

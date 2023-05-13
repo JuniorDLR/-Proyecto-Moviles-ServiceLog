@@ -7,13 +7,10 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.servivelog.R
-import com.example.servivelog.databinding.FragmentGestionarComputadoraBinding
 import com.example.servivelog.domain.model.computer.ComputerItem
-import com.example.servivelog.ui.gestioncomputadora.view.GestionarComputadora
 import com.example.servivelog.ui.gestioncomputadora.view.GestionarComputadoraDirections
 import com.example.servivelog.ui.gestioncomputadora.viewmodel.GestionCompViewModel
 
@@ -78,5 +75,10 @@ class ComputerAdapter(
             }
 
         }
+    }
+
+    fun updateRecycler(listC: List<ComputerItem>){
+        this.listC = listC
+        notifyDataSetChanged()
     }
 }

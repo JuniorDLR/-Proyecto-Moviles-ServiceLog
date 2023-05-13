@@ -4,5 +4,6 @@
        <item name="colorPrimary">@color/GrisUca</item>
         <item name="colorSecondary">@color/Uca</item>
         <item name="android:colorBackground">@color/Uca</item>
+        <item name="floatingActionButtonStyle">@color/GrisUca</item>
     </style>
 </resources>

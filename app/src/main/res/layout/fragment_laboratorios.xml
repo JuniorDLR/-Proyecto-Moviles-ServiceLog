@@ -45,26 +45,18 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
 
-                <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="10dp"
-                    android:src="@drawable/baseline_search_24" />
-
-                <com.google.android.material.textfield.TextInputLayout
+                <EditText
+                    android:id="@+id/etLab"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_margin="10dp">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etBuscarLabs"
-                        android:layout_width="340dp"
-                        android:layout_height="wrap_content"
-                        android:hint="Buscar Laboratorio"
-                        android:inputType="text" />
-
-                </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_height="55dp"
+                    android:singleLine="true"
+                    android:maxLines="1"
+                    android:imeOptions="actionDone"
+                    android:layout_margin="10dp"
+                    android:hint="Buscar laboratorio"
+                    tools:text="labp1"
+                    android:textSize="18sp"
+                    android:textStyle="italic"/>
 
             </LinearLayout>
 

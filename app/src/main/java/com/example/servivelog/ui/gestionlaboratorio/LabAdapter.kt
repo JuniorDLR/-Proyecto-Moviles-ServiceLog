@@ -12,6 +12,7 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.servivelog.R
 import com.example.servivelog.domain.model.lab.LabItem
+import com.example.servivelog.domain.model.mantenimiento.MantenimientoCUDItem
 import com.example.servivelog.ui.gestionlaboratorio.view.FragmentLaboratoriosDirections
 import com.example.servivelog.ui.gestionlaboratorio.viewmodel.GestionLabViewModel
 
@@ -77,5 +78,10 @@ class LabAdapter(
                 Navigation.findNavController(view).navigate(action)
             }
         }
+    }
+
+    fun updateRecycler(listL: List<LabItem>){
+        this.listL = listL
+        notifyDataSetChanged()
     }
 }

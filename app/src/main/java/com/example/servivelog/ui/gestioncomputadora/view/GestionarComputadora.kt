@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
@@ -27,6 +28,7 @@ class GestionarComputadora : Fragment() {
     private lateinit var addBtn:FloatingActionButton
     private lateinit var recyclerView: RecyclerView
     private val args: GestionarComputadoraArgs by navArgs()
+    private lateinit var adapter: ComputerAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         gestionarComputadoraBinding = FragmentGestionarComputadoraBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
@@ -37,8 +39,14 @@ class GestionarComputadora : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         gestionCompViewModel.onCreate()
-        gestionCompViewModel.modeloComputer.observe(viewLifecycleOwner){
-            setAdapter(it.filter { it.ubicacion == args.laboratorio.nombre })
+        gestionCompViewModel.modeloComputer.observe(viewLifecycleOwner){comp->
+            val compf = comp.filter { it.ubicacion == args.laboratorio.nombre }
+            setAdapter(compf)
+             gestionarComputadoraBinding.etServiceTag.addTextChangedListener {filter->
+                 val computerChanges = compf.filter { it.serviceTag.uppercase().contains(filter.toString().uppercase()) }
+                 adapter.updateRecycler(computerChanges)
+             }
+
         }
         //it es para mostrar corrutinas , clicklistener , all lo que retornes
         addBtn = gestionarComputadoraBinding.fbtnagregar
@@ -51,8 +59,9 @@ class GestionarComputadora : Fragment() {
     }
 
     private fun setAdapter(it: List<ComputerItem>) {
+        adapter = ComputerAdapter(requireActivity(),it,gestionarComputadoraBinding.root,gestionCompViewModel)
       recyclerView = gestionarComputadoraBinding.rvComputadora
         recyclerView.layoutManager = LinearLayoutManager(requireActivity())
-        recyclerView.adapter = ComputerAdapter(requireActivity(),it,gestionarComputadoraBinding.root,gestionCompViewModel)
+        recyclerView.adapter = adapter
     }
 }

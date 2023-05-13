@@ -1,6 +1,7 @@
 package com.example.servivelog.ui.gestionmantenimiento.adapter
 
 import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
@@ -31,6 +32,8 @@ import java.io.FileOutputStream
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import android.content.Intent
+import androidx.core.content.FileProvider
 
 class MantenimientoAdapter(
     private val activity: Activity,
@@ -103,82 +106,109 @@ class MantenimientoAdapter(
 
         holder.logo.setOnClickListener {
 
-            if (ContextCompat.checkSelfPermission(
-                    context,
-                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-                )
-                != PackageManager.PERMISSION_GRANTED
-            ) {
-                // Permission is not granted, request for the permission
-                ActivityCompat.requestPermissions(
-                    activity,
-                    arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                    MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE
-                )
-            } else {
-                val currentTime = Date()
-                val timeFormat = SimpleDateFormat("HH_mm_ss", Locale.getDefault())
-                val formattedTime = timeFormat.format(currentTime)
-                val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-                val currentDate = sdf.format(Date())
-
-                val carpeta = "/archivosPDF"
-                val path =
-                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath + carpeta
-                val dir = File(path)
-                if (!dir.exists()) {
-                    dir.mkdirs()
-                    Toast.makeText(context, "Se ha creado el directorio", Toast.LENGTH_SHORT).show()
-                }
-                val file = File(dir, "${mant.computadora}_${currentDate}_${formattedTime}.pdf")
-                val fos = FileOutputStream(file)
-
-                val computadora = listaC.find { it.serviceTag == mant.computadora }
-
-                val document = Document()
-                PdfWriter.getInstance(document, fos)
-                // Abrir el documento para escribir
-                document.open()
-
-
-                val titulo = Paragraph("REPORTE DE MANTENIMIENTO")
-                titulo.alignment = Element.ALIGN_CENTER
-                titulo.font.size = 18f
-                titulo.spacingAfter = 10f
-                titulo.font.setStyle("bold")
-                document.add(titulo)
-
-                document.add(Paragraph(" "))
-                val txtUsuario = Paragraph("Usuario: ${ActiveUser.userName}")
-                txtUsuario.alignment = Element.ALIGN_LEFT
-                document.add(txtUsuario)
-
-                document.add(Paragraph(" "))
-                val txtLab = Paragraph("Laboratorio: ${mant.labname}")
-                txtLab.alignment = Element.ALIGN_LEFT
-                document.add(txtLab)
-
-                document.add(Paragraph(" "))
-                val txtCodigos =
-                    Paragraph("Códigos de la computadora: ${mant.computadora} / ${computadora?.noInventario}")
-                txtCodigos.alignment = Element.ALIGN_LEFT
-                document.add(txtCodigos)
-
-                document.add(Paragraph(" "))
-                val tipoMantenimiento = Paragraph("Tipo de mantenimiento: ${mant.tipoLimpieza}")
-                tipoMantenimiento.alignment = Element.ALIGN_LEFT
-                document.add(tipoMantenimiento)
-
-                document.add(Paragraph(" "))
-                val descripcion = Paragraph("Descripción: ${mant.desc}")
-                document.add(descripcion)
-
-                document.close()
-
-                Toast.makeText(context, "Reporte generado correctamente", Toast.LENGTH_SHORT)
+            if (mant.computadora == "Sin datos") {
+                Toast.makeText(context, "La base de datos se encuentra vacia", Toast.LENGTH_SHORT)
                     .show()
-
+            } else {
+                generarReporteMantenimiento(mant)
             }
         }
     }
+
+    fun generarReporteMantenimiento(mant: MantenimientoCUDItem) {
+        if (ContextCompat.checkSelfPermission(
+                context,
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+            )
+            != PackageManager.PERMISSION_GRANTED
+        ) {
+            // Permission is not granted, request for the permission
+            ActivityCompat.requestPermissions(
+                activity,
+                arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE
+            )
+        } else {
+            val currentTime = Date()
+            val timeFormat = SimpleDateFormat("HH_mm_ss", Locale.getDefault())
+            val formattedTime = timeFormat.format(currentTime)
+            val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            val currentDate = sdf.format(Date())
+
+            val carpeta = "/archivosPDF"
+            val path =
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath + carpeta
+            val dir = File(path)
+            if (!dir.exists()) {
+                dir.mkdirs()
+                Toast.makeText(context, "Se ha creado el directorio", Toast.LENGTH_SHORT).show()
+            }
+            val file = File(dir, "${mant.computadora}_${currentDate}_${formattedTime}.pdf")
+            val uri = FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file)
+            val fos = FileOutputStream(file)
+
+            val computadora = listaC.find { it.serviceTag == mant.computadora }
+
+            val document = Document()
+            PdfWriter.getInstance(document, fos)
+            // Abrir el documento para escribir
+            document.open()
+
+
+            val titulo = Paragraph("REPORTE DE MANTENIMIENTO")
+            titulo.alignment = Element.ALIGN_CENTER
+            titulo.font.size = 18f
+            titulo.spacingAfter = 10f
+            titulo.font.setStyle("bold")
+            document.add(titulo)
+
+            document.add(Paragraph(" "))
+            val txtUsuario = Paragraph("Usuario: ${ActiveUser.userName}")
+            txtUsuario.alignment = Element.ALIGN_LEFT
+            document.add(txtUsuario)
+
+            document.add(Paragraph(" "))
+            val txtLab = Paragraph("Laboratorio: ${mant.labname}")
+            txtLab.alignment = Element.ALIGN_LEFT
+            document.add(txtLab)
+
+            document.add(Paragraph(" "))
+            val txtCodigos =
+                Paragraph("Códigos de la computadora: ${mant.computadora} / ${computadora?.noInventario}")
+            txtCodigos.alignment = Element.ALIGN_LEFT
+            document.add(txtCodigos)
+
+            document.add(Paragraph(" "))
+            val tipoMantenimiento = Paragraph("Tipo de mantenimiento: ${mant.tipoLimpieza}")
+            tipoMantenimiento.alignment = Element.ALIGN_LEFT
+            document.add(tipoMantenimiento)
+
+            document.add(Paragraph(" "))
+            val descripcion = Paragraph("Descripción: ${mant.desc}")
+            document.add(descripcion)
+
+            document.close()
+
+
+            val pdfViewIntent = Intent(Intent.ACTION_VIEW)
+            pdfViewIntent.setDataAndType(uri, "application/pdf")
+            pdfViewIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+
+            try {
+                context.startActivity(pdfViewIntent)
+            } catch (e: ActivityNotFoundException) {
+                Toast.makeText(context, "No hay aplicación para ver archivos PDF instalada", Toast.LENGTH_SHORT).show()
+            }
+
+            Toast.makeText(context, "Reporte generado correctamente", Toast.LENGTH_SHORT)
+                .show()
+
+        }
+    }
+
+    fun updateRecycler(listM: List<MantenimientoCUDItem>){
+        this.listM = listM
+        notifyDataSetChanged()
+    }
+
 }
