@@ -3,7 +3,5 @@
     <style name="Base.Theme.ServiveLog" parent="Theme.Material3.DayNight.NoActionBar">
        <item name="colorPrimary">@color/GrisUca</item>
         <item name="colorSecondary">@color/Uca</item>
-        <item name="android:colorBackground">@color/Uca</item>
-        <item name="floatingActionButtonStyle">@color/GrisUca</item>
     </style>
 </resources>

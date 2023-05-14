@@ -34,6 +34,11 @@ import java.util.Date
 import java.util.Locale
 import android.content.Intent
 import androidx.core.content.FileProvider
+import com.itextpdf.text.Chunk
+import com.itextpdf.text.Phrase
+import com.itextpdf.text.Rectangle
+import com.itextpdf.text.pdf.PdfPCell
+import com.itextpdf.text.pdf.PdfPTable
 
 class MantenimientoAdapter(
     private val activity: Activity,
@@ -49,7 +54,6 @@ class MantenimientoAdapter(
     inner class MyHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         var serviceTag: TextView
-        var lab: TextView
         var tipoMan: TextView
         var edit: ImageView
         var delete: ImageView
@@ -57,7 +61,6 @@ class MantenimientoAdapter(
 
         init {
             serviceTag = itemView.findViewById(R.id.txtServiceTag)
-            lab = itemView.findViewById(R.id.txtLab)
             tipoMan = itemView.findViewById(R.id.txtTipoLimpieza)
             edit = itemView.findViewById(R.id.ivEdit)
             delete = itemView.findViewById(R.id.ivDelete)
@@ -79,7 +82,6 @@ class MantenimientoAdapter(
     override fun onBindViewHolder(holder: MyHolder, position: Int) {
         val mant = listM[position]
         holder.serviceTag.text = mant.computadora
-        holder.lab.text = mant.labname
         holder.tipoMan.text = mant.tipoLimpieza
 
         holder.edit.setOnClickListener {
@@ -101,6 +103,7 @@ class MantenimientoAdapter(
                     .show()
             } else {
                 gestionManteViewModel.deleteMantenimiento(mant)
+
             }
         }
 
@@ -122,7 +125,7 @@ class MantenimientoAdapter(
             )
             != PackageManager.PERMISSION_GRANTED
         ) {
-            // Permission is not granted, request for the permission
+            // Si dan que no se piden otra vez
             ActivityCompat.requestPermissions(
                 activity,
                 arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE),
@@ -143,7 +146,7 @@ class MantenimientoAdapter(
                 dir.mkdirs()
                 Toast.makeText(context, "Se ha creado el directorio", Toast.LENGTH_SHORT).show()
             }
-            val file = File(dir, "${mant.computadora}_${currentDate}_${formattedTime}.pdf")
+            val file = File(dir, "${mant.computadora}_${mant.labname}_${currentDate}_${formattedTime}.pdf")
             val uri = FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file)
             val fos = FileOutputStream(file)
 
@@ -154,7 +157,6 @@ class MantenimientoAdapter(
             // Abrir el documento para escribir
             document.open()
 
-
             val titulo = Paragraph("REPORTE DE MANTENIMIENTO")
             titulo.alignment = Element.ALIGN_CENTER
             titulo.font.size = 18f
@@ -163,29 +165,92 @@ class MantenimientoAdapter(
             document.add(titulo)
 
             document.add(Paragraph(" "))
-            val txtUsuario = Paragraph("Usuario: ${ActiveUser.userName}")
-            txtUsuario.alignment = Element.ALIGN_LEFT
-            document.add(txtUsuario)
+
+            var tabla = PdfPTable(2)
+            tabla.widthPercentage = 100f
+            tabla.setWidths(floatArrayOf(45f, 75f))
+            tabla.horizontalAlignment = Element.ALIGN_LEFT
+
+            var celda = PdfPCell(Phrase("Usuario: "))
+            celda.border = Rectangle.NO_BORDER
+            celda.horizontalAlignment = Element.ALIGN_LEFT
+            tabla.addCell(celda)
+
+            var celda2 = PdfPCell(Phrase(ActiveUser.userName))
+            celda.horizontalAlignment = Element.ALIGN_LEFT
+            tabla.addCell(celda2)
+
+            document.add(tabla)
 
             document.add(Paragraph(" "))
-            val txtLab = Paragraph("Laboratorio: ${mant.labname}")
-            txtLab.alignment = Element.ALIGN_LEFT
-            document.add(txtLab)
+
+            tabla = PdfPTable(2)
+            tabla.widthPercentage = 100f
+            tabla.setWidths(floatArrayOf(45f, 75f))
+            tabla.horizontalAlignment = Element.ALIGN_LEFT
+
+            celda = PdfPCell(Phrase("Laboratorio: "))
+            celda.border = Rectangle.NO_BORDER
+            celda.horizontalAlignment = Element.ALIGN_LEFT
+            tabla.addCell(celda)
+
+            celda2 = PdfPCell(Phrase(mant.labname))
+            celda.horizontalAlignment = Element.ALIGN_LEFT
+            tabla.addCell(celda2)
+
+            document.add(tabla)
 
             document.add(Paragraph(" "))
-            val txtCodigos =
-                Paragraph("Códigos de la computadora: ${mant.computadora} / ${computadora?.noInventario}")
-            txtCodigos.alignment = Element.ALIGN_LEFT
-            document.add(txtCodigos)
+
+            tabla = PdfPTable(2)
+            tabla.widthPercentage = 100f
+            tabla.setWidths(floatArrayOf(45f, 75f))
+            tabla.horizontalAlignment = Element.ALIGN_LEFT
+
+            celda = PdfPCell(Phrase("Códigos de la computadora: "))
+            celda.border = Rectangle.NO_BORDER
+            celda.horizontalAlignment = Element.ALIGN_LEFT
+            tabla.addCell(celda)
+
+            celda2 = PdfPCell(Phrase("${mant.computadora} / ${computadora?.noInventario}"))
+            celda.horizontalAlignment = Element.ALIGN_LEFT
+            tabla.addCell(celda2)
+
+            document.add(tabla)
 
             document.add(Paragraph(" "))
-            val tipoMantenimiento = Paragraph("Tipo de mantenimiento: ${mant.tipoLimpieza}")
-            tipoMantenimiento.alignment = Element.ALIGN_LEFT
-            document.add(tipoMantenimiento)
+
+            tabla = PdfPTable(2)
+            tabla.widthPercentage = 100f
+            tabla.setWidths(floatArrayOf(45f, 75f))
+            tabla.horizontalAlignment = Element.ALIGN_LEFT
+
+            celda = PdfPCell(Phrase("Tipo de mantenimiento: "))
+            celda.border = Rectangle.NO_BORDER
+            celda.horizontalAlignment = Element.ALIGN_LEFT
+            celda.verticalAlignment = Element.ALIGN_CENTER
+            tabla.addCell(celda)
+
+            celda2 = PdfPCell(Phrase(mant.tipoLimpieza))
+            celda.horizontalAlignment = Element.ALIGN_LEFT
+            tabla.addCell(celda2)
+
+            document.add(tabla)
 
             document.add(Paragraph(" "))
-            val descripcion = Paragraph("Descripción: ${mant.desc}")
+            val descripcion = Paragraph("Descripción: ")
             document.add(descripcion)
+
+            document.add(Paragraph(" "))
+
+            tabla = PdfPTable(1)
+            tabla.horizontalAlignment = Element.ALIGN_LEFT
+
+            celda2 = PdfPCell(Phrase(mant.desc))
+            celda.horizontalAlignment = Element.ALIGN_LEFT
+            tabla.addCell(celda2)
+
+            document.add(tabla)
 
             document.close()
 
