@@ -63,35 +63,6 @@
                     android:textStyle="bold"
                     tools:text="CN-009NK2-73846-65N-0P05" />
 
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingTop="2dp">
-
-                    <TextView
-                        android:id="@+id/tvLab"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_marginStart="10dp"
-                        android:padding="3dp"
-                        android:text="Laboratorio:"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/txtLab"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_toEndOf="@+id/tvLab"
-                        android:padding="3dp"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        tools:text="LabP4" />
-                </RelativeLayout>
-
                 <TextView
                     android:id="@+id/tvTipoLimpieza"
                     android:layout_width="wrap_content"
@@ -104,7 +75,7 @@
 
                 <TextView
                     android:id="@+id/txtTipoLimpieza"
-                    android:layout_width="185dp"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:padding="3dp"
@@ -119,7 +90,6 @@
                 android:layout_width="55dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true"
                 android:orientation="vertical">
 
                 <com.google.android.material.imageview.ShapeableImageView
