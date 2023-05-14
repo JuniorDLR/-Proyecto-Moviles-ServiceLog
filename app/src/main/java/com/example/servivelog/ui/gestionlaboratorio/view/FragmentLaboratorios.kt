@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,6 +27,7 @@ class FragmentLaboratorios : Fragment() {
     private val gestionLabViewModel: GestionLabViewModel by viewModels()
     private lateinit var addbtn: FloatingActionButton
     private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: LabAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,8 +43,15 @@ class FragmentLaboratorios : Fragment() {
         addbtn = laboratorioBinding.fbtnAdd
 
         gestionLabViewModel.onCreate()
-        gestionLabViewModel.modeloLab.observe(viewLifecycleOwner){
-            setAdapter(it)
+        gestionLabViewModel.modeloLab.observe(viewLifecycleOwner) { lab ->
+            setAdapter(lab)
+
+            laboratorioBinding.etLab.addTextChangedListener {filter->
+                val labfiltrados =
+                    lab.filter { it.nombre.uppercase().contains(filter.toString().uppercase()) }
+                adapter.updateRecycler(labfiltrados)
+            }
+
         }
 
         addbtn.setOnClickListener {
@@ -53,10 +62,11 @@ class FragmentLaboratorios : Fragment() {
         return laboratorioBinding.root
     }
 
-    private fun setAdapter(it: List<LabItem>){
+    private fun setAdapter(it: List<LabItem>) {
+        adapter = LabAdapter(requireActivity(), it, laboratorioBinding.root, gestionLabViewModel)
         recyclerView = laboratorioBinding.rvLab
         recyclerView.layoutManager = LinearLayoutManager(requireActivity())
-        recyclerView.adapter = LabAdapter(requireActivity(), it, laboratorioBinding.root, gestionLabViewModel)
+        recyclerView.adapter = adapter
     }
 
 }
