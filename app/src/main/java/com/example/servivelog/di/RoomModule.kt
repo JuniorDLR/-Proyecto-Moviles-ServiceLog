@@ -41,5 +41,7 @@ object RoomModule {
     @Provides
     fun providesUserDao(db: ServiceLogRoom) = db.userDao()
 
-
+    @Singleton
+    @Provides
+    fun providesTipoMantenimientoDao(db: ServiceLogRoom) = db.tipoMantenimientoDao()
 }

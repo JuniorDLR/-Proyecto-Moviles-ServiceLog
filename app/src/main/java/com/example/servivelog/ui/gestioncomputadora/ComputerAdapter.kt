@@ -21,6 +21,7 @@ class ComputerAdapter(
     var view: View,
     var gestionCompViewModel: GestionCompViewModel
 ) : RecyclerView.Adapter<ComputerAdapter.MyHolder>() {
+
     inner class MyHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var serviceTag: TextView
         var modelo: TextView
@@ -47,6 +48,17 @@ class ComputerAdapter(
         return listC.size
     }
 
+    interface OnDeleteClickListener {
+        fun onDeleteClicked(compList: ComputerItem)
+    }
+
+    private var onDeleteClickListener: OnDeleteClickListener? = null
+
+    fun setOnDeleteClickListener(listener: OnDeleteClickListener) {
+        onDeleteClickListener = listener
+    }
+
+
     override fun onBindViewHolder(holder: MyHolder, position: Int) {
         val compList: ComputerItem = listC[position]
         holder.serviceTag.text = compList.serviceTag
@@ -70,13 +82,10 @@ class ComputerAdapter(
                 Toast.makeText(context, "no se encontaron computadoras", Toast.LENGTH_SHORT).show()
             else {
                 gestionCompViewModel.deleteComputer(compList)
-                val navController = Navigation.findNavController(view)
-                navController.navigate(R.id.action_gestionarComputadora_self)
+                onDeleteClickListener?.onDeleteClicked(compList)
             }
-
         }
     }
-
     fun updateRecycler(listC: List<ComputerItem>){
         this.listC = listC
         notifyDataSetChanged()

@@ -7,12 +7,12 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.servivelog.R
+import com.example.servivelog.domain.model.computer.ComputerItem
 import com.example.servivelog.domain.model.lab.LabItem
-import com.example.servivelog.domain.model.mantenimiento.MantenimientoCUDItem
+import com.example.servivelog.ui.gestionlaboratorio.view.FragmentLaboratorios
 import com.example.servivelog.ui.gestionlaboratorio.view.FragmentLaboratoriosDirections
 import com.example.servivelog.ui.gestionlaboratorio.viewmodel.GestionLabViewModel
 
@@ -20,7 +20,7 @@ class LabAdapter(
     var context: Context,
     var listL: List<LabItem>,
     var view: View,
-    var gestionLabViewModel: GestionLabViewModel,
+    private var gestionLabViewModel: GestionLabViewModel
 ) : RecyclerView.Adapter<LabAdapter.MyHolder>() {
 
     inner class MyHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -48,6 +48,16 @@ class LabAdapter(
         return listL.size
     }
 
+    interface OnDeleteClickListener {
+        fun onDeleteClicked(labItem: LabItem)
+    }
+
+    private var onDeleteClickListener: OnDeleteClickListener? = null
+
+    fun setOnDeleteClickListener(listener: OnDeleteClickListener) {
+        onDeleteClickListener = listener
+    }
+
     override fun onBindViewHolder(holder: MyHolder, position: Int) {
         val labList: LabItem = listL[position]
         holder.labName.text =  labList.nombre
@@ -66,8 +76,7 @@ class LabAdapter(
                 Toast.makeText(context,"No se encontraron Laboratorios en la Base de Datos", Toast.LENGTH_SHORT).show()
             else {
                 gestionLabViewModel.deleteLab(labList)
-                val navController = Navigation.findNavController(view)
-                navController.navigate(R.id.action_Fragmentlaboratorios_self)
+                onDeleteClickListener?.onDeleteClicked(labList)
             }
         }
         holder.logo.setOnClickListener{

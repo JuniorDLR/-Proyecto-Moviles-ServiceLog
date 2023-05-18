@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.gestionlaboratorio.view.FragmentAgregarLaboratorio">
+    tools:context=".ui.gestiontipomantenimiento.view.FragmentAgregarTipoMant">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -23,17 +23,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:text="Agregar Laboratorios"
+                    android:text="Agregar Tipo de mantenimiento"
                     android:textSize="25sp" />
 
             </LinearLayout>
 
             <TextView
-                android:id="@+id/tvNombreLab"
+                android:id="@+id/tvNombreTipoMant"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:text="Nombre Laboratorio"
+                android:text="Tipo de mantenimiento"
                 android:textSize="20sp" />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -42,34 +42,11 @@
                 android:layout_margin="10dp">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/NombreLabs"
+                    android:id="@+id/txtNombreTipoMant"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Ingrese el nombre del Laboratorio"
+                    android:hint="Ingrese el tipo de mantenimiento"
                     android:inputType="text" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <TextView
-                android:id="@+id/tvDescripcionLabs"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:text="Descripcion Laboratorio"
-                android:textSize="20sp" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etDescripcionLabs"
-                    android:layout_width="match_parent"
-                    android:layout_height="150dp"
-                    android:hint="Ingrese la Descripcion "
-                    android:inputType="text"
-                    android:layout_margin="10dp"/>
-
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button

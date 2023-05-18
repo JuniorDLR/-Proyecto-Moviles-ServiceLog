@@ -5,13 +5,19 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
+import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.appcompat.widget.LinearLayoutCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
+import com.example.servivelog.R
 import com.example.servivelog.databinding.FragmentAgregarMantenimientoBinding
 import com.example.servivelog.domain.model.computer.ComputerItem
 import com.example.servivelog.domain.model.lab.LabItem
 import com.example.servivelog.domain.model.mantenimiento.MantenimientoItem
+import com.example.servivelog.domain.model.tipoMantenimiento.TipoMantItem
 import com.example.servivelog.ui.gestionmantenimiento.adapter.AutoTextLabAdapter
 import com.example.servivelog.ui.gestionmantenimiento.adapter.AutotextComptAdapter
 import com.example.servivelog.ui.gestionmantenimiento.viewmodel.GestionManteViewModel
@@ -28,6 +34,8 @@ class FragmentAgregarMantenimiento : Fragment() {
 
     private lateinit var agregarMantenimientoBinding: FragmentAgregarMantenimientoBinding
     private val gestionManteViewModel: GestionManteViewModel by viewModels()
+    private lateinit var listTM: List<TipoMantItem>
+    private lateinit var linearLayout: LinearLayoutCompat
 
     override fun onCreate(savedInstanceState: Bundle?) {
         agregarMantenimientoBinding = FragmentAgregarMantenimientoBinding.inflate(layoutInflater)
@@ -39,7 +47,13 @@ class FragmentAgregarMantenimiento : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
+        ubicandoCheckbox()
         val agregarbtn = agregarMantenimientoBinding.btnAgregar
+
+        agregarMantenimientoBinding.tvAddMant.setOnClickListener{
+            val navController = Navigation.findNavController(it)
+            navController.navigate(R.id.action_fragmentAgregarMantenimiento_to_fragmentGestionTipoMant)
+        }
 
         CoroutineScope(Dispatchers.Main).launch {
             val lab = gestionManteViewModel.getAllLabs()
@@ -110,15 +124,38 @@ class FragmentAgregarMantenimiento : Fragment() {
 
     }
 
+    private fun ubicandoCheckbox() {
+        CoroutineScope(Dispatchers.Main).launch{
+            listTM = gestionManteViewModel.tiposDeMant()
+            linearLayout = agregarMantenimientoBinding.almacenTipoMant
+            linearLayout.removeAllViews()
+            if(!listTM.isEmpty()){
+                for (tm in listTM){
+                    val checkBox = CheckBox(requireContext())
+                    checkBox.text = tm.nombre
+                    linearLayout.addView(checkBox)
+                }
+                agregarMantenimientoBinding.tvTipos.isVisible = false
+            }else{
+                agregarMantenimientoBinding.tvTipos.isVisible = true
+            }
+        }
+
+    }
+
     private fun confirmarCheckBox(): String {
-        val cbExterno = agregarMantenimientoBinding.cbExterna
-        val cbInterno = agregarMantenimientoBinding.cbInterna
-        val cbCambio = agregarMantenimientoBinding.cbCambio
+
         var result = ""
-        val checkboxes = listOf(cbExterno, cbInterno, cbCambio)
-        for (checkbox in checkboxes) {
-            if (checkbox.isChecked) {
-                result += checkbox.text.toString() + ". "
+        for (i in 0 until linearLayout.childCount) {
+            val view = linearLayout.getChildAt(i)
+
+            // Verifica si el elemento es un CheckBox
+            if (view is CheckBox) {
+                // Comprueba si el CheckBox está seleccionado
+                val isChecked = view.isChecked
+                if (isChecked) {
+                    result += view.text.toString() + ". "
+                }
             }
         }
         return result

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.gestiondiagnostico.view.FragmentDiagnostico">
+    tools:context=".ui.gestiontipomantenimiento.view.FragmentGestionTipoMant">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,33 +24,33 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
-                android:text="Lista Diagnóstico"
+                android:text="Tipos de Mantenimiento"
                 android:textSize="25sp"
                 android:textStyle="bold" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fbtnagregar"
+                android:id="@+id/fbtnagregarTipoMant"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
-                android:src="@drawable/baseline_add_24"
                 android:contentDescription="add"
+                android:src="@drawable/baseline_add_24"
                 app:backgroundTint="@color/GrisUca"/>
 
         </LinearLayout>
 
         <EditText
-            android:id="@+id/etServiceTag"
+            android:id="@+id/etTipoMant"
             android:layout_width="match_parent"
             android:layout_height="55dp"
-            android:layout_margin="10dp"
             android:singleLine="true"
             android:maxLines="1"
             android:imeOptions="actionDone"
-            android:hint="Buscar por Service Tag"
-            tools:text="CN-009NK2-73846-65N-0P05"
+            android:layout_margin="10dp"
+            android:hint="Buscar por tipo de Mantenimiento"
+            tools:text="Limpieza externa completa"
             android:textSize="18sp"
             android:textStyle="italic"/>
 
@@ -59,11 +59,10 @@
             android:layout_height="match_parent">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvDiagnostico"
+                android:id="@+id/rvTipoMant"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"/>
-
         </ScrollView>
     </LinearLayout>
 
