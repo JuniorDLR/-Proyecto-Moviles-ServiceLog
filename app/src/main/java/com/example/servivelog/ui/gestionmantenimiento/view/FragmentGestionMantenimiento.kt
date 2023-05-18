@@ -23,14 +23,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class FragmentGestionMantenimiento : Fragment() {
+class FragmentGestionMantenimiento : Fragment(), MantenimientoAdapter.OnDeleteClickListener  {
 
     private val gestionManteViewModel: GestionManteViewModel by viewModels()
     private lateinit var gestionMantenimientoBinding: FragmentGestionMantenimientoBinding
     private lateinit var addBtn: FloatingActionButton
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: MantenimientoAdapter
-
+    private var mantf: List<MantenimientoCUDItem> = emptyList<MantenimientoCUDItem>()
     override fun onCreate(savedInstanceState: Bundle?) {
         gestionMantenimientoBinding = FragmentGestionMantenimientoBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
@@ -45,13 +45,16 @@ class FragmentGestionMantenimiento : Fragment() {
         gestionManteViewModel.onCreate()
 
         gestionManteViewModel.modeloMantenimiento.observe(viewLifecycleOwner){mantenimiento->
+
+            mantf = mantenimiento
+
             CoroutineScope(Dispatchers.Main).launch {
                 val listac = gestionManteViewModel.getAllComputers()
-                setAdapter(mantenimiento, listac)
+                setAdapter(mantf, listac)
             }
 
             gestionMantenimientoBinding.etServiceTag.addTextChangedListener {filter->
-                val mantenimientofiltrados = mantenimiento.filter { it.computadora.uppercase().contains(filter.toString().uppercase()) }
+                val mantenimientofiltrados = mantf.filter { it.computadora.uppercase().contains(filter.toString().uppercase()) }
                 adapter.updateRecycler(mantenimientofiltrados)
             }
 
@@ -67,8 +70,16 @@ class FragmentGestionMantenimiento : Fragment() {
         return gestionMantenimientoBinding.root
     }
 
+    override fun onDeleteClicked(mantenimientoCUDItem: MantenimientoCUDItem) {
+        val updatedList = adapter.listM.toMutableList()
+        updatedList.remove(mantenimientoCUDItem)
+        mantf = updatedList
+        adapter.updateRecycler(updatedList)
+    }
+
     private fun setAdapter(it: List<MantenimientoCUDItem>, listac: List<ComputerItem>) {
         adapter = MantenimientoAdapter(requireActivity(),requireActivity(), it, gestionMantenimientoBinding.root, gestionManteViewModel, listac)
+        adapter.setOnDeleteClickListener(this)
         recyclerView = gestionMantenimientoBinding.rvMantenimiento
         recyclerView.layoutManager = LinearLayoutManager(requireActivity())
         recyclerView.adapter = adapter

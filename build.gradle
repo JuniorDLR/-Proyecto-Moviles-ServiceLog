@@ -1,10 +1,15 @@
 buildscript {
+    ext {
+        kotlin_version = '1.8.21'
+    }
     repositories {
         google()
+        mavenCentral()
     }
     dependencies {
         //Esto es para pasar argumentos por navigations
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.5.3"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }// Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {

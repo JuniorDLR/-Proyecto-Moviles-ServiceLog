@@ -11,6 +11,8 @@ import com.example.servivelog.domain.model.computer.ComputerItem
 import com.example.servivelog.domain.model.lab.LabItem
 import com.example.servivelog.domain.model.mantenimiento.MantenimientoCUDItem
 import com.example.servivelog.domain.model.mantenimiento.MantenimientoItem
+import com.example.servivelog.domain.model.tipoMantenimiento.TipoMantItem
+import com.example.servivelog.domain.tipoMantenimientoUseCase.ReadTipoMant
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -19,12 +21,11 @@ import javax.inject.Inject
 class GestionManteViewModel @Inject constructor(
     private val getMantenimiento: GetMantenimiento,
     private val cudMantenimiento: CUDMantenimiento,
-    private val searchIdNameLab: RUDLab,
-    private val searchByIdNameComp: RUDComputer
+    private val readTipoMant: ReadTipoMant
 ): ViewModel(){
     val modeloMantenimiento = MutableLiveData<List<MantenimientoCUDItem>>()
     var loading = MutableLiveData<Boolean>()
-    val mantenimientoItem = MantenimientoCUDItem(0," ",  "Sin datos", "Limpieza general externa. Limpieza general interna. ", "", "")
+    val mantenimientoItem = MantenimientoCUDItem(0," ",  "Sin datos", "", "", "")
 
     fun onCreate(){
         //Funcion para un futuro
@@ -42,11 +43,6 @@ class GestionManteViewModel @Inject constructor(
             }
         }
     }
-
-    fun buscarlab(lab: String): LabItem {
-        return searchIdNameLab.searchLabByN(lab)
-    }
-
     fun insertMantenimiento(mantenimientoItem: MantenimientoItem){
         viewModelScope.launch { cudMantenimiento.insertMantenimiento(mantenimientoItem) }
     }
@@ -61,5 +57,8 @@ class GestionManteViewModel @Inject constructor(
     }
     suspend fun getAllComputers(): List<ComputerItem>{
         return cudMantenimiento.getAllComputers()
+    }
+    suspend fun tiposDeMant():List<TipoMantItem>{
+        return readTipoMant()
     }
 }

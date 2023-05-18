@@ -34,7 +34,6 @@ import java.util.Date
 import java.util.Locale
 import android.content.Intent
 import androidx.core.content.FileProvider
-import com.itextpdf.text.Chunk
 import com.itextpdf.text.Phrase
 import com.itextpdf.text.Rectangle
 import com.itextpdf.text.pdf.PdfPCell
@@ -78,6 +77,16 @@ class MantenimientoAdapter(
         return listM.size
     }
 
+    interface OnDeleteClickListener {
+        fun onDeleteClicked(mantenimientoCUDItem: MantenimientoCUDItem)
+    }
+
+    private var onDeleteClickListener: OnDeleteClickListener? = null
+
+    fun setOnDeleteClickListener(listener: OnDeleteClickListener) {
+        onDeleteClickListener = listener
+    }
+
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onBindViewHolder(holder: MyHolder, position: Int) {
         val mant = listM[position]
@@ -103,7 +112,7 @@ class MantenimientoAdapter(
                     .show()
             } else {
                 gestionManteViewModel.deleteMantenimiento(mant)
-
+                onDeleteClickListener?.onDeleteClicked(mant)
             }
         }
 
@@ -275,5 +284,4 @@ class MantenimientoAdapter(
         this.listM = listM
         notifyDataSetChanged()
     }
-
 }
