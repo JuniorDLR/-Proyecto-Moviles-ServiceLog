@@ -13,8 +13,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -31,30 +31,49 @@
                 android:layout_marginTop="50dp"
                 app:shapeAppearance="@style/CircularImageView"
                 app:srcCompat="@drawable/logo" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="10dp"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mantenimientos creados en los Últimos 4 meses: "
+                    android:textStyle="bold"
+                    android:textSize="16dp"
+                    />
+                <TextView
+                    android:id="@+id/cantidad"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textStyle="italic"
+                    android:textSize="16dp"
+                    />
 
-            <ScrollView
+            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Últimos 4 mantenimientos creados "
+                android:textStyle="bold"
+                android:textSize="16dp"
+                android:layout_margin="10dp"
+                />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/UltimosDiagnosticos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="35dp">
+                android:layout_margin="10dp" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/UltimosDiagnosticos"
-                    android:layout_margin="10dp"/>
-            </ScrollView>
-            <ScrollView
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/ultimosMantenimientos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="35dp">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/ultimosMantenimientos"
-                    android:layout_margin="10dp"/>
-            </ScrollView>
-
+                android:layout_margin="10dp" />
 
         </LinearLayout>
     </ScrollView>

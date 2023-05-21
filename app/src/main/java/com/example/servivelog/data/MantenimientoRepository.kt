@@ -15,6 +15,11 @@ class MantenimientoRepository @Inject constructor(
         val response: List<MantenimientoEntity> = mantenimientoDao.getAllMaintenances()
         return response.map { it.toDomainCUD() }
     }
+    //declaramos la fun en el repositorio de mantenimiento
+    suspend fun getLastfourMaintenances(): List<MantenimientoCUDItem> {
+        val response: List<MantenimientoEntity> = mantenimientoDao.getLastfourMaintenances()
+        return response.map { it.toDomainCUD() }
+    }
 
     @WorkerThread
     suspend fun insertMantenimiento(mantenimientoEntity: MantenimientoEntity){

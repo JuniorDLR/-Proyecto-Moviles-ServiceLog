@@ -33,4 +33,13 @@ class CUDMantenimiento @Inject constructor(
     suspend fun deleteMantenimiento(mantenimientoCUDItem: MantenimientoCUDItem){
         mantenimientoRepository.deleteMantenimiento(mantenimientoCUDItem.toDatabase())//Mapper especializado para eliminar
     }
+     //mandamos a pedir que nos devuelva la lista de last 4
+    suspend fun getLastMaintenance():List<MantenimientoCUDItem>{
+        return mantenimientoRepository.getLastfourMaintenances()
+    }
+    //mandamos a pedir todos los mantenimientos
+    suspend fun getAllmantenimiento():List<MantenimientoCUDItem>{
+        return mantenimientoRepository.getAllMantenimientos()
+    }
+
 }
