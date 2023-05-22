@@ -103,6 +103,7 @@
                     android:textSize="20sp" />
 
                 <TextView
+                    android:id="@+id/conteo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
@@ -115,39 +116,25 @@
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/vpImagen"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"/>
+                android:layout_height="250dp"/>
 
-
-            <RelativeLayout
+            <Button
+                android:id="@+id/btnFoto"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <Button
-                    android:id="@+id/btnTomarFoto"
-                    android:layout_width="200dp"
-                    android:layout_height="match_parent"
-                    android:text="Tomar foto"
-                    android:textSize="20sp"
-                    />
-
-                <Button
-                    android:id="@+id/btnAñadirFoto"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:text="Añadir foto"
-                    android:textSize="20sp"
-                    />
-            </RelativeLayout>
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="5dp"
+                android:text="Agregar foto"
+                android:textSize="20sp" />
 
             <Button
                 android:id="@+id/btnEditar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Guardar cambios"
-                android:textSize="20sp"
                 android:layout_margin="10dp"
-                />
+                android:text="Guardar"
+                android:textSize="20sp" />
 
         </LinearLayout>
     </ScrollView>

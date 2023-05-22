@@ -25,7 +25,9 @@ class CudDiagnosis @Inject constructor(
     suspend fun getallLaboratories(): List<LabItem> {
         return labRepository.getAllLabs()
     }
-
+    suspend fun getAllDiagnosis():List<DiagnosisItem>{
+        return  diagnosis.getAllDiagnosis()
+    }
     suspend fun insertDiagnosis(insertDiagnosis: InsertDiagnosis) {
         diagnosis.insertDiagnosis(insertDiagnosis.toInsertDataBase())
 
@@ -38,6 +40,7 @@ class CudDiagnosis @Inject constructor(
     suspend fun deleteDiagnosis(diagnosisItem: DiagnosisItem) {
         diagnosis.deleteDiagnosis(diagnosisItem.toDataBase())
     }
+
 
 
 }

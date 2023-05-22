@@ -1,61 +1,68 @@
 package com.example.servivelog.ui.gestiondiagnostico.adapter
-
-
 import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager.widget.PagerAdapter
 import com.example.servivelog.R
 
-class ImageAdapter(private val bitmapList: MutableList<Bitmap>) :
-    RecyclerView.Adapter<ImageAdapter.ViewHolder>() {
+class ImageAdapter(
+    private val images: MutableList<Bitmap>,
+    private val imageCountListener: ImageCountListener
+) : PagerAdapter() {
 
-    class ViewHolder(itemView: View, private val adapter: ImageAdapter) :
-        RecyclerView.ViewHolder(itemView) {
-        private val imageView: ImageView = itemView.findViewById(R.id.image_view)
-        private val deleteButton: ImageView = itemView.findViewById(R.id.delete_button)
+    override fun instantiateItem(container: ViewGroup, position: Int): Any {
+        val inflater = LayoutInflater.from(container.context)
+        val itemView = inflater.inflate(R.layout.item_viewpaguer, container, false)
+        val imageView: ImageView = itemView.findViewById(R.id.image_view)
+        val deleteButton: ImageView = itemView.findViewById(R.id.delete_button)
 
-        fun bind(bitmap: Bitmap) {
-            imageView.setImageBitmap(bitmap)
+        val image = images[position]
+        imageView.setImageBitmap(image)
 
-            deleteButton.setOnClickListener {
-                val position = adapterPosition
-                if (position != RecyclerView.NO_POSITION) {
-                    adapter.removeImage(position)
-                }
-            }
+        deleteButton.setOnClickListener {
+            onDeleteClick(position)
+        }
+
+        container.addView(itemView)
+        return itemView
+    }
+
+    override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
+        container.removeView(`object` as View)
+    }
+
+    override fun getCount(): Int {
+        return images.size
+    }
+
+    fun addImage(image: Bitmap) {
+        images.add(image)
+        notifyDataSetChanged()
+        imageCountListener.onImageAdded(images.size)
+    }
+
+    fun onDeleteClick(position: Int) {
+        if (position >= 0 && position < images.size) {
+            images.removeAt(position)
+            notifyDataSetChanged()
+            imageCountListener.onImageRemoved(images.size)
+
         }
     }
 
-    fun addImage(bitmap: Bitmap) {
-        bitmapList.add(bitmap)
-        notifyDataSetChanged()
+    override fun isViewFromObject(view: View, `object`: Any): Boolean {
+        return view == `object`
     }
 
-    fun clear() {
-        bitmapList.clear()
-        notifyDataSetChanged()
+    interface ImageCountListener {
+        fun onImageAdded(imageCount: Int)
+        fun onImageRemoved(imageCount: Int)
+    }
+    fun hasImageAtPosition(position: Int): Boolean {
+        return position >= 0 && position < images.size
     }
 
-    fun removeImage(position: Int) {
-        bitmapList.removeAt(position)
-        notifyDataSetChanged()
-    }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_viewpaguer, parent, false)
-        return ViewHolder(inflater, this) // Pasar la referencia del adaptador
-    }
-
-    override fun getItemCount(): Int {
-        return bitmapList.size
-    }
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val bitmap = bitmapList[position]
-        holder.bind(bitmap)
-    }
 }

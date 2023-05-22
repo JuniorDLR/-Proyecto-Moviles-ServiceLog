@@ -61,8 +61,11 @@ class GestioDiagnosisViewModel @Inject constructor(
     suspend fun getAllLaboratories(): List<LabItem> {
         return cudDiagnosis.getallLaboratories()
     }
-    suspend fun getAllComputer():List<ComputerItem>{
+
+    suspend fun getAllComputer(): List<ComputerItem> {
         return cudDiagnosis.getAllComputer()
     }
+
+
 
 }
