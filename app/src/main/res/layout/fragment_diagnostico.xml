@@ -41,7 +41,7 @@
 
         </LinearLayout>
 
-        <EditText
+        <androidx.appcompat.widget.SearchView
             android:id="@+id/etServiceTag"
             android:layout_width="match_parent"
             android:layout_height="55dp"
@@ -49,10 +49,12 @@
             android:singleLine="true"
             android:maxLines="1"
             android:imeOptions="actionDone"
-            android:hint="Buscar por Service Tag"
+            android:queryHint="Buscar por Service Tag"
             tools:text="CN-009NK2-73846-65N-0P05"
             android:textSize="18sp"
-            android:textStyle="italic"/>
+            android:textStyle="italic">
+
+        </androidx.appcompat.widget.SearchView>
 
         <ScrollView
             android:layout_width="match_parent"

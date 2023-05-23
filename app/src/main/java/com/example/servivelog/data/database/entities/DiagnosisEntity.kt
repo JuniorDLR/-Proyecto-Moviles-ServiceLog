@@ -3,6 +3,8 @@ package com.example.servivelog.data.database.entities
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.servivelog.domain.model.diagnosis.DiagnosisItem
+import com.example.servivelog.domain.model.diagnosis.InsertDiagnosis
 
 @Entity("tblDiagnosis")
 data class DiagnosisEntity(
@@ -23,3 +25,17 @@ data class DiagnosisEntity(
     var ruta4: String
 
 )
+
+fun DiagnosisItem.toDataBase() =
+    DiagnosisEntity(idD, nombrelab, ServiceTag, descripcion, ruta1, ruta2, ruta3, ruta4)
+
+fun InsertDiagnosis.toInsertDataBase() =
+    DiagnosisEntity(
+        nombrelab = nombrelab,
+        ServiceTag = ServiceTag,
+        descripcion = descripcion,
+        ruta1 = ruta1,
+        ruta2 = ruta2,
+        ruta3 = ruta3,
+        ruta4 = ruta4
+    )

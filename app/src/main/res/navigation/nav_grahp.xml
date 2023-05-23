@@ -48,7 +48,11 @@
         android:id="@+id/fragmentEditarDiagnostico"
         android:name="com.example.servivelog.ui.gestiondiagnostico.view.FragmentEditarDiagnostico"
         android:label="fragment_editar_diagnostico"
-        tools:layout="@layout/fragment_editar_diagnostico" />
+        tools:layout="@layout/fragment_editar_diagnostico" >
+        <argument
+            android:name="diagnosis"
+            app:argType="com.example.servivelog.domain.model.diagnosis.DiagnosisItem" />
+    </fragment>
     <fragment
         android:id="@+id/fragmentAgregarDiagnostico"
         android:name="com.example.servivelog.ui.gestiondiagnostico.view.FragmentAgregarDiagnostico"
