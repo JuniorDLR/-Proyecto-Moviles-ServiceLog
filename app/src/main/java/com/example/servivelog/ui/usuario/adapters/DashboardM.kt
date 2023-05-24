@@ -1,4 +1,4 @@
-package com.example.servivelog.ui.usuario.adapterMantenimiento
+package com.example.servivelog.ui.usuario.adapters
 
 import android.app.Activity
 import android.content.Context

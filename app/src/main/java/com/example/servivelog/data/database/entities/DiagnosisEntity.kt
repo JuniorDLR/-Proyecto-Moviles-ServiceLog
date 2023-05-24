@@ -22,12 +22,14 @@ data class DiagnosisEntity(
     @ColumnInfo("Imagen3")
     var ruta3: String,
     @ColumnInfo("Imagen4")
-    var ruta4: String
+    var ruta4: String,
+    @ColumnInfo("Fecha")
+    var fecha: String
 
 )
 
 fun DiagnosisItem.toDataBase() =
-    DiagnosisEntity(idD, nombrelab, ServiceTag, descripcion, ruta1, ruta2, ruta3, ruta4)
+    DiagnosisEntity(idD, nombrelab, ServiceTag, descripcion, ruta1, ruta2, ruta3, ruta4, fecha)
 
 fun InsertDiagnosis.toInsertDataBase() =
     DiagnosisEntity(
@@ -37,5 +39,6 @@ fun InsertDiagnosis.toInsertDataBase() =
         ruta1 = ruta1,
         ruta2 = ruta2,
         ruta3 = ruta3,
-        ruta4 = ruta4
+        ruta4 = ruta4,
+        fecha = fecha
     )

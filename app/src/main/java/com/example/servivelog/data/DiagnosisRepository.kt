@@ -21,6 +21,10 @@ class DiagnosisRepository @Inject constructor(
         return response.map { it.toDomain() }
     }
 
+    suspend fun getLastFourDiagnosis(): List<DiagnosisItem>{
+        val response: List<DiagnosisEntity> = diagnosisDao.getLastFourDiagnosis()
+        return response.map{it.toDomain() }
+    }
 
     suspend fun insertDiagnosis(diagnosis: DiagnosisEntity) {
         diagnosisDao.insertDiagnosis(diagnosis)

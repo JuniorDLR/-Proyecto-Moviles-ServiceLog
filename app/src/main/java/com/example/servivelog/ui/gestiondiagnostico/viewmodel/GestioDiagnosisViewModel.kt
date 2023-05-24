@@ -21,7 +21,7 @@ class GestioDiagnosisViewModel @Inject constructor(
 
     val modeloDiagnosis = MutableLiveData<List<DiagnosisItem>>()
     var loading = MutableLiveData<Boolean>()
-    val diagnosisItem = DiagnosisItem(0, "", "Sin datos", "", "", "", "", "")
+    val diagnosisItem = DiagnosisItem(0, "", "Sin datos", "", "", "", "", "","")
 
     fun onCreate() {
         viewModelScope.launch {

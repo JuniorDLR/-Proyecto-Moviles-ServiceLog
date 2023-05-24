@@ -13,10 +13,12 @@ data class DiagnosisItem(
     var ruta1: String,
     var ruta2: String,
     var ruta3: String,
-    var ruta4: String
+    var ruta4: String,
+    var fecha: String
 ): Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
+        parcel.readString()!!,
         parcel.readString()!!,
         parcel.readString()!!,
         parcel.readString()!!,
@@ -36,6 +38,7 @@ data class DiagnosisItem(
         parcel.writeString(ruta2)
         parcel.writeString(ruta3)
         parcel.writeString(ruta4)
+        parcel.writeString(fecha)
     }
 
     override fun describeContents(): Int {
@@ -61,5 +64,6 @@ fun DiagnosisEntity.toDomain() = DiagnosisItem(
     ruta1 = ruta1,
     ruta2 = ruta2,
     ruta3 = ruta3,
-    ruta4 = ruta4
+    ruta4 = ruta4,
+    fecha = fecha
 )
