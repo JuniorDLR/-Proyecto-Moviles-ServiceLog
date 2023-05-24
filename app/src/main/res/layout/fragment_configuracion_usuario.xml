@@ -24,7 +24,27 @@
                 android:layout_margin="10dp"
                 android:textSize="25sp"
                 android:textStyle="bold" />
+            <TextView
+                android:id="@+id/tvUser"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="Usuario"
+                android:textSize="19sp"
+                android:textStyle="bold" />
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"/>
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etUser"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:layout_margin="10dp"
+                android:hint="Ingrese su usuario"/>
             <TextView
                 android:id="@+id/tvFnombre"
                 android:layout_width="match_parent"
