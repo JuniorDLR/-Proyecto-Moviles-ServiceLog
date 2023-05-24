@@ -35,6 +35,9 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.OutputStream
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 @AndroidEntryPoint
 class FragmentAgregarDiagnostico : Fragment() {
@@ -238,6 +241,10 @@ class FragmentAgregarDiagnostico : Fragment() {
                 val servicio = datoC
                 val descripcion = agregarDiagnosticoBinding.etDescripcionDiagnostico.text.toString()
 
+                val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                val date = Date()
+                val formatedDate = dateFormat.format(date)
+
                 val insertDiagnosis = InsertDiagnosis(
                     nombrelab = laboratorio,
                     ServiceTag = servicio,
@@ -245,7 +252,8 @@ class FragmentAgregarDiagnostico : Fragment() {
                     ruta1 = ruta1 ?: "",
                     ruta2 = ruta2 ?: "",
                     ruta3 = ruta3 ?: "",
-                    ruta4 = ruta4 ?: ""
+                    ruta4 = ruta4 ?: "",
+                    fecha = formatedDate
                 )
 
                 gestionDiagnosisViewModel.insertDiagnosi(insertDiagnosis)

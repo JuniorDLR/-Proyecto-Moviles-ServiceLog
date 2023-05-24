@@ -14,9 +14,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.servivelog.R
 import com.example.servivelog.databinding.FragmentMenuBinding
 import com.example.servivelog.domain.model.computer.ComputerItem
+import com.example.servivelog.domain.model.diagnosis.DiagnosisItem
 import com.example.servivelog.domain.model.mantenimiento.MantenimientoCUDItem
 import com.example.servivelog.ui.MainActivity
-import com.example.servivelog.ui.usuario.adapterMantenimiento.DashboardM
+import com.example.servivelog.ui.usuario.adapters.DashboardD
+import com.example.servivelog.ui.usuario.adapters.DashboardM
 import com.example.servivelog.ui.usuario.viewmodel.UserViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -53,18 +55,29 @@ class FragmentMenu : Fragment() {
 
         CoroutineScope(Dispatchers.Main).launch {
             val listam = userViewModel.getLastMaintenance()
+            val listad = userViewModel.getLastFourDiagnosis()
             val computadora = userViewModel.getallcomputers()
             val todomantenimiento = userViewModel.getAllmantenimiento()
             setdashboardM(listam, computadora)
+            val tododiagnostico = userViewModel.getAllDiagnosis()
+            setdashboardD(listad,computadora)
             val cantidad = obtenerlast4Month(todomantenimiento)
             menuBinding.cantidad.text =
                 cantidad.toString()//te devuelve la cantidad de mantenimiento creados  en los ultimos 4 meses
+            val cantidadD = obtenerlastMonth(tododiagnostico)
+            menuBinding.cantidadD.text = cantidadD.toString()
         }
         return menuBinding.root
     }
 
+    private fun setdashboardD(listad: List<DiagnosisItem>, computadora: List<ComputerItem>) {
+        val recyclerView = menuBinding.ultimosDiagnosticos
+        recyclerView.layoutManager = LinearLayoutManager(requireActivity())
+        recyclerView.adapter = DashboardD(requireActivity(),requireActivity(),listad, menuBinding.root, computadora)
+    }
+
     private fun setdashboardM(listam: List<MantenimientoCUDItem>, computadora: List<ComputerItem>) {//crea el dashboard
-        val recyclerView = menuBinding.ultimosMantenimientos
+        val recyclerView = menuBinding.ultimosMantenimiento
         recyclerView.layoutManager = LinearLayoutManager(requireActivity())
         recyclerView.adapter =
             DashboardM(requireActivity(), requireActivity(), listam, menuBinding.root, computadora)//muestra las ultimas computadoras , creadas en los ultmos 4 meses
@@ -102,6 +115,26 @@ class FragmentMenu : Fragment() {
             // No hacer nada y cerrar el cuadro de diálogo
         }
         alertDialogBuilder.show()
+    }
+
+    private fun obtenerlastMonth(listaD: List<DiagnosisItem>): Int{
+        val formato = SimpleDateFormat("yyyyy-MM-dd", Locale.getDefault())
+        val calendar = Calendar.getInstance()
+        val fechaActual = Date()
+        calendar.time = fechaActual
+        calendar.add(Calendar.MONTH, -1)
+        val fechaLimite = calendar.time
+
+        var contador = 0
+
+        for (d in listaD) {
+            val fecha = formato.parse(d.fecha)
+            if (fecha.after(fechaLimite) || fecha == fechaLimite)
+                contador++
+        }
+
+        return contador
+
     }
 
 }

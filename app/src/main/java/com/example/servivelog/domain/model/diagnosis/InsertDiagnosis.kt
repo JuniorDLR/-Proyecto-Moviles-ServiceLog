@@ -7,5 +7,6 @@ data class InsertDiagnosis(
     var ruta1: String,
     var ruta2: String,
     var ruta3: String,
-    var ruta4: String
+    var ruta4: String,
+    var fecha: String
 )

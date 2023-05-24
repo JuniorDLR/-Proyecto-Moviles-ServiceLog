@@ -41,6 +41,8 @@ class CudDiagnosis @Inject constructor(
         diagnosis.deleteDiagnosis(diagnosisItem.toDataBase())
     }
 
-
+    suspend fun getLastFourDiagnosis(): List<DiagnosisItem>{
+        return diagnosis.getLastFourDiagnosis()
+    }
 
 }
