@@ -34,10 +34,12 @@ import java.util.Date
 import java.util.Locale
 import android.content.Intent
 import androidx.core.content.FileProvider
+import com.itextpdf.text.Image
 import com.itextpdf.text.Phrase
 import com.itextpdf.text.Rectangle
 import com.itextpdf.text.pdf.PdfPCell
 import com.itextpdf.text.pdf.PdfPTable
+import com.itextpdf.text.pdf.PdfPageEventHelper
 
 class MantenimientoAdapter(
     private val activity: Activity,
@@ -147,7 +149,7 @@ class MantenimientoAdapter(
             val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
             val currentDate = sdf.format(Date())
 
-            val carpeta = "/archivosPDF"
+            val carpeta = "/mantenimientoPDF"
             val path =
                 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath + carpeta
             val dir = File(path)
@@ -155,16 +157,62 @@ class MantenimientoAdapter(
                 dir.mkdirs()
                 Toast.makeText(context, "Se ha creado el directorio", Toast.LENGTH_SHORT).show()
             }
-            val file = File(dir, "${mant.computadora}_${mant.labname}_${currentDate}_${formattedTime}.pdf")
-            val uri = FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file)
+            val file =
+                File(dir, "${mant.computadora}_${mant.labname}_${currentDate}_${formattedTime}.pdf")
+            val uri =
+                FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file)
             val fos = FileOutputStream(file)
 
             val computadora = listaC.find { it.serviceTag == mant.computadora }
 
             val document = Document()
-            PdfWriter.getInstance(document, fos)
+            val pdfWriter = PdfWriter.getInstance(document, fos)
+
+            // Agregar el contenido del pie de página
+            val footer = object : PdfPageEventHelper() {
+                override fun onEndPage(writer: PdfWriter, document: Document) {
+                    val currentTime = Date()
+                    val timeFormat = SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.getDefault())
+                    val formattedTime = timeFormat.format(currentTime)
+
+                    val footerTable = PdfPTable(2)
+                    footerTable.widthPercentage = 100f
+                    footerTable.totalWidth =
+                        document.pageSize.width - document.leftMargin() - document.rightMargin()
+
+                    val leftCell = PdfPCell()
+                    leftCell.addElement(Paragraph("PBX: (505) 2278-3923 al 27 ext. 1109"))
+                    leftCell.addElement(Paragraph("direccion.administrativa@uca.edu.ni"))
+                    leftCell.border = Rectangle.NO_BORDER
+                    leftCell.fixedHeight = 40f
+                    footerTable.addCell(leftCell)
+
+                    val rightCell = PdfPCell(Paragraph(formattedTime))
+                    rightCell.border = Rectangle.NO_BORDER
+                    rightCell.horizontalAlignment = Element.ALIGN_RIGHT
+                    footerTable.addCell(rightCell)
+
+                    footerTable.writeSelectedRows(
+                        0, 2,
+                        document.leftMargin(),
+                        document.bottomMargin() + 8,
+                        writer.directContent
+                    )
+                }
+            }
+
+            pdfWriter.pageEvent = footer
             // Abrir el documento para escribir
             document.open()
+
+            val inputStream = context.resources.openRawResource(R.raw.uca_logo_fondo_blanco)
+            val byteArray = ByteArray(inputStream.available())
+            inputStream.read(byteArray)
+
+            val image = Image.getInstance(byteArray)
+            image.scaleToFit(100f, 100f)
+            image.alignment = Element.ALIGN_LEFT
+            document.add(image)
 
             val titulo = Paragraph("REPORTE DE MANTENIMIENTO")
             titulo.alignment = Element.ALIGN_CENTER
@@ -271,7 +319,11 @@ class MantenimientoAdapter(
             try {
                 context.startActivity(pdfViewIntent)
             } catch (e: ActivityNotFoundException) {
-                Toast.makeText(context, "No hay aplicación para ver archivos PDF instalada", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    context,
+                    "No hay aplicación para ver archivos PDF instalada",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
 
             Toast.makeText(context, "Reporte generado correctamente", Toast.LENGTH_SHORT)
@@ -280,7 +332,7 @@ class MantenimientoAdapter(
         }
     }
 
-    fun updateRecycler(listM: List<MantenimientoCUDItem>){
+    fun updateRecycler(listM: List<MantenimientoCUDItem>) {
         this.listM = listM
         notifyDataSetChanged()
     }

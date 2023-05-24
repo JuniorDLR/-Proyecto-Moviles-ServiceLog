@@ -70,9 +70,8 @@ class FragmentAgregarComputadora : Fragment() {
         val ubicacion = agregarComputadoraBinding.etUbicacion.text.toString()
         val serviceTagNoInventario = comp.filter { it.serviceTag == serviceTag || it.noInventario == noInventario}
 
-        if (labs.none { it.nombre == ubicacion} || nombre.isEmpty()
-            || descripcion.isEmpty() || marca.isEmpty() || modelo.isEmpty() || procesador.isEmpty() || ram == null || almacenamiento == null
-            || serviceTag.isEmpty() || noInventario.isEmpty() || serviceTagNoInventario.isNotEmpty()){
+        if (descripcion.isEmpty() || marca.isEmpty() || modelo.isEmpty() || procesador.isEmpty() || ram == null || almacenamiento == null
+            || serviceTag.isEmpty() || noInventario.isEmpty() || serviceTagNoInventario.isNotEmpty() || nombre.isEmpty()){
             return InsertItem("", "", "", "", "", 0, 0, "", "", "")
         }else{
             return InsertItem(

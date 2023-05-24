@@ -21,7 +21,8 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
                 android:text="Editar Diagnostico"
-                android:textSize="30sp" />
+                android:textSize="25sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -29,20 +30,18 @@
                 android:layout_marginStart="11dp"
                 android:layout_marginTop="20dp"
                 android:text="Laboratorio"
-                android:textSize="20sp" />
+                android:textSize="19sp"
+                android:textStyle="bold" />
 
-            <com.google.android.material.textfield.TextInputLayout
+            <AutoCompleteTextView
+                android:id="@+id/ctvLabD"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etLabs"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:textAlignment="center"
-                    tools:text="LabP4" />
-            </com.google.android.material.textfield.TextInputLayout>
+                android:layout_margin="10dp"
+                android:layout_height="55dp"
+                android:completionThreshold="1"
+                android:hint="Laboratorio P 1"
+                android:textSize="17sp"
+                android:textAlignment="center"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -50,20 +49,18 @@
                 android:layout_marginStart="11dp"
                 android:layout_marginTop="20dp"
                 android:text="Service Tag de la computadora"
-                android:textSize="20sp" />
+                android:textSize="19sp"
+                android:textStyle="bold" />
 
-            <com.google.android.material.textfield.TextInputLayout
+            <AutoCompleteTextView
+                android:id="@+id/ctvServiceTag"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etServiPc"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:textAlignment="center"
-                    tools:text="Service Tag" />
-            </com.google.android.material.textfield.TextInputLayout>
+                android:layout_margin="10dp"
+                android:layout_height="55dp"
+                android:completionThreshold="1"
+                android:hint="@string/ServiceTagExp"
+                android:textSize="17sp"
+                android:textAlignment="center"/>
 
 
             <TextView
@@ -71,8 +68,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="11dp"
                 android:layout_marginTop="20dp"
-                android:text="Descripcion del diagnostico"
-                android:textSize="20sp" />
+                android:text="Descripción del diagnóstico"
+                android:textSize="19sp"
+                android:textStyle="bold" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
@@ -99,8 +97,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="11dp"
-                    android:text="Datos visuales"
-                    android:textSize="20sp" />
+                    android:text="Documentación visual"
+                    android:textSize="19sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/conteo"
@@ -108,7 +107,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_marginEnd="10dp"
-                    android:textSize="20sp"
+                    android:textSize="19sp"
+                    android:textStyle="bold"
                     tools:text="0/4" />
 
             </RelativeLayout>
@@ -133,7 +133,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:text="Guardar"
+                android:text="Guardar cambios"
                 android:textSize="20sp" />
 
         </LinearLayout>

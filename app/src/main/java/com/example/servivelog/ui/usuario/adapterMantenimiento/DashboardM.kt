@@ -44,7 +44,7 @@ class DashboardM(
 
         val mant = list[position]
         holder.serviceTagM.text = mant.computadora
-        holder.tipoMant.text = mant.computadora
+        holder.tipoMant.text = mant.tipoLimpieza
 
     }
 }
