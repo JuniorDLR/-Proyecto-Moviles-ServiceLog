@@ -1,12 +1,15 @@
 package com.example.servivelog.ui.gestiondiagnostico.view
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.isVisible
 
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,8 +18,10 @@ import com.example.servivelog.R
 import com.example.servivelog.databinding.FragmentDiagnosticoBinding
 import com.example.servivelog.domain.model.computer.ComputerItem
 import com.example.servivelog.domain.model.diagnosis.DiagnosisItem
+import com.example.servivelog.ui.MainActivity
 import com.example.servivelog.ui.gestiondiagnostico.adapter.DiagnosisAdapter
 import com.example.servivelog.ui.gestiondiagnostico.viewmodel.GestioDiagnosisViewModel
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -41,6 +46,13 @@ class FragmentDiagnostico : Fragment(), DiagnosisAdapter.OnDeleteClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
+        val callback = requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            // Mostrar el cuadro de diálogo de confirmación aquí
+            showExitConfirmationDialog()
+        }
+        callback.isEnabled = true
+
         val btnAgregar = fragmentDiagnostico.fbtnagregar
 
         gestionDiagnosisViewModel.onCreate()
@@ -95,4 +107,21 @@ class FragmentDiagnostico : Fragment(), DiagnosisAdapter.OnDeleteClickListener {
         recyclerView.layoutManager = LinearLayoutManager(requireActivity())
         recyclerView.adapter = adapter
     }
+
+    private fun showExitConfirmationDialog() {
+        val alertDialogBuilder = AlertDialog.Builder(requireContext())
+        alertDialogBuilder.setTitle("Salir de la aplicación")
+        alertDialogBuilder.setMessage("¿Estás seguro de que deseas cerrar sesión?")
+        alertDialogBuilder.setPositiveButton("Sí") { dialog, which ->
+            (activity as MainActivity).findViewById<BottomNavigationView>(R.id.BarraNavegacion).isVisible =
+                false //esto funciona para dejar de mostrar el navigation view despues de cerrar sesion
+            val navController = Navigation.findNavController(fragmentDiagnostico.root)
+            navController.popBackStack()
+        }
+        alertDialogBuilder.setNegativeButton("No") { dialog, which ->
+            // No hacer nada y cerrar el cuadro de diálogo
+        }
+        alertDialogBuilder.show()
+    }
+
 }

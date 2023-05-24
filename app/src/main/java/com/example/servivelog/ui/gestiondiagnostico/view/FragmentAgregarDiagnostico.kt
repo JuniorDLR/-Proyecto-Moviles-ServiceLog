@@ -18,17 +18,18 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
-import androidx.viewpager2.widget.ViewPager2
-import com.example.servivelog.R
 import com.example.servivelog.databinding.FragmentAgregarDiagnosticoBinding
+import com.example.servivelog.domain.model.computer.ComputerItem
 import com.example.servivelog.domain.model.diagnosis.InsertDiagnosis
-import com.example.servivelog.ui.gestiondiagnostico.adapter.DiagnosisAdapter
+import com.example.servivelog.domain.model.lab.LabItem
 import com.example.servivelog.ui.gestiondiagnostico.adapter.ImageAdapter
 import com.example.servivelog.ui.gestiondiagnostico.viewmodel.GestioDiagnosisViewModel
+import com.example.servivelog.ui.gestionmantenimiento.adapter.AutoTextLabAdapter
+import com.example.servivelog.ui.gestionmantenimiento.adapter.AutotextComptAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.async
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
@@ -88,6 +89,10 @@ class FragmentAgregarDiagnostico : Fragment() {
         val btnAgregar = agregarDiagnosticoBinding.btnGuardar
         val btnFoto = agregarDiagnosticoBinding.btnFoto
 
+        CoroutineScope(Dispatchers.Main).launch {
+            val lab = gestionDiagnosisViewModel.getAllLaboratories()
+            setLabAdapter(lab)
+        }
 
         // Inicializar ViewPager y ImageAdapter
         viewPager = agregarDiagnosticoBinding.viewPager
@@ -112,9 +117,7 @@ class FragmentAgregarDiagnostico : Fragment() {
 
 
         btnAgregar.setOnClickListener {
-            agregarDatos()
-            val navController = Navigation.findNavController(it)
-            navController.popBackStack()
+            agregarDatos(it)
         }
 
 
@@ -221,27 +224,39 @@ class FragmentAgregarDiagnostico : Fragment() {
         }
     }
 
-    private fun agregarDatos() {
+    private fun agregarDatos(view: View) {
+
         lifecycleScope.launch {
-            val laboratorio = agregarDiagnosticoBinding.etLabs.text.toString()
-            val servicio = agregarDiagnosticoBinding.etServiPc.text.toString()
-            val descripcion = agregarDiagnosticoBinding.etDescripcionDiagnostico.text.toString()
+            val datoL = agregarDiagnosticoBinding.ctvLabD.text.toString()
+            val datoC = agregarDiagnosticoBinding.ctvServiceTag.text.toString()
+            val lab = gestionDiagnosisViewModel.getAllLaboratories()
+            val labI = lab.filter { it.nombre == datoL }
+            val comp = gestionDiagnosisViewModel.getAllComputer()
+            val compL = comp.filter { it.ubicacion == datoL }
+            if (labI.isNotEmpty()  && compL.isNotEmpty() && datoL != "" && datoC != ""){
+                val laboratorio = datoL
+                val servicio = datoC
+                val descripcion = agregarDiagnosticoBinding.etDescripcionDiagnostico.text.toString()
 
-            val insertDiagnosis = InsertDiagnosis(
-                nombrelab = laboratorio,
-                ServiceTag = servicio,
-                descripcion = descripcion,
-                ruta1 = ruta1 ?: "",
-                ruta2 = ruta2 ?: "",
-                ruta3 = ruta3 ?: "",
-                ruta4 = ruta4 ?: ""
-            )
+                val insertDiagnosis = InsertDiagnosis(
+                    nombrelab = laboratorio,
+                    ServiceTag = servicio,
+                    descripcion = descripcion,
+                    ruta1 = ruta1 ?: "",
+                    ruta2 = ruta2 ?: "",
+                    ruta3 = ruta3 ?: "",
+                    ruta4 = ruta4 ?: ""
+                )
 
-            gestionDiagnosisViewModel.insertDiagnosi(insertDiagnosis)
-            Toast.makeText(requireContext(), "Datos guardados correctamente", Toast.LENGTH_SHORT)
-                .show()
+                gestionDiagnosisViewModel.insertDiagnosi(insertDiagnosis)
+                Toast.makeText(requireContext(), "Datos guardados correctamente", Toast.LENGTH_SHORT)
+                    .show()
 
+                val navController = Navigation.findNavController(view)
+                navController.popBackStack()
 
+            }else
+                Toast.makeText(requireContext(), "Hay datos no existentes o falta que ingresen datos", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -272,5 +287,22 @@ class FragmentAgregarDiagnostico : Fragment() {
         }
     }
 
+    private fun setLabAdapter(lab: List<LabItem>) {
+        val adapter = AutoTextLabAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, lab.map { it.nombre })
+        agregarDiagnosticoBinding.ctvLabD.setAdapter(adapter)
+
+        agregarDiagnosticoBinding.ctvLabD.setOnItemClickListener { _, _, position, _ ->
+            val selectedLab = lab[position]
+            CoroutineScope(Dispatchers.Main).launch {
+                val computerList = gestionDiagnosisViewModel.getAllComputer().filter { it.ubicacion == selectedLab.nombre }
+                setCompAdapter(computerList)
+            }
+        }
+    }
+
+    private fun setCompAdapter(comp: List<ComputerItem>) {
+        val adapter = AutotextComptAdapter(requireActivity(), android.R.layout.simple_dropdown_item_1line ,comp.map { it.serviceTag })
+        agregarDiagnosticoBinding.ctvServiceTag.setAdapter(adapter)
+    }
 
 }

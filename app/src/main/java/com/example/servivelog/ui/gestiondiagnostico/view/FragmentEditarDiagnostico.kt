@@ -1,5 +1,6 @@
 package com.example.servivelog.ui.gestiondiagnostico.view
 
+import android.R
 import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
@@ -17,12 +18,20 @@ import com.example.servivelog.databinding.FragmentEditarDiagnosticoBinding
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager.widget.ViewPager
+import com.example.servivelog.domain.model.computer.ComputerItem
 import com.example.servivelog.domain.model.diagnosis.DiagnosisItem
+import com.example.servivelog.domain.model.lab.LabItem
 import com.example.servivelog.ui.gestiondiagnostico.adapter.ImageAdapter
 import com.example.servivelog.ui.gestiondiagnostico.viewmodel.GestioDiagnosisViewModel
+import com.example.servivelog.ui.gestionmantenimiento.adapter.AutoTextLabAdapter
+import com.example.servivelog.ui.gestionmantenimiento.adapter.AutotextComptAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -77,8 +86,8 @@ class FragmentEditarDiagnostico : Fragment() {
 
     private fun obteniendoDatos() {
         diagnosisItem = args.diagnosis
-        editarDiagnosticoBinding.etLabs.setText(diagnosisItem.nombrelab)
-        editarDiagnosticoBinding.etServiPc.setText(diagnosisItem.ServiceTag)
+        editarDiagnosticoBinding.ctvLabD.setText(diagnosisItem.nombrelab)
+        editarDiagnosticoBinding.ctvServiceTag.setText(diagnosisItem.ServiceTag)
         editarDiagnosticoBinding.etDescripcionDiagnostico.setText(diagnosisItem.descripcion)
 
         ruta1 = diagnosisItem.ruta1
@@ -129,32 +138,50 @@ class FragmentEditarDiagnostico : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val btnEditar = editarDiagnosticoBinding.btnEditar
+
+        CoroutineScope(Dispatchers.Main).launch {
+            val lab = gestionDiagnosisViewModel.getAllLaboratories()
+            setLabAdapter(lab)
+        }
+
         btnEditar.setOnClickListener {
-            diagnosisItem.nombrelab = editarDiagnosticoBinding.etLabs.text.toString()
-            diagnosisItem.ServiceTag = editarDiagnosticoBinding.etServiPc.text.toString()
-            diagnosisItem.descripcion = editarDiagnosticoBinding.etDescripcionDiagnostico.text.toString()
+            lifecycleScope.launch {
+                val datoL = editarDiagnosticoBinding.ctvLabD.text.toString()
+                val datoC = editarDiagnosticoBinding.ctvServiceTag.text.toString()
+                val lab = gestionDiagnosisViewModel.getAllLaboratories()
+                val labI = lab.filter { it.nombre == datoL }
+                val comp = gestionDiagnosisViewModel.getAllComputer()
+                val compL = comp.filter { it.ubicacion == datoL }
 
-            if (!imageAdapter.hasImageAtPosition(0)) {
-                diagnosisItem.ruta1 = ""
-            }
-            if (!imageAdapter.hasImageAtPosition(1)) {
-                diagnosisItem.ruta2 = ""
-            }
-            if (!imageAdapter.hasImageAtPosition(2)) {
-                diagnosisItem.ruta3 = ""
-            }
-            if (!imageAdapter.hasImageAtPosition(3)) {
-                diagnosisItem.ruta4 = ""
-            }
+                if ((labI.isNotEmpty() && labI.size <= 1) && compL.isNotEmpty() && datoL != "" && datoC != ""){
+                    diagnosisItem.nombrelab = editarDiagnosticoBinding.ctvLabD.text.toString()
+                    diagnosisItem.ServiceTag = editarDiagnosticoBinding.ctvServiceTag.text.toString()
+                    diagnosisItem.descripcion = editarDiagnosticoBinding.etDescripcionDiagnostico.text.toString()
 
-            gestionDiagnosisViewModel.updateDiagnosis(diagnosisItem)
-            Toast.makeText(
-                requireContext(),
-                "Diagnóstico editado correctamente",
-                Toast.LENGTH_SHORT
-            ).show()
-            val navController = Navigation.findNavController(requireView())
-            navController.popBackStack()
+                    if (!imageAdapter.hasImageAtPosition(0)) {
+                        diagnosisItem.ruta1 = ""
+                    }
+                    if (!imageAdapter.hasImageAtPosition(1)) {
+                        diagnosisItem.ruta2 = ""
+                    }
+                    if (!imageAdapter.hasImageAtPosition(2)) {
+                        diagnosisItem.ruta3 = ""
+                    }
+                    if (!imageAdapter.hasImageAtPosition(3)) {
+                        diagnosisItem.ruta4 = ""
+                    }
+
+                    gestionDiagnosisViewModel.updateDiagnosis(diagnosisItem)
+                    Toast.makeText(
+                        requireContext(),
+                        "Diagnóstico editado correctamente",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    val navController = Navigation.findNavController(requireView())
+                    navController.popBackStack()
+                }else
+                    Toast.makeText(requireContext(), "Hay datos no existentes o falta que ingresen datos", Toast.LENGTH_SHORT).show()
+            }
         }
 
         return editarDiagnosticoBinding.root
@@ -251,5 +278,24 @@ class FragmentEditarDiagnostico : Fragment() {
         val countText = "$imageCount/$MAX"
         editarDiagnosticoBinding.conteo.text = countText
     }
+
+    private fun setLabAdapter(lab: List<LabItem>) {
+        val adapter = AutoTextLabAdapter(requireContext(), R.layout.simple_dropdown_item_1line, lab.map { it.nombre })
+        editarDiagnosticoBinding.ctvLabD.setAdapter(adapter)
+
+        editarDiagnosticoBinding.ctvLabD.setOnItemClickListener { _, _, position, _ ->
+            val selectedLab = lab[position]
+            CoroutineScope(Dispatchers.Main).launch {
+                val computerList = gestionDiagnosisViewModel.getAllComputer().filter { it.ubicacion == selectedLab.nombre }
+                setCompAdapter(computerList)
+            }
+        }
+    }
+
+    private fun setCompAdapter(comp: List<ComputerItem>) {
+        val adapter = AutotextComptAdapter(requireActivity(), R.layout.simple_dropdown_item_1line ,comp.map { it.serviceTag })
+        editarDiagnosticoBinding.ctvServiceTag.setAdapter(adapter)
+    }
+
 }
 

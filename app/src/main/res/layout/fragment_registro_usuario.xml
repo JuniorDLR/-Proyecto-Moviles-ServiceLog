@@ -22,8 +22,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/registro_de_usuario"
-                android:textAlignment="center"
-                android:textSize="30sp" />
+                android:layout_margin="10dp"
+                android:textSize="25sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvUserName"
@@ -31,7 +32,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:text="User name"
-                android:textSize="20sp" />
+                android:textSize="19sp"
+                android:textStyle="bold" />
 
 
             <EditText
@@ -52,7 +54,8 @@
                 android:layout_margin="10dp"
                 android:layout_marginTop="35dp"
                 android:text="@string/nombres"
-                android:textSize="20sp" />
+                android:textSize="19sp"
+                android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/etNombre"
@@ -70,7 +73,8 @@
                 android:layout_margin="10dp"
                 android:layout_marginTop="20dp"
                 android:text="@string/apellidos"
-                android:textSize="20sp" />
+                android:textSize="19sp"
+                android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/etApellido"
@@ -89,7 +93,8 @@
                 android:layout_margin="10dp"
                 android:layout_marginTop="20dp"
                 android:text="@string/correo_electronico"
-                android:textSize="20sp" />
+                android:textSize="19sp"
+                android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/etCorreo"
@@ -108,7 +113,8 @@
                 android:layout_margin="10dp"
                 android:layout_marginTop="20dp"
                 android:text="@string/contrase_a"
-                android:textSize="20sp" />
+                android:textSize="19sp"
+                android:textStyle="bold" />
 
 
             <com.google.android.material.textfield.TextInputLayout
@@ -133,7 +139,8 @@
                 android:layout_margin="10dp"
                 android:layout_marginTop="20dp"
                 android:text="@string/confirmar_contrase_a"
-                android:textSize="20sp" />
+                android:textSize="19sp"
+                android:textStyle="bold" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"

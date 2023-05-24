@@ -25,15 +25,8 @@ import com.example.servivelog.domain.model.diagnosis.DiagnosisItem
 import com.example.servivelog.domain.model.user.ActiveUser
 import com.example.servivelog.ui.gestiondiagnostico.view.FragmentDiagnosticoDirections
 import com.example.servivelog.ui.gestiondiagnostico.viewmodel.GestioDiagnosisViewModel
-import com.itextpdf.text.Document
-import com.itextpdf.text.Element
-import com.itextpdf.text.Image
-import com.itextpdf.text.Paragraph
-import com.itextpdf.text.Phrase
-import com.itextpdf.text.Rectangle
-import com.itextpdf.text.pdf.PdfPCell
-import com.itextpdf.text.pdf.PdfPTable
-import com.itextpdf.text.pdf.PdfWriter
+import com.itextpdf.text.*
+import com.itextpdf.text.pdf.*
 import java.io.File
 import java.io.FileOutputStream
 import java.text.SimpleDateFormat
@@ -125,7 +118,6 @@ class DiagnosisAdapter(
         }
     }
 
-
     fun updateRecycler(updateList: MutableList<DiagnosisItem>) {
         listD = updateList
         originalList = updateList
@@ -196,17 +188,62 @@ class DiagnosisAdapter(
                 FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file)
             val fos = FileOutputStream(file)
 
-            val computadora = listaC.find { it.serviceTag == diag.nombrelab }
+            val computadora = listaC.find { it.ubicacion == diag.nombrelab }
 
             val document = Document()
-            PdfWriter.getInstance(document, fos)
+            val pdfWriter = PdfWriter.getInstance(document, fos)
+
+            // Agregar el contenido del pie de página
+            val footer = object : PdfPageEventHelper() {
+                override fun onEndPage(writer: PdfWriter, document: Document) {
+                    val currentTime = Date()
+                    val timeFormat = SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.getDefault())
+                    val formattedTime = timeFormat.format(currentTime)
+
+                    val footerTable = PdfPTable(2)
+                    footerTable.widthPercentage = 100f
+                    footerTable.totalWidth = document.pageSize.width - document.leftMargin() - document.rightMargin()
+
+                    val leftCell = PdfPCell()
+                    leftCell.addElement(Paragraph("PBX: (505) 2278-3923 al 27 ext. 1109"))
+                    leftCell.addElement(Paragraph("direccion.administrativa@uca.edu.ni"))
+                    leftCell.border = Rectangle.NO_BORDER
+                    leftCell.fixedHeight = 40f
+                    footerTable.addCell(leftCell)
+
+                    val rightCell = PdfPCell(Paragraph(formattedTime))
+                    rightCell.border = Rectangle.NO_BORDER
+                    rightCell.horizontalAlignment = Element.ALIGN_RIGHT
+                    footerTable.addCell(rightCell)
+
+                    footerTable.writeSelectedRows(
+                        0, 2,
+                        document.leftMargin(),
+                        document.bottomMargin() + 8,
+                        writer.directContent
+                    )
+                }
+            }
+
+            // Agregar el evento del footer al escritor del documento
+            pdfWriter.pageEvent = footer
+
             // Abrir el documento para escribir
             document.open()
+
+            val inputStream = context.resources.openRawResource(R.raw.uca_logo_fondo_blanco)
+            val byteArray = ByteArray(inputStream.available())
+            inputStream.read(byteArray)
+
+            val image = Image.getInstance(byteArray)
+            image.scaleToFit(100f, 100f)
+            image.alignment = Element.ALIGN_LEFT
+            document.add(image)
 
             val titulo = Paragraph("REPORTE TECNICO")
             titulo.alignment = Element.ALIGN_CENTER
             titulo.font.size = 18f
-            titulo.spacingAfter = 10f
+            titulo.spacingBefore = 10f
             titulo.font.setStyle("bold")
             document.add(titulo)
 
@@ -285,27 +322,30 @@ class DiagnosisAdapter(
             var imagen = Image.getInstance(diag.ruta1)
             if (diag.ruta1 != "") {
                 imagen.alignment = Element.ALIGN_CENTER
+                imagen.scaleAbsolute(200f, 200f)
                 document.add(imagen)
             }
             if (diag.ruta2 != "") {
                 imagen = Image.getInstance(diag.ruta2)
+                imagen.scaleAbsolute(200f, 200f)
                 imagen.alignment = Element.ALIGN_CENTER
                 document.add(imagen)
             }
+
             if (diag.ruta3 != "") {
                 imagen = Image.getInstance(diag.ruta3)
+                imagen.scaleAbsolute(200f, 200f)
                 imagen.alignment = Element.ALIGN_CENTER
                 document.add(imagen)
             }
             if (diag.ruta4 != "") {
                 imagen = Image.getInstance(diag.ruta4)
+                imagen.scaleAbsolute(200f, 200f)
                 imagen.alignment = Element.ALIGN_CENTER
                 document.add(imagen)
             }
 
-
             document.close()
-
 
             val pdfViewIntent = Intent(Intent.ACTION_VIEW)
             pdfViewIntent.setDataAndType(uri, "application/pdf")
@@ -323,7 +363,6 @@ class DiagnosisAdapter(
 
             Toast.makeText(context, "Reporte generado correctamente", Toast.LENGTH_SHORT)
                 .show()
-
         }
     }
 
