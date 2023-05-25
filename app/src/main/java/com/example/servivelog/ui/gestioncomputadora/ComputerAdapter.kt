@@ -67,7 +67,7 @@ class ComputerAdapter(
 
         holder.edit.setOnClickListener {
 
-            if (compList.descripcion == "sin datos")
+            if (compList.serviceTag == "sin datos")
                 Toast.makeText(context, "no se encontaron computadoras", Toast.LENGTH_SHORT).show()
             else {
                 val action =
@@ -78,7 +78,7 @@ class ComputerAdapter(
             }
         }
         holder.delete.setOnClickListener {
-            if (compList.descripcion == "sin datos")
+            if (compList.serviceTag == "sin datos")
                 Toast.makeText(context, "no se encontaron computadoras", Toast.LENGTH_SHORT).show()
             else {
                 gestionCompViewModel.deleteComputer(compList)
