@@ -12,8 +12,6 @@ class RUDComputer @Inject constructor(
     private val computerRepository: ComputerRepository,
     private val labRepository: LabRepository
 ) {
-
-
     suspend fun getallLabs(): List<LabItem> {
         return labRepository.getAllLabs()
     }

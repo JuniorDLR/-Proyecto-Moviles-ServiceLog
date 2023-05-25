@@ -24,13 +24,13 @@ class GestionCompViewModel @Inject constructor(
     val computerItem = ComputerItem(
         0,
         "",
+        "",
+        "",
+        "",
+        "",
+        0,
+        0,
         "sin datos",
-        "",
-        "",
-        "",
-        0,
-        0,
-        "",
         "",
         ""
     )
