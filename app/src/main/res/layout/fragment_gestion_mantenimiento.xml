@@ -41,18 +41,73 @@
 
         </LinearLayout>
 
-        <EditText
-            android:id="@+id/etServiceTag"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:singleLine="true"
-            android:maxLines="1"
-            android:imeOptions="actionDone"
-            android:layout_margin="10dp"
-            android:hint="Buscar por Service Tag"
-            tools:text="CN-009NK2-73846-65N-0P05"
-            android:textSize="18sp"
-            android:textStyle="italic"/>
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/etServiceTag"
+                android:layout_width="wrap_content"
+                android:layout_height="55dp"
+                android:singleLine="true"
+                android:maxLines="1"
+                android:imeOptions="actionDone"
+                android:layout_margin="10dp"
+                android:hint="Buscar por Service Tag"
+                tools:text="CN-009NK2-73846-65N-0P05"
+                android:textSize="18sp"
+                android:textStyle="italic"/>
+
+            <EditText
+                android:id="@+id/etFecha"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:singleLine="true"
+                android:maxLines="1"
+                android:imeOptions="actionDone"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                tools:text=" yyyy-MM-dd"
+                android:textSize="18sp"
+                android:textStyle="italic"
+                android:inputType="date"
+                android:clickable="true"
+                android:focusable="false"
+                android:drawableStart="@drawable/calendar_icon"/>
+
+        </LinearLayout>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Laboratorio: "
+                android:textSize="20sp"
+                android:textStyle="bold"/>
+
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_width="280dp"
+                android:layout_height="50dp"
+                android:popupBackground="@color/white"
+                android:padding="8dp"
+                android:gravity="center_vertical"
+                android:spinnerMode="dropdown" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <Button
+            android:id="@+id/btnClean"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Limpiar Filtros"
+            android:layout_margin="10dp"/>
 
         <ScrollView
             android:layout_width="match_parent"

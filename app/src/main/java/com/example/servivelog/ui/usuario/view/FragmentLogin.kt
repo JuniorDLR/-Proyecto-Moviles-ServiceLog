@@ -78,6 +78,8 @@ class FragmentLogin : Fragment() {
         }
 
         if (ActiveUser.clave == loginBinding.txtPassword.text.toString() && ActiveUser.clave != "" && ActiveUser.userName == loginBinding.txtUser.text.toString() && ActiveUser.clave != "") {
+            loginBinding.txtUser.setText("")
+            loginBinding.txtPassword.setText("")
             val navController = Navigation.findNavController(loginBinding.root)
             navController.navigate(R.id.action_fragmentLogin_to_fragmentMenu)
             (activity as MainActivity).findViewById<BottomNavigationView>(R.id.BarraNavegacion).isVisible =

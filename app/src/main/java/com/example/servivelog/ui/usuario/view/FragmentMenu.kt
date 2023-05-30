@@ -1,6 +1,7 @@
 package com.example.servivelog.ui.usuario.view
 
 import android.app.AlertDialog
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -54,14 +55,11 @@ class FragmentMenu : Fragment() {
         callback.isEnabled = true
 
         CoroutineScope(Dispatchers.Main).launch {
-            val listam = userViewModel.getLastMaintenance()
-            val listad = userViewModel.getLastFourDiagnosis()
-            val computadora = userViewModel.getallcomputers()
+
             val todomantenimiento = userViewModel.getAllmantenimiento()
-            setdashboardM(listam, computadora)
             val tododiagnostico = userViewModel.getAllDiagnosis()
-            setdashboardD(listad,computadora)
             val cantidad = obtenerlast4Month(todomantenimiento)
+
             menuBinding.cantidad.text =
                 cantidad.toString()//te devuelve la cantidad de mantenimiento creados  en los ultimos 4 meses
             val cantidadD = obtenerlastMonth(tododiagnostico)
@@ -70,17 +68,17 @@ class FragmentMenu : Fragment() {
         return menuBinding.root
     }
 
-    private fun setdashboardD(listad: List<DiagnosisItem>, computadora: List<ComputerItem>) {
+    private fun setdashboardD(listad: List<DiagnosisItem>) {
         val recyclerView = menuBinding.ultimosDiagnosticos
         recyclerView.layoutManager = LinearLayoutManager(requireActivity())
-        recyclerView.adapter = DashboardD(requireActivity(),requireActivity(),listad, menuBinding.root, computadora)
+        recyclerView.adapter = DashboardD(requireActivity(),listad, menuBinding.root)
     }
 
-    private fun setdashboardM(listam: List<MantenimientoCUDItem>, computadora: List<ComputerItem>) {//crea el dashboard
+    private fun setdashboardM(listam: List<MantenimientoCUDItem>) {//crea el dashboard
         val recyclerView = menuBinding.ultimosMantenimiento
         recyclerView.layoutManager = LinearLayoutManager(requireActivity())
         recyclerView.adapter =
-            DashboardM(requireActivity(), requireActivity(), listam, menuBinding.root, computadora)//muestra las ultimas computadoras , creadas en los ultmos 4 meses
+            DashboardM(requireActivity(), listam, menuBinding.root)//muestra las ultimas computadoras , creadas en los ultmos 4 meses
     }
 
     private fun obtenerlast4Month(listaM: List<MantenimientoCUDItem>): Int {//fun para obtener los 4 meses
@@ -89,21 +87,24 @@ class FragmentMenu : Fragment() {
         val fechaActual = Date()
         calendar.time = fechaActual
         calendar.add(Calendar.MONTH, -4)
-        val fechaLimite = calendar.time
 
+        val fechaLimite = calendar.time
         var contador = 0
+        var last4MM: MutableList<MantenimientoCUDItem> = mutableListOf()
 
         for (m in listaM) {
             val fecha = formato.parse(m.dia)
-            if (fecha.after(fechaLimite) || fecha == fechaLimite)
+            if (fecha.after(fechaLimite) || fecha == fechaLimite){
                 contador++
+                last4MM.add(m)
+            }
         }
-
+        setdashboardM(last4MM.subList(0, minOf(last4MM.size, 4)))
         return contador
     }
     private fun showExitConfirmationDialog() {
         val alertDialogBuilder = AlertDialog.Builder(requireContext())
-        alertDialogBuilder.setTitle("Salir de la aplicación")
+        alertDialogBuilder.setTitle("Terminar la sesión")
         alertDialogBuilder.setMessage("¿Estás seguro de que deseas cerrar sesión?")
         alertDialogBuilder.setPositiveButton("Sí") { dialog, which ->
             (activity as MainActivity).findViewById<BottomNavigationView>(R.id.BarraNavegacion).isVisible =
@@ -114,7 +115,10 @@ class FragmentMenu : Fragment() {
         alertDialogBuilder.setNegativeButton("No") { dialog, which ->
             // No hacer nada y cerrar el cuadro de diálogo
         }
-        alertDialogBuilder.show()
+        val dialog = alertDialogBuilder.show()
+
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE)?.setBackgroundColor(Color.RED)
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE)?.setBackgroundColor(Color.GREEN)
     }
 
     private fun obtenerlastMonth(listaD: List<DiagnosisItem>): Int{
@@ -123,16 +127,20 @@ class FragmentMenu : Fragment() {
         val fechaActual = Date()
         calendar.time = fechaActual
         calendar.add(Calendar.MONTH, -1)
-        val fechaLimite = calendar.time
 
+        val fechaLimite = calendar.time
         var contador = 0
+        val lastMD: MutableList<DiagnosisItem> = mutableListOf()
 
         for (d in listaD) {
             val fecha = formato.parse(d.fecha)
-            if (fecha.after(fechaLimite) || fecha == fechaLimite)
+            if (fecha.after(fechaLimite) || fecha == fechaLimite ) {
                 contador++
+                lastMD.add(d)
+            }
         }
 
+        setdashboardD(lastMD.subList(0, minOf(lastMD.size, 4)))
         return contador
 
     }
