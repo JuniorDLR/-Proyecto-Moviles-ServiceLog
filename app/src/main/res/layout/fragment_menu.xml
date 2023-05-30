@@ -80,7 +80,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Diagnósticos creados en los últimos 4 meses: "
+                    android:text="Diagnósticos creados en el último mes: "
                     android:textStyle="bold"
                     android:textSize="16dp" />
                 <TextView

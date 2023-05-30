@@ -40,6 +40,8 @@ import com.itextpdf.text.Rectangle
 import com.itextpdf.text.pdf.PdfPCell
 import com.itextpdf.text.pdf.PdfPTable
 import com.itextpdf.text.pdf.PdfPageEventHelper
+import com.itextpdf.text.pdf.PdfTemplate
+import java.io.BufferedInputStream
 
 class MantenimientoAdapter(
     private val activity: Activity,
@@ -55,17 +57,19 @@ class MantenimientoAdapter(
     inner class MyHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         var serviceTag: TextView
-        var tipoMan: TextView
+        var lab: TextView
+        var fecha: TextView
         var edit: ImageView
         var delete: ImageView
         var logo: ImageView
 
         init {
             serviceTag = itemView.findViewById(R.id.txtServiceTag)
-            tipoMan = itemView.findViewById(R.id.txtTipoLimpieza)
+            lab = itemView.findViewById(R.id.txtLab)
             edit = itemView.findViewById(R.id.ivEdit)
             delete = itemView.findViewById(R.id.ivDelete)
             logo = itemView.findViewById(R.id.iconoCvComputadora)
+            fecha = itemView.findViewById(R.id.txtFecha)
         }
     }
 
@@ -93,7 +97,8 @@ class MantenimientoAdapter(
     override fun onBindViewHolder(holder: MyHolder, position: Int) {
         val mant = listM[position]
         holder.serviceTag.text = mant.computadora
-        holder.tipoMan.text = mant.tipoLimpieza
+        holder.lab.text = mant.labname
+        holder.fecha.text = mant.dia
 
         holder.edit.setOnClickListener {
             if (mant.computadora == "Sin datos") {
@@ -165,20 +170,34 @@ class MantenimientoAdapter(
 
             val computadora = listaC.find { it.serviceTag == mant.computadora }
 
-            val document = Document()
+            val document = Document() // Crear un objeto Document con tamaño de página A4
+            document.setMargins(20f, 20f, 100f, 50f) // Establecer los márgenes izquierdo, derecho, superior e inferior en unidades de medida
+
             val pdfWriter = PdfWriter.getInstance(document, fos)
 
-            // Agregar el contenido del pie de página
-            val footer = object : PdfPageEventHelper() {
+            val resourceId = R.raw.uca_logo_fondo_blanco
+            val inputStream = context.resources.openRawResource(resourceId)
+            val bufferedInputStream = BufferedInputStream(inputStream)
+            val byteArray = bufferedInputStream.readBytes()
+
+            val pageEvent = object : PdfPageEventHelper() {
+                private lateinit var headerTemplate: PdfTemplate
+                private var headerHeight: Float = 100f // Ajusta la altura deseada para el encabezado
+
+                override fun onOpenDocument(writer: PdfWriter, document: Document) {
+                    headerTemplate = writer.directContent.createTemplate(document.pageSize.width, headerHeight)
+                }
+
                 override fun onEndPage(writer: PdfWriter, document: Document) {
+                    val cb = writer.directContent
+
                     val currentTime = Date()
                     val timeFormat = SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.getDefault())
                     val formattedTime = timeFormat.format(currentTime)
 
                     val footerTable = PdfPTable(2)
                     footerTable.widthPercentage = 100f
-                    footerTable.totalWidth =
-                        document.pageSize.width - document.leftMargin() - document.rightMargin()
+                    footerTable.totalWidth = document.pageSize.width - document.leftMargin() - document.rightMargin()
 
                     val leftCell = PdfPCell()
                     leftCell.addElement(Paragraph("PBX: (505) 2278-3923 al 27 ext. 1109"))
@@ -196,23 +215,24 @@ class MantenimientoAdapter(
                         0, 2,
                         document.leftMargin(),
                         document.bottomMargin() + 8,
-                        writer.directContent
+                        cb
                     )
+
+                    // Dibujar la imagen del encabezado en el PdfTemplate
+                    val headerImage = Image.getInstance(byteArray)
+                    headerImage.scaleToFit(100f, 100f)
+                    headerTemplate.addImage(headerImage, 100f, 0f, 0f, headerHeight, 0f, 0f)
+
+                    // Agregar el PdfTemplate al contenido directo de la página en la posición deseada
+                    cb.addTemplate(headerTemplate, 20f, document.top())
                 }
             }
 
-            pdfWriter.pageEvent = footer
+            // Establecer el evento de página que combina el encabezado y el pie de página
+            pdfWriter.pageEvent = pageEvent
+
             // Abrir el documento para escribir
             document.open()
-
-            val inputStream = context.resources.openRawResource(R.raw.uca_logo_fondo_blanco)
-            val byteArray = ByteArray(inputStream.available())
-            inputStream.read(byteArray)
-
-            val image = Image.getInstance(byteArray)
-            image.scaleToFit(100f, 100f)
-            image.alignment = Element.ALIGN_LEFT
-            document.add(image)
 
             val titulo = Paragraph("REPORTE DE MANTENIMIENTO")
             titulo.alignment = Element.ALIGN_CENTER

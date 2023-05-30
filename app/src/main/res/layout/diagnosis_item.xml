@@ -44,49 +44,78 @@
                 android:layout_toEndOf="@+id/iconoCvComputadora"
                 android:orientation="vertical">
 
+
                 <TextView
                     android:id="@+id/tvServiceTag"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
                     android:padding="3dp"
                     android:text="ServiceTag:"
                     android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginStart="5dp"/>
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/txtServiceTag"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="3dp"
-                    tools:text="CN-009NK2-73846-65N-0P05"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:layout_marginStart="10dp"/>
-
-                <TextView
-                    android:id="@+id/tvDescripcion"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginStart="5dp"
-                    android:padding="3dp"
-                    android:text="Descripción:"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/txtDescripcion"
-                    android:layout_width="175dp"
-                    android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:padding="3dp"
                     android:textSize="14sp"
                     android:textStyle="bold"
-                    tools:text="MuchoTexto, MuchoTexto,
-                        MuchoTexto, MuchoTexto,
-                        MuchoTexto" />
+                    tools:text="CN-009NK2-73846-65N-0P05" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:padding="3dp"
+                        android:text="Laboratorio: "
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txtLab"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="Laboratorio P1"
+                        android:textStyle="bold"
+                        android:padding="3dp"
+                        android:layout_marginTop="10dp"
+                        android:textSize="14sp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Creado el día :"
+                        android:textStyle="bold"
+                        android:padding="3dp"
+                        android:layout_marginStart="10dp"
+                        android:textSize="14sp"/>
+
+                    <TextView
+                        android:id="@+id/txtFecha"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="yyyy-MM-dd"
+                        android:textStyle="bold"
+                        android:padding="3dp"
+                        android:layout_marginStart="5dp"
+                        android:textSize="14sp"/>
+
+                </LinearLayout>
+
 
             </LinearLayout>
 

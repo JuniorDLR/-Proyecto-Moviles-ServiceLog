@@ -14,7 +14,7 @@ interface DiagnosisDao {
     @Query("SELECT * FROM tblDiagnosis ORDER BY idDiag")
     suspend fun getAllDiagnosis(): List<DiagnosisEntity>
 
-    @Query("SELECT * FROM tblDiagnosis ORDER BY idDiag DESC LIMIT 4")
+    @Query("SELECT * FROM tblDiagnosis ORDER BY idDiag DESC")
     suspend fun  getLastFourDiagnosis(): List<DiagnosisEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

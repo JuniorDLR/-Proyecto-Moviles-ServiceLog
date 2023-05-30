@@ -15,7 +15,7 @@ interface MantenimientoDao {
     suspend fun getAllMaintenances(): List<MantenimientoEntity>
 
     //Declaramos en el dao
-    @Query("SELECT * FROM tblMantenimiento ORDER BY idM DESC LIMIT 4")
+    @Query("SELECT * FROM tblMantenimiento ORDER BY idM DESC")
     suspend fun getLastfourMaintenances(): List<MantenimientoEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
