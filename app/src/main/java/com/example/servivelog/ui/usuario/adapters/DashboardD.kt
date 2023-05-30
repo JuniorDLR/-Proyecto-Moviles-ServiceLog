@@ -14,20 +14,20 @@ import com.example.servivelog.domain.model.diagnosis.DiagnosisItem
 import com.example.servivelog.ui.Hilt_MainActivity
 
 class DashboardD(
-    val activity: Activity,
     var context: Context,
     var list: List<DiagnosisItem>,
-    var view: View,
-    var listaC: List<ComputerItem>
+    var view: View
 ): RecyclerView.Adapter<DashboardD.MiHolder>() {
 
     inner class MiHolder(inteView: View):RecyclerView.ViewHolder(inteView){
             var servicetag: TextView
-            var descripcion: TextView
+            var laboratorio: TextView
+            var fecha: TextView
 
             init{
                 servicetag = itemView.findViewById(R.id.txtServiceTag)
-                descripcion = itemView.findViewById(R.id.txtDescripcion)
+                laboratorio = itemView.findViewById(R.id.txtLab)
+                fecha = itemView.findViewById(R.id.txtFecha)
             }
 
     }
@@ -44,6 +44,7 @@ class DashboardD(
     override fun onBindViewHolder(holder: MiHolder, position: Int) {
          val diag= list[position]
         holder.servicetag.text = diag.ServiceTag
-        holder.descripcion.text = diag.descripcion
+        holder.laboratorio.text = diag.nombrelab
+        holder.fecha.text = diag.fecha
     }
 }

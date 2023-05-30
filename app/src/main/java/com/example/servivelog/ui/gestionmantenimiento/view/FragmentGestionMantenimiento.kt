@@ -1,11 +1,16 @@
 package com.example.servivelog.ui.gestionmantenimiento.view
 
 import android.app.AlertDialog
+import android.app.DatePickerDialog
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
@@ -26,16 +31,24 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 @AndroidEntryPoint
-class FragmentGestionMantenimiento : Fragment(), MantenimientoAdapter.OnDeleteClickListener  {
+class FragmentGestionMantenimiento : Fragment(), MantenimientoAdapter.OnDeleteClickListener {
 
     private val gestionManteViewModel: GestionManteViewModel by viewModels()
     private lateinit var gestionMantenimientoBinding: FragmentGestionMantenimientoBinding
     private lateinit var addBtn: FloatingActionButton
     private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: MantenimientoAdapter
-    private var mantf: List<MantenimientoCUDItem> = emptyList<MantenimientoCUDItem>()
+    private var adapter: MantenimientoAdapter? = null
+    private var mantf: List<MantenimientoCUDItem> = emptyList()
+    private var filteredList: List<MantenimientoCUDItem> = emptyList()
+    private var selectedLaboratory: String = "Seleccionar"
+    private var selectedDate: String = ""
+    private var serviceTag: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         gestionMantenimientoBinding = FragmentGestionMantenimientoBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
@@ -45,6 +58,28 @@ class FragmentGestionMantenimiento : Fragment(), MantenimientoAdapter.OnDeleteCl
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        gestionManteViewModel.onCreate()
+
+        gestionManteViewModel.modeloMantenimiento.observe(viewLifecycleOwner) { mantenimiento ->
+
+            mantf = mantenimiento
+
+            CoroutineScope(Dispatchers.Main).launch {
+                val listac = gestionManteViewModel.getAllComputers()
+                setAdapter(mantf, listac)
+                gestionMantenimientoBinding.etFecha.setText("yyyy-MM-dd")
+            }
+
+            gestionMantenimientoBinding.etServiceTag.addTextChangedListener { filter ->
+
+                selectedLaboratory = gestionMantenimientoBinding.spinner.selectedItem.toString()
+                selectedDate = gestionMantenimientoBinding.etFecha.text.toString()
+
+                applyFilters(selectedLaboratory, selectedDate, filter.toString())
+            }
+        }
+
+        gestionMantenimientoBinding.etFecha.setOnClickListener { showDatePickerDialog() }
 
         val callback = requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             // Mostrar el cuadro de diálogo de confirmación aquí
@@ -52,44 +87,83 @@ class FragmentGestionMantenimiento : Fragment(), MantenimientoAdapter.OnDeleteCl
         }
         callback.isEnabled = true
 
-        gestionManteViewModel.onCreate()
+        CoroutineScope(Dispatchers.Main).launch {
+            val labs = gestionManteViewModel.getAllLabs()
+            val listaNombres: ArrayList<String> = ArrayList()
 
-        gestionManteViewModel.modeloMantenimiento.observe(viewLifecycleOwner){mantenimiento->
-
-            mantf = mantenimiento
-
-            CoroutineScope(Dispatchers.Main).launch {
-                val listac = gestionManteViewModel.getAllComputers()
-                setAdapter(mantf, listac)
+            listaNombres.add("Seleccionar")
+            for (l in labs) {
+                val nombre = l.nombre
+                listaNombres.add(nombre)
             }
 
-            gestionMantenimientoBinding.etServiceTag.addTextChangedListener {filter->
-                val mantenimientofiltrados = mantf.filter { it.computadora.uppercase().contains(filter.toString().uppercase()) }
-                adapter.updateRecycler(mantenimientofiltrados)
-            }
-
+            setAdapterSpinner(listaNombres)
         }
 
         addBtn = gestionMantenimientoBinding.fbtnagregar
 
-        addBtn.setOnClickListener{
+        addBtn.setOnClickListener {
             val navController = Navigation.findNavController(it)
             navController.navigate(R.id.action_fragmentGestionMantenimiento_to_fragmentAgregarMantenimiento)
+        }
+
+        gestionMantenimientoBinding.btnClean.setOnClickListener{
+            gestionMantenimientoBinding.etFecha.setText("yyyy-MM-dd")
+            gestionMantenimientoBinding.etServiceTag.setText("")
+            gestionMantenimientoBinding.spinner.setSelection(0)
         }
 
         return gestionMantenimientoBinding.root
     }
 
+    private fun setAdapterSpinner(listaNombres: ArrayList<String>) {
+        val spinner = gestionMantenimientoBinding.spinner
+        val adapter =
+            ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, listaNombres)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+        spinner.adapter = adapter
+
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                val selectedItem = parent.getItemAtPosition(position) as String
+                serviceTag = gestionMantenimientoBinding.etServiceTag.text.toString()
+                selectedDate = gestionMantenimientoBinding.etFecha.text.toString()
+                applyFilters(selectedItem, selectedDate, serviceTag)
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // Lógica cuando no se selecciona ningún elemento
+            }
+        }
+    }
+
     override fun onDeleteClicked(mantenimientoCUDItem: MantenimientoCUDItem) {
-        val updatedList = adapter.listM.toMutableList()
-        updatedList.remove(mantenimientoCUDItem)
-        mantf = updatedList
-        adapter.updateRecycler(updatedList)
+        val savingData: MutableList<MantenimientoCUDItem> = mantf.toMutableList() //Se guarda mantf para no perder la lista original
+        savingData.remove(mantenimientoCUDItem)//Se elimina el dato del recycler
+        val updatedList = adapter?.listM?.toMutableList()//Esta es la lista filtrada
+        updatedList?.remove(mantenimientoCUDItem)//se elimina el dato de la lista filtrada
+        mantf = updatedList!!//creo que no es necesario
+        filteredList = filteredList.filter { it != mantenimientoCUDItem } //se filtra la lista
+        adapter?.updateRecycler(filteredList)// se muestra
+        mantf = savingData.toList()//lista recuperada
     }
 
     private fun setAdapter(it: List<MantenimientoCUDItem>, listac: List<ComputerItem>) {
-        adapter = MantenimientoAdapter(requireActivity(),requireActivity(), it, gestionMantenimientoBinding.root, gestionManteViewModel, listac)
-        adapter.setOnDeleteClickListener(this)
+        adapter = MantenimientoAdapter(
+            requireActivity(),
+            requireActivity(),
+            it,
+            gestionMantenimientoBinding.root,
+            gestionManteViewModel,
+            listac
+        )
+        adapter?.setOnDeleteClickListener(this)
         recyclerView = gestionMantenimientoBinding.rvMantenimiento
         recyclerView.layoutManager = LinearLayoutManager(requireActivity())
         recyclerView.adapter = adapter
@@ -97,7 +171,7 @@ class FragmentGestionMantenimiento : Fragment(), MantenimientoAdapter.OnDeleteCl
 
     private fun showExitConfirmationDialog() {
         val alertDialogBuilder = AlertDialog.Builder(requireContext())
-        alertDialogBuilder.setTitle("Salir de la aplicación")
+        alertDialogBuilder.setTitle("Terminar la sesión")
         alertDialogBuilder.setMessage("¿Estás seguro de que deseas cerrar sesión?")
         alertDialogBuilder.setPositiveButton("Sí") { dialog, which ->
             (activity as MainActivity).findViewById<BottomNavigationView>(R.id.BarraNavegacion).isVisible =
@@ -108,7 +182,44 @@ class FragmentGestionMantenimiento : Fragment(), MantenimientoAdapter.OnDeleteCl
         alertDialogBuilder.setNegativeButton("No") { dialog, which ->
             // No hacer nada y cerrar el cuadro de diálogo
         }
-        alertDialogBuilder.show()
+        val dialog = alertDialogBuilder.show()
+
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE)?.setBackgroundColor(Color.RED)
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE)?.setBackgroundColor(Color.GREEN)
+    }
+
+    private fun showDatePickerDialog() {
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val datePickerDialog =
+            DatePickerDialog(requireContext(), { _, selectedYear, selectedMonth, selectedDay ->
+                val selectedDate = Calendar.getInstance()
+                selectedDate.set(selectedYear, selectedMonth, selectedDay)
+
+                val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                val formattedDate = dateFormat.format(selectedDate.time)
+                gestionMantenimientoBinding.etFecha.setText(formattedDate)
+                serviceTag = gestionMantenimientoBinding.etServiceTag.text.toString()
+                selectedLaboratory = gestionMantenimientoBinding.spinner.selectedItem.toString()
+                applyFilters(selectedLaboratory, formattedDate, serviceTag)
+            }, year, month, day)
+
+        datePickerDialog.show()
+    }
+
+    fun applyFilters(selectedLaboratory: String, selectedDate: String, serviceTag: String) {
+        filteredList = mantf.filter { mantenimiento ->
+            val labMatches =
+                selectedLaboratory == "Seleccionar" || mantenimiento.labname == selectedLaboratory
+            val dateMatches = selectedDate == "yyyy-MM-dd" || mantenimiento.dia == selectedDate
+            val serviceTagMatches = serviceTag.isEmpty() || mantenimiento.computadora.uppercase()
+                .contains(serviceTag.uppercase())
+            labMatches && dateMatches && serviceTagMatches
+        }
+        adapter?.updateRecycler(filteredList)
     }
 
 }

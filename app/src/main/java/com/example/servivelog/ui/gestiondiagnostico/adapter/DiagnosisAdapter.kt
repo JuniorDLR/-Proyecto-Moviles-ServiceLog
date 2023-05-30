@@ -27,6 +27,7 @@ import com.example.servivelog.ui.gestiondiagnostico.view.FragmentDiagnosticoDire
 import com.example.servivelog.ui.gestiondiagnostico.viewmodel.GestioDiagnosisViewModel
 import com.itextpdf.text.*
 import com.itextpdf.text.pdf.*
+import java.io.BufferedInputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.text.SimpleDateFormat
@@ -40,22 +41,23 @@ class DiagnosisAdapter(
     var view: View,
     var gestioDiagnosisViewModel: GestioDiagnosisViewModel,
     val listaC: List<ComputerItem>
-) : RecyclerView.Adapter<DiagnosisAdapter.MyHolder>(), Filterable {
+) : RecyclerView.Adapter<DiagnosisAdapter.MyHolder>() {
 
     private val MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1002
-    private var originalList: List<DiagnosisItem> = listD
-    private var filteredList: List<DiagnosisItem> = listD
 
     inner class MyHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
         var serviceTag: TextView
-        var descripcion: TextView
+        var lab: TextView
+        var fecha: TextView
         var edit: ImageView
         var delete: ImageView
         var logo: ImageView
 
         init {
             serviceTag = itemView.findViewById(R.id.txtServiceTag)
-            descripcion = itemView.findViewById(R.id.txtDescripcion)
+            lab = itemView.findViewById(R.id.txtLab)
+            fecha = itemView.findViewById(R.id.txtFecha)
             edit = itemView.findViewById(R.id.ivEdit)
             delete = itemView.findViewById(R.id.ivDelete)
             logo = itemView.findViewById(R.id.iconoCvComputadora)
@@ -68,7 +70,7 @@ class DiagnosisAdapter(
     }
 
     override fun getItemCount(): Int {
-        return filteredList.size
+        return listD.size
     }
 
     interface OnDeleteClickListener {
@@ -82,9 +84,10 @@ class DiagnosisAdapter(
     }
 
     override fun onBindViewHolder(holder: MyHolder, position: Int) {
-        val diag = filteredList[position]
+        val diag = listD[position]
         holder.serviceTag.text = diag.ServiceTag
-        holder.descripcion.text = diag.descripcion
+        holder.lab.text = diag.nombrelab
+        holder.fecha.text = diag.fecha
 
         holder.edit.setOnClickListener {
             if (diag.ServiceTag == "Sin datos") {
@@ -105,6 +108,7 @@ class DiagnosisAdapter(
                     .show()
             } else {
                 gestioDiagnosisViewModel.deleteDiagnosis(diag)
+                onDeleteClickListener?.onDeleteCliked(diag)
             }
         }
 
@@ -114,37 +118,6 @@ class DiagnosisAdapter(
                     .show()
             } else {
                 generarReporteDiagnosi(diag)
-            }
-        }
-    }
-
-    fun updateRecycler(updateList: MutableList<DiagnosisItem>) {
-        listD = updateList
-        originalList = updateList
-        filteredList = updateList
-        notifyDataSetChanged()
-    }
-
-    override fun getFilter(): Filter {
-        return object : Filter() {
-            override fun performFiltering(constraint: CharSequence?): FilterResults {
-                val query = constraint?.toString()?.trim() ?: ""
-                filteredList = if (query.isEmpty()) {
-                    originalList
-                } else {
-                    originalList.filter { item ->
-                        item.ServiceTag.contains(query, ignoreCase = true)
-                    }
-                }
-                val results = FilterResults()
-                results.values = filteredList
-                return results
-            }
-
-            override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                @Suppress("UNCHECKED_CAST")
-                filteredList = results?.values as? List<DiagnosisItem> ?: emptyList()
-                notifyDataSetChanged()
             }
         }
     }
@@ -190,12 +163,27 @@ class DiagnosisAdapter(
 
             val computadora = listaC.find { it.ubicacion == diag.nombrelab }
 
-            val document = Document()
+            val document = Document() // Crear un objeto Document con tamaño de página A4
+            document.setMargins(20f, 20f, 100f, 50f) // Establecer los márgenes izquierdo, derecho, superior e inferior en unidades de medida
+
             val pdfWriter = PdfWriter.getInstance(document, fos)
 
-            // Agregar el contenido del pie de página
-            val footer = object : PdfPageEventHelper() {
+            val resourceId = R.raw.uca_logo_fondo_blanco
+            val inputStream = context.resources.openRawResource(resourceId)
+            val bufferedInputStream = BufferedInputStream(inputStream)
+            val byteArray = bufferedInputStream.readBytes()
+
+            val pageEvent = object : PdfPageEventHelper() {
+                private lateinit var headerTemplate: PdfTemplate
+                private var headerHeight: Float = 100f // Ajusta la altura deseada para el encabezado
+
+                override fun onOpenDocument(writer: PdfWriter, document: Document) {
+                    headerTemplate = writer.directContent.createTemplate(document.pageSize.width, headerHeight)
+                }
+
                 override fun onEndPage(writer: PdfWriter, document: Document) {
+                    val cb = writer.directContent
+
                     val currentTime = Date()
                     val timeFormat = SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.getDefault())
                     val formattedTime = timeFormat.format(currentTime)
@@ -220,25 +208,24 @@ class DiagnosisAdapter(
                         0, 2,
                         document.leftMargin(),
                         document.bottomMargin() + 8,
-                        writer.directContent
+                        cb
                     )
+
+                    // Dibujar la imagen del encabezado en el PdfTemplate
+                    val headerImage = Image.getInstance(byteArray)
+                    headerImage.scaleToFit(100f, 100f)
+                    headerTemplate.addImage(headerImage, 100f, 0f, 0f, headerHeight, 0f, 0f)
+
+                    // Agregar el PdfTemplate al contenido directo de la página en la posición deseada
+                    cb.addTemplate(headerTemplate, 20f, document.top())
                 }
             }
 
-            // Agregar el evento del footer al escritor del documento
-            pdfWriter.pageEvent = footer
+            // Establecer el evento de página que combina el encabezado y el pie de página
+            pdfWriter.pageEvent = pageEvent
 
             // Abrir el documento para escribir
             document.open()
-
-            val inputStream = context.resources.openRawResource(R.raw.uca_logo_fondo_blanco)
-            val byteArray = ByteArray(inputStream.available())
-            inputStream.read(byteArray)
-
-            val image = Image.getInstance(byteArray)
-            image.scaleToFit(100f, 100f)
-            image.alignment = Element.ALIGN_LEFT
-            document.add(image)
 
             val titulo = Paragraph("REPORTE TECNICO")
             titulo.alignment = Element.ALIGN_CENTER
@@ -319,8 +306,9 @@ class DiagnosisAdapter(
             val documentacion = Paragraph("Documentacion:")
             document.add(documentacion)
 
-            var imagen = Image.getInstance(diag.ruta1)
+            var imagen:Image
             if (diag.ruta1 != "") {
+                imagen = Image.getInstance(diag.ruta1)
                 imagen.alignment = Element.ALIGN_CENTER
                 imagen.scaleAbsolute(200f, 200f)
                 document.add(imagen)
@@ -364,6 +352,11 @@ class DiagnosisAdapter(
             Toast.makeText(context, "Reporte generado correctamente", Toast.LENGTH_SHORT)
                 .show()
         }
+    }
+
+    fun updateRecycler(listD: List<DiagnosisItem>) {
+        this.listD = listD
+        notifyDataSetChanged()
     }
 
 }

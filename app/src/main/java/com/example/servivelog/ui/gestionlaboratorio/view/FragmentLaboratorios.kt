@@ -2,6 +2,7 @@ package com.example.servivelog.ui.gestionlaboratorio.view
 
 import android.app.AlertDialog
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -99,7 +100,7 @@ class FragmentLaboratorios : Fragment(), LabAdapter.OnDeleteClickListener {
 
     private fun showExitConfirmationDialog() {
         val alertDialogBuilder = AlertDialog.Builder(requireContext())
-        alertDialogBuilder.setTitle("Salir de la aplicación")
+        alertDialogBuilder.setTitle("Terminar la sesión")
         alertDialogBuilder.setMessage("¿Estás seguro de que deseas cerrar sesión?")
         alertDialogBuilder.setPositiveButton("Sí") { dialog, which ->
             (activity as MainActivity).findViewById<BottomNavigationView>(R.id.BarraNavegacion).isVisible =
@@ -110,7 +111,10 @@ class FragmentLaboratorios : Fragment(), LabAdapter.OnDeleteClickListener {
         alertDialogBuilder.setNegativeButton("No") { dialog, which ->
             // No hacer nada y cerrar el cuadro de diálogo
         }
-        alertDialogBuilder.show()
+        val dialog = alertDialogBuilder.show()
+
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE)?.setBackgroundColor(Color.RED)
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE)?.setBackgroundColor(Color.GREEN)
     }
 
 }

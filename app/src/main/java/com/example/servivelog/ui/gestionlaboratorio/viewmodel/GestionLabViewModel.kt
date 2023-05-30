@@ -58,4 +58,7 @@ class GestionLabViewModel @Inject constructor(
             rudLab.deleteLab(lab)
         }
     }
+    suspend fun getAllLabs(): List<LabItem>{
+        return getAllLab()
+    }
 }
