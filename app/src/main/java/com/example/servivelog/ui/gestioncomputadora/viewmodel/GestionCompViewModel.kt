@@ -5,10 +5,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.servivelog.domain.computerusecase.GetAllComputer
 import com.example.servivelog.domain.computerusecase.RUDComputer
+import com.example.servivelog.domain.diagnosisusecase.CudDiagnosis
 import com.example.servivelog.domain.labusecase.RUDLab
+import com.example.servivelog.domain.mantenimientousecase.CUDMantenimiento
 import com.example.servivelog.domain.model.computer.ComputerItem
 import com.example.servivelog.domain.model.computer.InsertItem
+import com.example.servivelog.domain.model.diagnosis.DiagnosisItem
 import com.example.servivelog.domain.model.lab.LabItem
+import com.example.servivelog.domain.model.mantenimiento.MantenimientoCUDItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -17,7 +21,9 @@ import javax.inject.Inject
 @HiltViewModel
 class GestionCompViewModel @Inject constructor(
     private val getAllComputer: GetAllComputer,
-    private val rudComputer: RUDComputer
+    private val rudComputer: RUDComputer,
+    private val cudDiagnosis: CudDiagnosis,
+    private val cudMantenimiento: CUDMantenimiento
 ) : ViewModel() {
     val modeloComputer = MutableLiveData<List<ComputerItem>>()
     val loading = MutableLiveData<Boolean>()
@@ -75,6 +81,14 @@ class GestionCompViewModel @Inject constructor(
 
     suspend fun getComputers(): List<ComputerItem> {
         return getAllComputer()
+    }
+
+    suspend fun getAllDiagnosis(): List<DiagnosisItem>{
+        return cudDiagnosis.getAllDiagnosis()
+    }
+
+    suspend fun getAllMantenimientos(): List<MantenimientoCUDItem>{
+        return cudMantenimiento.getAllmantenimiento()
     }
 
 }

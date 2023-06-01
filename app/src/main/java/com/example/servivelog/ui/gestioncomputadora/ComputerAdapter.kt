@@ -13,6 +13,9 @@ import com.example.servivelog.R
 import com.example.servivelog.domain.model.computer.ComputerItem
 import com.example.servivelog.ui.gestioncomputadora.view.GestionarComputadoraDirections
 import com.example.servivelog.ui.gestioncomputadora.viewmodel.GestionCompViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class ComputerAdapter(
@@ -78,11 +81,19 @@ class ComputerAdapter(
             }
         }
         holder.delete.setOnClickListener {
-            if (compList.serviceTag == "sin datos")
-                Toast.makeText(context, "no se encontaron computadoras", Toast.LENGTH_SHORT).show()
-            else {
-                gestionCompViewModel.deleteComputer(compList)
-                onDeleteClickListener?.onDeleteClicked(compList)
+            CoroutineScope(Dispatchers.Main).launch {
+                val diag = gestionCompViewModel.getAllDiagnosis()
+                val diagFiltered = diag.filter { it.ServiceTag == compList.serviceTag }
+                val mant = gestionCompViewModel.getAllMantenimientos()
+                val mantFiltered = mant.filter { it.computadora == compList.serviceTag }
+                if (compList.serviceTag != "sin datos"){
+                    if (diagFiltered.isEmpty() && mantFiltered.isEmpty()){
+                        gestionCompViewModel.deleteComputer(compList)
+                        onDeleteClickListener?.onDeleteClicked(compList)
+                    }else
+                        Toast.makeText(context, "Elimine primero todos los mantenimienots y diagnósticos", Toast.LENGTH_SHORT).show()
+                }else
+                    Toast.makeText(context, "no se encontaron computadoras", Toast.LENGTH_SHORT).show()
             }
         }
     }

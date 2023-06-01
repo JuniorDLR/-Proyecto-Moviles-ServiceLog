@@ -15,6 +15,9 @@ import com.example.servivelog.domain.model.lab.LabItem
 import com.example.servivelog.ui.gestionlaboratorio.view.FragmentLaboratorios
 import com.example.servivelog.ui.gestionlaboratorio.view.FragmentLaboratoriosDirections
 import com.example.servivelog.ui.gestionlaboratorio.viewmodel.GestionLabViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class LabAdapter(
     var context: Context,
@@ -72,11 +75,23 @@ class LabAdapter(
             }
         }
         holder.delete.setOnClickListener{
-            if(labList.nombre == "Sin Datos")
-                Toast.makeText(context,"No se encontraron Laboratorios en la Base de Datos", Toast.LENGTH_SHORT).show()
-            else {
-                gestionLabViewModel.deleteLab(labList)
-                onDeleteClickListener?.onDeleteClicked(labList)
+            CoroutineScope(Dispatchers.Main).launch {
+                val comps = gestionLabViewModel.getAllComps()
+                val filtrated = comps.filter { it.ubicacion == labList.nombre }
+                if (labList.nombre != "Sin Datos") {
+                    if (filtrated.isEmpty()){
+                        gestionLabViewModel.deleteLab(labList)
+                        onDeleteClickListener?.onDeleteClicked(labList)
+                    }else{
+                        Toast.makeText(context, "Elimine primeramente todas las computadoras", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    Toast.makeText(
+                        context,
+                        "No se encontraron Laboratorios en la Base de Datos",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
         }
         holder.logo.setOnClickListener{
