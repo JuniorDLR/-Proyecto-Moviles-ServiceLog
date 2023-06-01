@@ -85,7 +85,7 @@ class FragmentLogin : Fragment() {
             (activity as MainActivity).findViewById<BottomNavigationView>(R.id.BarraNavegacion).isVisible =
                 true //esto funciona para mostrar el navigation view despues de iniciar sesion
         } else {
-            Toast.makeText(context, "Contraseña incorrecta o no ha registrado este usuario usuario", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, "Contraseña incorrecta o no ha registrado este usuario", Toast.LENGTH_LONG).show()
         }
 
 
