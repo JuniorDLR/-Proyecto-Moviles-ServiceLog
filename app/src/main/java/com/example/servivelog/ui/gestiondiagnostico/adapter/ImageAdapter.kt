@@ -11,6 +11,7 @@ class ImageAdapter(
     private val images: MutableList<Bitmap>,
     private val imageCountListener: ImageCountListener
 ) : PagerAdapter() {
+    private var deletePosition: Int = -1
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val inflater = LayoutInflater.from(container.context)
@@ -45,11 +46,19 @@ class ImageAdapter(
 
     fun onDeleteClick(position: Int) {
         if (position >= 0 && position < images.size) {
+            deletePosition= position
             images.removeAt(position)
             notifyDataSetChanged()
             imageCountListener.onImageRemoved(images.size)
 
         }
+    }
+
+    override fun getItemPosition(`object`: Any): Int {
+        if(`object` is View && images.isEmpty()){
+            return POSITION_NONE
+        }
+        return  super.getItemPosition(`object`)
     }
 
     override fun isViewFromObject(view: View, `object`: Any): Boolean {
