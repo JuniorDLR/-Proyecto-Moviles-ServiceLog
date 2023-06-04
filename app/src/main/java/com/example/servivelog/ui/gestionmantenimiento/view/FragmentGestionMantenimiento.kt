@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
@@ -33,7 +32,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
-import java.util.Date
 import java.util.Locale
 
 @AndroidEntryPoint
@@ -47,8 +45,10 @@ class FragmentGestionMantenimiento : Fragment(), MantenimientoAdapter.OnDeleteCl
     private var mantf: List<MantenimientoCUDItem> = emptyList()
     private var filteredList: List<MantenimientoCUDItem> = emptyList()
     private var selectedLaboratory: String = "Seleccionar"
-    private var selectedDate: String = ""
+    private var selectedDateS: String = ""
     private var serviceTag: String = ""
+    private var selectedDateF: String = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         gestionMantenimientoBinding = FragmentGestionMantenimientoBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
@@ -67,19 +67,22 @@ class FragmentGestionMantenimiento : Fragment(), MantenimientoAdapter.OnDeleteCl
             CoroutineScope(Dispatchers.Main).launch {
                 val listac = gestionManteViewModel.getAllComputers()
                 setAdapter(mantf, listac)
-                gestionMantenimientoBinding.etFecha.setText("yyyy-MM-dd")
+                gestionMantenimientoBinding.etFechaIn.setText("yyyy-MM-dd")
+                gestionMantenimientoBinding.etFechaFin.setText("yyyy-MM-dd")
             }
 
             gestionMantenimientoBinding.etServiceTag.addTextChangedListener { filter ->
 
                 selectedLaboratory = gestionMantenimientoBinding.spinner.selectedItem.toString()
-                selectedDate = gestionMantenimientoBinding.etFecha.text.toString()
+                selectedDateS = gestionMantenimientoBinding.etFechaIn.text.toString()
+                selectedDateF = gestionMantenimientoBinding.etFechaFin.text.toString()
 
-                applyFilters(selectedLaboratory, selectedDate, filter.toString())
+                applyFilters(selectedLaboratory, selectedDateS, filter.toString(), selectedDateF)
             }
         }
 
-        gestionMantenimientoBinding.etFecha.setOnClickListener { showDatePickerDialog() }
+        gestionMantenimientoBinding.etFechaIn.setOnClickListener { showDatePickerDialog() }
+        gestionMantenimientoBinding.etFechaFin.setOnClickListener { showDatePickerDialog2() }
 
         val callback = requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             // Mostrar el cuadro de diálogo de confirmación aquí
@@ -108,7 +111,8 @@ class FragmentGestionMantenimiento : Fragment(), MantenimientoAdapter.OnDeleteCl
         }
 
         gestionMantenimientoBinding.btnClean.setOnClickListener{
-            gestionMantenimientoBinding.etFecha.setText("yyyy-MM-dd")
+            gestionMantenimientoBinding.etFechaIn.setText("yyyy-MM-dd")
+            gestionMantenimientoBinding.etFechaFin.setText("yyyy-MM-dd")
             gestionMantenimientoBinding.etServiceTag.setText("")
             gestionMantenimientoBinding.spinner.setSelection(0)
         }
@@ -132,9 +136,12 @@ class FragmentGestionMantenimiento : Fragment(), MantenimientoAdapter.OnDeleteCl
                 id: Long
             ) {
                 val selectedItem = parent.getItemAtPosition(position) as String
+
                 serviceTag = gestionMantenimientoBinding.etServiceTag.text.toString()
-                selectedDate = gestionMantenimientoBinding.etFecha.text.toString()
-                applyFilters(selectedItem, selectedDate, serviceTag)
+                selectedDateS = gestionMantenimientoBinding.etFechaIn.text.toString()
+                selectedDateF = gestionMantenimientoBinding.etFechaFin.text.toString()
+
+                applyFilters(selectedItem, selectedDateS, serviceTag, selectedDateF)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
@@ -201,25 +208,57 @@ class FragmentGestionMantenimiento : Fragment(), MantenimientoAdapter.OnDeleteCl
 
                 val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
                 val formattedDate = dateFormat.format(selectedDate.time)
-                gestionMantenimientoBinding.etFecha.setText(formattedDate)
+                gestionMantenimientoBinding.etFechaIn.setText(formattedDate)
+
                 serviceTag = gestionMantenimientoBinding.etServiceTag.text.toString()
                 selectedLaboratory = gestionMantenimientoBinding.spinner.selectedItem.toString()
-                applyFilters(selectedLaboratory, formattedDate, serviceTag)
+                selectedDateF = gestionMantenimientoBinding.etFechaFin.text.toString()
+
+                applyFilters(selectedLaboratory, formattedDate, serviceTag, selectedDateF)
             }, year, month, day)
 
         datePickerDialog.show()
     }
 
-    fun applyFilters(selectedLaboratory: String, selectedDate: String, serviceTag: String) {
+    fun applyFilters( selectedLaboratory: String,
+                      selectedDate: String,
+                      serviceTag: String,
+                      selectedDateF: String) {
         filteredList = mantf.filter { mantenimiento ->
             val labMatches =
                 selectedLaboratory == "Seleccionar" || mantenimiento.labname == selectedLaboratory
-            val dateMatches = selectedDate == "yyyy-MM-dd" || mantenimiento.dia == selectedDate
+            val dateMatches = (selectedDate == "yyyy-MM-dd" || mantenimiento.dia >= selectedDate) &&
+                    (selectedDateF == "yyyy-MM-dd" || mantenimiento.dia <= selectedDateF)
             val serviceTagMatches = serviceTag.isEmpty() || mantenimiento.computadora.uppercase()
                 .contains(serviceTag.uppercase())
             labMatches && dateMatches && serviceTagMatches
         }
         adapter?.updateRecycler(filteredList)
+    }
+
+    private fun showDatePickerDialog2() {
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val datePickerDialog =
+            DatePickerDialog(requireContext(), { _, selectedYear, selectedMonth, selectedDay ->
+                var selectedDate = Calendar.getInstance()
+                selectedDate.set(selectedYear, selectedMonth, selectedDay)
+
+                val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                val formattedDate = dateFormat.format(selectedDate.time)
+
+                gestionMantenimientoBinding.etFechaFin.setText(formattedDate)
+                selectedDateS = gestionMantenimientoBinding.etFechaIn.text.toString()
+                serviceTag = gestionMantenimientoBinding.etServiceTag.text.toString()
+                selectedLaboratory = gestionMantenimientoBinding.spinner.selectedItem.toString()
+
+                applyFilters(selectedLaboratory, selectedDateS, serviceTag, formattedDate)
+            }, year, month, day)
+
+        datePickerDialog.show()
     }
 
 }
