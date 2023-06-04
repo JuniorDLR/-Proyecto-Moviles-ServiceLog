@@ -18,6 +18,7 @@ class ImageAdapter(
         val itemView = inflater.inflate(R.layout.item_viewpaguer, container, false)
         val imageView: ImageView = itemView.findViewById(R.id.image_view)
         val deleteButton: ImageView = itemView.findViewById(R.id.delete_button)
+        itemView.tag = position
 
         val image = images[position]
         imageView.setImageBitmap(image)
@@ -46,20 +47,30 @@ class ImageAdapter(
 
     fun onDeleteClick(position: Int) {
         if (position >= 0 && position < images.size) {
-            deletePosition= position
+            deletePosition = position
             images.removeAt(position)
             notifyDataSetChanged()
             imageCountListener.onImageRemoved(images.size)
 
+            if (position == images.size && position > 0) {
+                // Si la imagen eliminada es la última y hay al menos una imagen restante,
+                // selecciona la imagen de la izquierda
+                deletePosition = position - 1
+            }
         }
+    }
+    override fun getItemPosition(`object`: Any): Int {
+        val view = `object` as View
+        val position = view.tag as Int
+
+        if (deletePosition != -1 && position >= deletePosition) {
+            return POSITION_NONE // Eliminar la vista
+        }
+
+        return position // Mantener la vista en su posición actual
     }
 
-    override fun getItemPosition(`object`: Any): Int {
-        if(`object` is View && images.isEmpty()){
-            return POSITION_NONE
-        }
-        return  super.getItemPosition(`object`)
-    }
+
 
     override fun isViewFromObject(view: View, `object`: Any): Boolean {
         return view == `object`

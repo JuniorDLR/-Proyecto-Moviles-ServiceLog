@@ -43,8 +43,9 @@ class FragmentDiagnostico : Fragment(), DiagnosisAdapter.OnDeleteClickListener {
     private var diagF: List<DiagnosisItem> = emptyList()
     private var filteredList: List<DiagnosisItem> = emptyList()
     private var selectedLaboratory: String = "Seleccionar"
-    private var selectedDate: String = ""
+    private var selectedDateS: String = ""
     private var serviceTag: String = ""
+    private var selectedDateF: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         fragmentDiagnostico = FragmentDiagnosticoBinding.inflate(layoutInflater)
@@ -64,21 +65,25 @@ class FragmentDiagnostico : Fragment(), DiagnosisAdapter.OnDeleteClickListener {
             CoroutineScope(Dispatchers.Main).launch {
                 val listaC = gestionDiagnosisViewModel.getAllComputer()
                 setAdapter(diagF, listaC)
-                fragmentDiagnostico.etFechaD.setText("yyyy-MM-dd")
+                fragmentDiagnostico.etFechaDIn.setText("yyyy-MM-dd")
+                fragmentDiagnostico.etFechaDFin.setText("yyyy-MM-dd")
             }
 
             fragmentDiagnostico.etServiceTagD.addTextChangedListener { filter ->
 
                 selectedLaboratory = fragmentDiagnostico.spinnerD.selectedItem.toString()
-                selectedDate = fragmentDiagnostico.etFechaD.text.toString()
+                selectedDateS = fragmentDiagnostico.etFechaDIn.text.toString()
+                selectedDateF = fragmentDiagnostico.etFechaDFin.text.toString()
 
-                applyFilters(selectedLaboratory, selectedDate, filter.toString())
+                applyFilters(selectedLaboratory, selectedDateS, filter.toString(), selectedDateF)
             }
         }
 
         val btnAgregar = fragmentDiagnostico.fbtnagregar
 
-        fragmentDiagnostico.etFechaD.setOnClickListener { showDatePickerDialog() }
+        fragmentDiagnostico.etFechaDIn.setOnClickListener { showDatePickerDialog() }
+
+        fragmentDiagnostico.etFechaDFin.setOnClickListener { showDatePickerDialog2() }
 
         btnAgregar.setOnClickListener {
             val navController = Navigation.findNavController(requireView())
@@ -105,7 +110,8 @@ class FragmentDiagnostico : Fragment(), DiagnosisAdapter.OnDeleteClickListener {
         callback.isEnabled = true
 
         fragmentDiagnostico.btnClean.setOnClickListener{
-            fragmentDiagnostico.etFechaD.setText("yyyy-MM-dd")
+            fragmentDiagnostico.etFechaDFin.setText("yyyy-MM-dd")
+            fragmentDiagnostico.etFechaDIn.setText("yyyy-MM-dd")
             fragmentDiagnostico.etServiceTagD.setText("")
             fragmentDiagnostico.spinnerD.setSelection(0)
         }
@@ -129,9 +135,12 @@ class FragmentDiagnostico : Fragment(), DiagnosisAdapter.OnDeleteClickListener {
                 id: Long
             ) {
                 val selectedItem = parent.getItemAtPosition(position) as String
+
                 serviceTag = fragmentDiagnostico.etServiceTagD.text.toString()
-                selectedDate = fragmentDiagnostico.etFechaD.text.toString()
-                applyFilters(selectedItem, selectedDate, serviceTag)
+                selectedDateS = fragmentDiagnostico.etFechaDIn.text.toString()
+                selectedDateF = fragmentDiagnostico.etFechaDFin.text.toString()
+
+                applyFilters(selectedItem, selectedDateS, serviceTag, selectedDateF)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
@@ -192,30 +201,63 @@ class FragmentDiagnostico : Fragment(), DiagnosisAdapter.OnDeleteClickListener {
         val day = calendar.get(Calendar.DAY_OF_MONTH)
 
         val datePickerDialog =
-            DatePickerDialog(requireContext(), { _, selectedYear, selectedMonth, selectedDay ->
+            DatePickerDialog(requireContext(), R.style.MyDatePickerDialogTheme, { _, selectedYear, selectedMonth, selectedDay ->
                 val selectedDate = Calendar.getInstance()
                 selectedDate.set(selectedYear, selectedMonth, selectedDay)
 
                 val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
                 val formattedDate = dateFormat.format(selectedDate.time)
-                fragmentDiagnostico.etFechaD.setText(formattedDate)
+                fragmentDiagnostico.etFechaDIn.setText(formattedDate)
                 serviceTag = fragmentDiagnostico.etServiceTagD.text.toString()
                 selectedLaboratory = fragmentDiagnostico.spinnerD.selectedItem.toString()
-                applyFilters(selectedLaboratory, formattedDate, serviceTag)
+                selectedDateF = fragmentDiagnostico.etFechaDFin.text.toString()
+                applyFilters(selectedLaboratory, formattedDate, serviceTag, selectedDateF)
             }, year, month, day)
 
         datePickerDialog.show()
     }
 
-    fun applyFilters(selectedLaboratory: String, selectedDate: String, serviceTag: String) {
+    fun applyFilters(
+        selectedLaboratory: String,
+        selectedDate: String,
+        serviceTag: String,
+        selectedDateF: String
+    ) {
         filteredList = diagF.filter { diagnostico ->
             val labMatches =
                 selectedLaboratory == "Seleccionar" || diagnostico.nombrelab == selectedLaboratory
-            val dateMatches = selectedDate == "yyyy-MM-dd" || diagnostico.fecha == selectedDate
+            val dateMatches = (selectedDate == "yyyy-MM-dd" || diagnostico.fecha >= selectedDate) &&
+                    (selectedDateF == "yyyy-MM-dd" || diagnostico.fecha <= selectedDateF)
             val serviceTagMatches = serviceTag.isEmpty() || diagnostico.ServiceTag.uppercase()
                 .contains(serviceTag.uppercase())
             labMatches && dateMatches && serviceTagMatches
         }
         adapter?.updateRecycler(filteredList)
     }
+
+    private fun showDatePickerDialog2() {
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val datePickerDialog =
+            DatePickerDialog(requireContext(), R.style.MyDatePickerDialogTheme, { _, selectedYear, selectedMonth, selectedDay ->
+                val selectedDate = Calendar.getInstance()
+                selectedDate.set(selectedYear, selectedMonth, selectedDay)
+
+                val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                val formattedDate = dateFormat.format(selectedDate.time)
+
+                fragmentDiagnostico.etFechaDFin.setText(formattedDate)
+                serviceTag = fragmentDiagnostico.etServiceTagD.text.toString()
+                selectedLaboratory = fragmentDiagnostico.spinnerD.selectedItem.toString()
+                selectedDateS = fragmentDiagnostico.etFechaDIn.text.toString()
+
+                applyFilters(selectedLaboratory, selectedDateS, serviceTag, formattedDate)
+            }, year, month, day)
+
+        datePickerDialog.show()
+    }
+
 }

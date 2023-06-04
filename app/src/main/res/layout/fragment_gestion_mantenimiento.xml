@@ -40,43 +40,71 @@
                 app:backgroundTint="@color/GrisUca"/>
 
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
             <EditText
                 android:id="@+id/etServiceTag"
-                android:layout_width="wrap_content"
-                android:layout_height="55dp"
-                android:singleLine="true"
-                android:maxLines="1"
-                android:imeOptions="actionDone"
-                android:layout_margin="10dp"
-                android:hint="Buscar por Service Tag"
-                tools:text="CN-009NK2-73846-65N-0P05"
-                android:textSize="18sp"
-                android:textStyle="italic"/>
-
-            <EditText
-                android:id="@+id/etFecha"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
-                android:singleLine="true"
-                android:maxLines="1"
+                android:layout_margin="10dp"
+                android:hint="Buscar por Service Tag"
                 android:imeOptions="actionDone"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                tools:text=" yyyy-MM-dd"
+                android:maxLines="1"
+                android:singleLine="true"
                 android:textSize="18sp"
                 android:textStyle="italic"
-                android:inputType="date"
-                android:clickable="true"
-                android:focusable="false"
-                android:drawableStart="@drawable/calendar_icon"/>
+                tools:text="CN-009NK2-73846-65N-0P05" />
 
-        </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="Inicio: "
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/etFechaIn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="55dp"
+                    android:layout_marginEnd="10dp"
+                    android:clickable="true"
+                    android:drawableStart="@drawable/calendar_icon"
+                    android:focusable="false"
+                    android:imeOptions="actionDone"
+                    android:inputType="date"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textSize="18sp"
+                    android:textStyle="italic"
+                    tools:text=" yyyy-MM-dd" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Fin: "
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/etFechaFin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="55dp"
+                    android:layout_marginEnd="10dp"
+                    android:clickable="true"
+                    android:drawableStart="@drawable/calendar_icon"
+                    android:focusable="false"
+                    android:imeOptions="actionDone"
+                    android:inputType="date"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textSize="18sp"
+                    android:textStyle="italic"
+                    tools:text=" yyyy-MM-dd" />
+            </LinearLayout>
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"

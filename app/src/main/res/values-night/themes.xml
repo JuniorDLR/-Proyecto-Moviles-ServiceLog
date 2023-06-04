@@ -3,5 +3,6 @@
     <style name="Base.Theme.ServiveLog" parent="Theme.Material3.DayNight.NoActionBar">
        <item name="colorPrimary">@color/GrisUca</item>
         <item name="colorSecondary">@color/Uca</item>
+        <item name="backgroundColor">@color/Uca</item>
     </style>
 </resources>
