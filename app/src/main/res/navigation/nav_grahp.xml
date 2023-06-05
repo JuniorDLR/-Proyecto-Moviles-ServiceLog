@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_fragmentLogin_to_fragmentRegistroUsuario"
             app:destination="@id/fragmentRegistroUsuario" />
+        <action
+            android:id="@+id/action_fragmentLogin_to_acercaDe"
+            app:destination="@id/acercaDe" />
     </fragment>
     <fragment
         android:id="@+id/fragmentMenu"
@@ -179,4 +182,9 @@
             android:name="tipoMant"
             app:argType="com.example.servivelog.domain.model.tipoMantenimiento.TipoMantItem" />
     </fragment>
+    <fragment
+        android:id="@+id/acercaDe"
+        android:name="com.example.servivelog.ui.gestioneasteregg.AcercaDe"
+        android:label="fragment_acerca_de"
+        tools:layout="@layout/fragment_acerca_de" />
 </navigation>

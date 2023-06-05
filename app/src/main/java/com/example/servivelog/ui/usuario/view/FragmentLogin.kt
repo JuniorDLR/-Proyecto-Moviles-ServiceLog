@@ -60,6 +60,10 @@ class FragmentLogin : Fragment() {
             navController.navigate(R.id.action_fragmentLogin_to_fragmentRegistroUsuario)
         }
 
+        loginBinding.logo.setOnClickListener{
+            val navController = Navigation.findNavController(it)
+            navController.navigate(R.id.action_fragmentLogin_to_acercaDe)
+        }
 
         return loginBinding.root
     }
